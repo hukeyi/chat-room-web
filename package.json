@@ -13,7 +13,8 @@
     "express": "^4.17.1",
     "mysql": "^2.18.1",
     "vue": "^3.0.0",
-    "vuex": "^3.6.2"
+    "vue-router": "^4.0.6",
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
