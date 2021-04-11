@@ -26,5 +26,11 @@ module.exports = {
 			},
 		},
 	},
-	//其他配置....
+	css: {
+		loaderOptions: {
+			sass: {
+				data: `@import "@/assets/global.scss";`,
+			},
+		},
+	},
 };
