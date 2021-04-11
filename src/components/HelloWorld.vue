@@ -2,7 +2,7 @@
 	<div class="hello">
 		<h1>{{ msg }}</h1>
 		<form>
-			<input type="text" name="username" v-model="userName" /> <br />
+			<el-input type="text" name="username" v-model="userName" /> <br />
 			<input type="text" name="age" v-model="age" /> <br />
 			<a href="javascript:;" @click="addUser">提交</a>
 		</form>
