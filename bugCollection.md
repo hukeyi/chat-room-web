@@ -1,4 +1,4 @@
-### 项目配置问题
+## 项目配置问题
 
 - instead of using `import Vue from 'vue'`, use `import {createApp} from 'vue'`
 
@@ -12,7 +12,7 @@
 
 - there're some serious compatible issues with sass-loader and webpack. Sass-loader v10+ is needed to solve the problem
 
-### Login 模块问题
+## Login 模块问题
 
 - 深度选择器 修改 element 内置样式 `/deep/` -> `::v-deep`
 
@@ -21,3 +21,28 @@
 - js 切换图片闪屏问题，`<img>`加载比较慢，导致从 login.vue 到 sign.vue 切换时会闪屏：该用 router-view，不切换图片
 
 - `<el-image>`的 `src` 引入本地图片，必须用 `require('...')`，因为 webpack 打包后会改变本地图片的名称，导致 `src` 找不到提供的路径
+
+## Home 模块问题
+
+### 嵌套命名视图
+
+[嵌套命名视图](https://next.router.vuejs.org/zh/guide/essentials/named-views.html#%E5%B5%8C%E5%A5%97%E5%91%BD%E5%90%8D%E8%A7%86%E5%9B%BE)
+给`<router-view>`命名，在同一个页面的不同页面结构中使用不同的组件：注意`components`末尾有个**s**!
+
+/router/index.js:
+
+```
+children: [
+  {
+    path: 'me',
+    components: {
+      leftSidebar1: FriendChatList,
+      mainCentral: FriendChatBox,
+    },
+  },
+  {
+    path: 'channels',
+    components: { leftSidebar1: RoomList, mainCentral: RoomChatBox },
+  },
+],
+```

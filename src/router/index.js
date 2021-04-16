@@ -1,8 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
+// login
 import Register from '../views/login/Register.vue';
 import Entrance from '../views/login/index.vue';
 import Signin from '../views/login/Login.vue';
-import User from '../views/user/index.vue';
+// home
+import Home from '../views/home/index.vue';
+import FriendChatList from '../views/home/user/FriendChatList.vue';
+import RoomList from '../views/home/channel/RoomList.vue';
+import FriendChatBox from '../views/home/user/FriendChatBox.vue';
+import RoomChatBox from '../views/home/channel/RoomChatBox.vue';
 
 const routes = [
 	{
@@ -22,7 +28,20 @@ const routes = [
 	},
 	{
 		path: '/home',
-		component: User,
+		component: Home,
+		children: [
+			{
+				path: 'me',
+				components: {
+					leftSidebar1: FriendChatList,
+					mainCentral: FriendChatBox,
+				},
+			},
+			{
+				path: 'channels',
+				components: { leftSidebar1: RoomList, mainCentral: RoomChatBox },
+			},
+		],
 	},
 ];
 const router = createRouter({
