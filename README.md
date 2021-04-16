@@ -6,7 +6,9 @@ Vue3, Node.js, Express, Socket.io, Element plus
 
 ### Login
 
-- [ ] login.vue
+- [x] Login.vue
+- [x] Register.vue
+- [ ] ChangePassword.vue
 
 ### User
 
