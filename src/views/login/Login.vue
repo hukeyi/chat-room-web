@@ -36,6 +36,9 @@
 				console.log('login btn clicked'); //fixme
 
 				// 传后端验证用户名和密码
+
+				// 进入用户主页
+				this.$router.push('/home');
 			},
 			handleCreateAcc() {
 				// change views
