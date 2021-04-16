@@ -1,19 +1,16 @@
 <template>
 	<div class="user">
 		<el-container class="whole-area">
+			<!-- 最左侧边栏，频道选择 -->
 			<el-aside class="left-sidebar-0"></el-aside>
+			<!-- 列表侧边栏 朋友/房间选择 -->
 			<el-aside class="left-sidebar-1">
 				<router-view name="leftSidebar1" />
 			</el-aside>
-			<el-container class="main-area">
-				<el-header class="main-header"></el-header>
-				<el-container>
-					<el-main class="main-central">
-						<router-view name="mainCentral" />
-					</el-main>
-					<el-aside class="main-right-sidebar"></el-aside>
-				</el-container>
-			</el-container>
+			<!-- 主界面 好友/聊天界面 -->
+			<el-main class="main-box">
+				<router-view name="mainCentral" />
+			</el-main>
 		</el-container>
 	</div>
 </template>
@@ -37,17 +34,8 @@
 				background-color: yellow;
 				width: 240px !important;
 			}
-			.main-header {
-				background-color: green;
-			}
-			.main-central {
-				background-color: blue;
-				min-width: 600px;
+			.main-box {
 				padding: 0;
-			}
-			.main-right-sidebar {
-				background-color: purple;
-				width: 300px;
 			}
 		}
 	}
