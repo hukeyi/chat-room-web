@@ -28,9 +28,11 @@ module.exports = {
 	},
 	css: {
 		loaderOptions: {
-			sass: {
-				data: `@import "@/assets/global.scss";`,
+			scss: {
+				//sass loader v10+ 必须用addtionalData
+				additionalData: `@import "@/assets/styles/global.scss";`,
 			},
 		},
+		// requireModuleExtension: false, //fixme：加了这个之后element ui的样式会失效！
 	},
 };

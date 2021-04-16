@@ -1,8 +1,13 @@
 <template>
-	<div class="signin">
+	<div class="register">
 		<inputItem
 			labelValue="电子邮箱或电话号码"
 			placeholder="email or phone"
+			@onInput="handleInputID"
+		></inputItem>
+		<inputItem
+			labelValue="用户名"
+			placeholder="2+ characters"
 			@onInput="handleInputUsername"
 		></inputItem>
 		<inputItem
@@ -10,13 +15,11 @@
 			placeholder="8+ characters"
 			@onInput="handleInputPassword"
 		></inputItem>
-
-		<el-button @click="handleClickLogin" size="small">登录</el-button>
-		<div style="margin-top: 10px;">
-			<p class="sign-in-link" @click="handleCreateAcc">创建账号</p>
-			<span style="color: #fff"> | </span>
-			<p class="sign-in-link">忘记密码</p>
-		</div>
+		<el-button @click="handleClickRegister" size="small">注册</el-button>
+		<br />
+		<p class="sign-in-link" @click="handleBackToLogin">
+			已有账号？
+		</p>
 	</div>
 </template>
 
@@ -26,31 +29,33 @@
 		components: { InputItem },
 		data() {
 			return {
-				userId: '',
+				userID: '',
+				username: '',
 				password: '',
 				imgUrl: require('../../assets/chat-logo-trans.png'),
 			};
 		},
 		methods: {
-			handleClickLogin() {
-				console.log('login btn clicked'); //fixme
-
-				// 传后端验证用户名和密码
-			},
-			handleCreateAcc() {
+			handleBackToLogin() {
 				// change views
-				this.$router.push('/register');
+				this.$router.push('/login');
 			},
-			handleChangePass() {
-				// change views
+			handleInputID(input) {
+				this.userID = input;
+				console.log('input id', input); //fixme
 			},
 			handleInputUsername(input) {
-				this.userId = input;
-				console.log('input username:', this.userId); //fixme
+				this.username = input;
+				console.log('input username', input); //fixme
 			},
 			handleInputPassword(input) {
 				this.password = input;
-				console.log('input password:', this.password); //fixme
+				console.log('input password', input); //fixme
+			},
+			handleClickRegister() {
+				console.log('register btn clicked'); //fixme
+
+				// 传后端 axios.post
 			},
 		},
 		mounted() {},
@@ -58,12 +63,13 @@
 </script>
 
 <style lang="scss" scoped>
-	.signin {
+	.register {
 		overflow: hidden;
 		text-align: center;
 		padding: 0px 30% 100px;
 
 		.sign-in-link {
+			margin-top: 10px;
 			display: inline-block;
 			text-decoration: underline;
 			color: rgb(255, 255, 255);
@@ -75,6 +81,11 @@
 			border-radius: 25px;
 			color: #fff;
 			background-color: #262626;
+		}
+
+		.el-input {
+			width: 250px;
+			margin-bottom: 20px;
 		}
 	}
 </style>
