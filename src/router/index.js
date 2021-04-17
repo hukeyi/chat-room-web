@@ -5,7 +5,7 @@ import Entrance from '../views/login/index.vue';
 import Signin from '../views/login/Login.vue';
 // home
 import Home from '../views/home/index.vue';
-import FriendChatList from '../views/home/user/FriendChatList.vue';
+import FriendChatList from '../views/home/user/FriendChatList/index.vue';
 import RoomList from '../views/home/channel/RoomList.vue';
 import FriendChatBox from '../views/home/user/FriendChatBox.vue';
 import RoomChatBox from '../views/home/channel/RoomChatBox.vue';

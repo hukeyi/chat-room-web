@@ -13,7 +13,7 @@
 	export default {
 		data() {
 			return {
-				imgUrl: require('../../assets/chat-logo-trans.png'),
+				imgUrl: require('@/assets/chat-logo-trans.png'),
 			};
 		},
 	};
