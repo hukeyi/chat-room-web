@@ -20,23 +20,5 @@
 </script>
 
 <style lang="scss" scoped>
-	.entrance {
-		overflow: hidden;
-		text-align: center;
-		padding-top: 100px;
-
-		::v-deep #chat-logo {
-			width: 300px;
-			height: 252px;
-			margin-bottom: 20px;
-			margin-left: 35px;
-		}
-
-		.image-slot {
-			width: 300px;
-			height: 252px;
-			margin-bottom: 20px;
-			margin-left: 35px;
-		}
-	}
+	@import '@/assets/styles/login/login.scss';
 </style>

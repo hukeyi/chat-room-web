@@ -63,29 +63,5 @@
 </script>
 
 <style lang="scss" scoped>
-	.register {
-		overflow: hidden;
-		text-align: center;
-		padding: 0px 30% 100px;
-
-		.sign-in-link {
-			margin-top: 10px;
-			display: inline-block;
-			text-decoration: underline;
-			color: rgb(255, 255, 255);
-			font-size: 12px;
-		}
-
-		.el-button {
-			width: 250px;
-			border-radius: 25px;
-			color: #fff;
-			background-color: #262626;
-		}
-
-		.el-input {
-			width: 250px;
-			margin-bottom: 20px;
-		}
-	}
+	@import '@/assets/styles/login/login.scss';
 </style>

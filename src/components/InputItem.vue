@@ -67,11 +67,11 @@
 		margin-bottom: 20px;
 		.input-label {
 			display: inline-block;
-			color: gray;
+			color: $fontColorDeep;
 			font-size: 14px;
 		}
 		.input-content {
-			color: gray;
+			color: $fontColorDeep;
 		}
 	}
 </style>
