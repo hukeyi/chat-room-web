@@ -1,21 +1,28 @@
 <template>
 	<div class="friend-chat-list">
 		<el-container style="width: 100%; height: 100%;">
-			<!-- 左边栏，好友列表头部；私信 -->
+			<!-- 头部标题：私信 -->
 			<el-header class="friend-chat-header">
 				<span>私信</span>
 				<span style="float: right;">+</span>
 			</el-header>
-			<!-- 好友列表 -->
+			<!-- 主要：好友列表 -->
 			<el-main class="chat-session-list">
-				<ChatListItem
-					v-for="item in chatList"
-					:key="item.id"
-					:name="item.name"
-				></ChatListItem>
-				<!-- <el-skeleton :rows="10" /> -->
+				<div v-if="chatList.length">
+					<ChatListItem
+						v-for="item in chatList"
+						:key="item.id"
+						:name="item.name"
+					></ChatListItem>
+				</div>
+				<div v-else>
+					<el-empty
+						:imageSize="100"
+						description="暂时没有私聊窗口哦"
+					></el-empty>
+				</div>
 			</el-main>
-			<!-- 用户个人信息 -->
+			<!-- 底部：用户个人信息 -->
 			<el-footer class="user-info-setting">
 				<div class="user-info">
 					<img :src="user_avator" />
@@ -33,17 +40,27 @@
 
 <script>
 	import ChatListItem from './FriendChatItem';
+	import { mapGetters, mapMutations } from 'vuex';
+
 	export default {
 		components: { ChatListItem },
 		data() {
 			return {
 				user_avator: require('@/assets/styles/common/img/user.png'),
 				setting_icon: require('@/assets/styles/common/img/international.png'),
-				chatList: [
-					{ id: '1', name: 'friend-1', avator: '' },
-					{ id: '2', name: 'friend-2', avator: '' },
-				],
+				chatList: [],
 			};
+		},
+		methods: {
+			...mapGetters({
+				getList: 'allFriendChatList',
+			}),
+			...mapMutations({
+				deleteListItemById: 'deleteFriendChatById',
+			}),
+		},
+		mounted() {
+			this.chatList = this.getList();
 		},
 	};
 </script>

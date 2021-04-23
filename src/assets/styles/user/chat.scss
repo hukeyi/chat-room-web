@@ -103,6 +103,9 @@
 				background-color: $emphasisColorA;
 				color: $fontColorDeep;
 			}
+			.add-friend-btn:hover {
+				color: $fontColorLight;
+			}
 
 			.friend-info-drawer {
 				background-color: $themeColorMedium;

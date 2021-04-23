@@ -3,15 +3,13 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import Register from '../views/login/Register.vue';
 import Entrance from '../views/login/index.vue';
 import Signin from '../views/login/Login.vue';
-// home
-import Home from '../views/home/index.vue';
-import FriendChatList from '../views/home/user/FriendChatList/index.vue';
-import RoomList from '../views/home/channel/RoomList.vue';
-import FriendChatBox from '../views/home/user/FriendChatBox/index.vue';
-import RoomChatBox from '../views/home/channel/RoomChatBox.vue';
+// channel & user
+import Channel from '../views/channel/index.vue';
+import User from '../views/user/index.vue';
 
 const routes = [
 	{
+		//网站首页-登录注册界面
 		path: '/',
 		redirect: '/login',
 		component: Entrance,
@@ -27,22 +25,14 @@ const routes = [
 		],
 	},
 	{
-		path: '/home',
-		redirect: '/home/me',
-		component: Home,
-		children: [
-			{
-				path: 'me',
-				components: {
-					leftSidebar1: FriendChatList,
-					mainCentral: FriendChatBox,
-				},
-			},
-			{
-				path: 'channels',
-				components: { leftSidebar1: RoomList, mainCentral: RoomChatBox },
-			},
-		],
+		// 用户首页-好友界面
+		path: '/me',
+		component: User,
+	},
+	{
+		// 用户首页-某频道界面
+		path: '/channel',
+		component: Channel,
 	},
 ];
 const router = createRouter({

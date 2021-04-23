@@ -2,7 +2,7 @@
 	<!-- 主页最左边栏界面 -->
 	<div class="channel-selector">
 		<!-- 用户主页 -->
-		<SelectorItem :icon="icon_userhome" link="home/me"></SelectorItem>
+		<SelectorItem :icon="icon_userhome" link="me"></SelectorItem>
 		<hr width="60%" class="level-divider" />
 		<!-- 已加入频道主页 -->
 		<SelectorItem></SelectorItem>

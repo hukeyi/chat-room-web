@@ -139,6 +139,7 @@
 <script>
 	import InputItem from '@/components/InputItem.vue';
 	import InfoCardItem from '@/components/InfoCardItem.vue';
+	import { mapGetters, mapActions } from 'vuex';
 
 	export default {
 		components: { InputItem, InfoCardItem },
@@ -146,11 +147,7 @@
 			return {
 				icon_friend: require('@/assets/styles/common/img/user.png'),
 				showAddFriend: false,
-				friendList: [
-					{ id: '0', name: 'frank', avator: '', status: 'on' },
-					{ id: '1', name: 'john', avator: '', status: 'off' },
-					{ id: '2', name: 'mary', avator: '', status: 'on' },
-				],
+				friendList: [],
 				selectFriendStatus: 'all', //默认全部
 
 				showRightDrawer: false,
@@ -160,18 +157,12 @@
 			};
 		},
 		methods: {
-			/**
-			 * 获取在线好友列表
-			 */
-			getOnList() {
-				return this.friendList.filter((item) => item.status === 'on');
-			},
-			/**
-			 * 获取离线好友列表
-			 */
-			getOffList() {
-				return this.friendList.filter((item) => item.status === 'off');
-			},
+			...mapGetters({
+				getList: 'allFriends',
+				getOnList: 'onFriends',
+				getOffList: 'offFriends',
+			}),
+			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
 
 			/**
 			 * 删除好友
@@ -182,13 +173,10 @@
 				this.showRightDrawer = false;
 
 				// 2. delete friendlist'id
-				this.friendList.splice(
-					this.friendList.findIndex((item) => item.id === id),
-					1
-				);
+				this.deleteFriendById(id);
 
 				// 3. delete 左边栏的私信中的friend chat item（如果有的话）
-				// 通过触发事件"deleteChatItem"
+				this.deleteFriendChatById(id);
 
 				// 4. fixme: axios, request backend to delete friend-id in the database
 			},
@@ -211,9 +199,9 @@
 			/**
 			 * 点击好友card，显示好友信息事件回调函数
 			 */
-			handleClickFriendCard(item) {
-				console.log('click friend card', item);
-				this.drawerInfo = item; // 点击的朋友id
+			handleClickFriendCard(info) {
+				console.log('click friend card', info);
+				this.drawerInfo = info;
 				this.showRightDrawer = !this.showRightDrawer;
 			},
 			/**
@@ -234,11 +222,13 @@
 							message: '删除成功!',
 						});
 					})
-					.catch(() => {});
+					.catch(() => {
+						console.log('cancel delete friend', id);
+					});
 			},
 		},
 		mounted() {
-			// get whole friend list
+			this.friendList = this.getList();
 		},
 	};
 </script>
@@ -249,5 +239,5 @@
 			display: none;
 		}
 	}
-	@import '@/assets/styles/home/chat.scss';
+	@import '@/assets/styles/user/chat.scss';
 </style>
