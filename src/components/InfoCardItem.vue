@@ -95,7 +95,7 @@
 			background-color: $fontColorMedium;
 		}
 		.status.on {
-			background-color: greenyellow;
+			background-color: $emphasisColorB;
 		}
 	}
 </style>

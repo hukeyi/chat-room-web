@@ -13,6 +13,7 @@
 						v-for="item in chatList"
 						:key="item.id"
 						:name="item.name"
+						@click="handleClickItem(item)"
 					></ChatListItem>
 				</div>
 				<div v-else>
@@ -58,6 +59,9 @@
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
 			}),
+			handleClickItem(item) {
+				console.log('click', item.name);
+			},
 		},
 		mounted() {
 			this.chatList = this.getList();

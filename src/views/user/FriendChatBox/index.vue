@@ -45,17 +45,21 @@
 							overflow: hidden;
 							"
 							inputStyle="float: left; width: 60%;"
-							labelValue="您可以通过搜索好友ID来添加好友："
-							placeholder="请输入用户ID"
+							labelValue="您可以通过搜索好友ID或昵称来添加好友："
+							placeholder="请输入用户ID或昵称"
 							:clearable="true"
+							@onInput="handleInputId"
 						>
-							<el-button size="medium" class="add-friend-btn"
+							<el-button
+								@click="handleClickSearchFriend"
+								size="medium"
+								class="add-friend-btn"
 								>搜索好友</el-button
 							>
 						</InputItem>
 					</div>
 					<!-- 无好友 -->
-					<div v-if="!showAddFriend && !friendList.length" class="no-friends">
+					<div v-else-if="!friendList.length" class="no-friends">
 						<el-empty
 							description="暂时没有好友，赶快搜索好友开始聊天吧"
 							:image-size="200"
@@ -130,6 +134,22 @@
 							>
 						</el-row>
 					</el-drawer>
+					<!-- 根据id搜索的好友列表 -->
+					<div v-if="showAddFriend" class="add-friend-result">
+						<template v-for="item in searchResultList" :key="item.id">
+							<div class="add-friend-result-item">
+								<InfoCardItem
+									:name="item.name"
+									:avator="item.avator ? item.avator : undefined"
+									:id="item.id"
+									:status="item.status"
+								></InfoCardItem>
+								<el-button @click="handleClickSend(item)"
+									>发送好友申请</el-button
+								>
+							</div>
+						</template>
+					</div>
 				</el-main>
 			</el-container>
 		</el-container>
@@ -145,15 +165,16 @@
 		components: { InputItem, InfoCardItem },
 		data() {
 			return {
-				icon_friend: require('@/assets/styles/common/img/user.png'),
-				showAddFriend: false,
 				friendList: [],
-				selectFriendStatus: 'all', //默认全部
+				searchResultList: [],
+				searchId: '',
 
+				icon_friend: require('@/assets/styles/common/img/user.png'),
+
+				showAddFriend: false,
+				selectFriendStatus: 'all',
 				showRightDrawer: false,
-				drawerInfo: undefined, //drawer展示信息的好友的id
-
-				showDialog: false,
+				drawerInfo: undefined, //drawer展示的好友的id
 			};
 		},
 		methods: {
@@ -164,9 +185,7 @@
 			}),
 			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
 
-			/**
-			 * 删除好友
-			 */
+			//删除好友
 			deleteFriend(id) {
 				console.log('start delete friend', id);
 				// 1. close right drawer
@@ -180,36 +199,65 @@
 
 				// 4. fixme: axios, request backend to delete friend-id in the database
 			},
-			/**
-			 * 添加好友按钮的点击事件回调函数
-			 */
+			// 判断一个字符串是否可能是id
+			canBeID(str) {
+				console.log('is id', str);
+				return true;
+				// 1. is all number
+
+				// 2. is within the id length limits
+			},
+			// fixme
+			searchFriendById(id) {
+				console.log('start search by id', id);
+
+				// 1. request to backend find friend by id
+
+				// 2. change searchResultList
+				this.searchResultList = [
+					{ id: '3', name: 'hu', avator: '', status: 'on' },
+					{ id: '4', name: 'wang', avator: '', status: 'off' },
+					{ id: '5', name: 'qian', avator: '', status: 'on' },
+				];
+				return true;
+			},
+			// fixme
+			searchFriendByName(name) {
+				console.log('start search by name', name);
+
+				// 1. request to backend find friend by name
+
+				// 2. change searchResultList
+				this.searchResultList = [
+					{ id: '3', name: 'hu', avator: '', status: 'on' },
+					{ id: '4', name: 'wang', avator: '', status: 'off' },
+					{ id: '5', name: 'qian', avator: '', status: 'on' },
+				];
+				return true;
+			},
+			// 发送好友请求
+			sendAddRequest(id) {
+				console.log('send request to', id);
+				// fixme: request to backend send request
+			},
+			//添加好友按钮的点击事件回调函数
 			handleClickAddFriend() {
 				this.showAddFriend = true;
 				this.selectFriendStatus = '';
 			},
-			/**
-			 * 好友界面头顶栏好友状态菜单选择事件回调函数
-			 */
+			//好友界面头顶栏好友状态菜单选择事件回调函数
 			handleSelectStatus(key) {
-				//好友在线状态选择 header selector
-				console.log('select status', key);
 				this.selectFriendStatus = key;
 				this.showAddFriend = false;
 			},
-			/**
-			 * 点击好友card，显示好友信息事件回调函数
-			 */
+
+			//点击好友card，显示好友信息事件回调函数
 			handleClickFriendCard(info) {
-				console.log('click friend card', info);
 				this.drawerInfo = info;
 				this.showRightDrawer = !this.showRightDrawer;
 			},
-			/**
-			 * 点击删除好友按钮的回调函数
-			 */
+			//点击删除好友按钮的回调函数
 			handleClickDeleteFriend(id, name) {
-				console.log('click delete friend', id);
-
 				this.$confirm(`是否确认删除好友${name}?`, '确认删除', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -222,8 +270,45 @@
 							message: '删除成功!',
 						});
 					})
-					.catch(() => {
-						console.log('cancel delete friend', id);
+					.catch((err) => {
+						console.log('cancel delete friend', id, err);
+					});
+			},
+			// 搜索好友输入框的input回调函数
+			handleInputId(id) {
+				this.searchId = id;
+			},
+			// 搜索好友按钮点击事件的回调函数
+			handleClickSearchFriend() {
+				console.log('click search', this.searchId);
+				const id = this.searchId;
+				// 判断是否可能为id
+				// 1. 是，先搜id，若无搜name
+				// 2. 否，只搜name
+				if (this.canBeID(id)) {
+					if (!this.searchFriendById(id)) {
+						this.searchFriendByName(id);
+					}
+				} else {
+					this.searchFriendByName(id);
+				}
+			},
+			// 发送好友请求按钮的回调函数
+			handleClickSend(item) {
+				this.$confirm(`是否向 ${item.name} 发送好友申请?`, '', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning',
+				})
+					.then(() => {
+						this.sendAddRequest(item.id);
+						this.$message({
+							type: 'success',
+							message: '发送成功!',
+						});
+					})
+					.catch((err) => {
+						console.log('cancel send request', item.id, err);
 					});
 			},
 		},

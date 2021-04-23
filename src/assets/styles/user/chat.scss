@@ -133,6 +133,30 @@
 					}
 				}
 			}
+
+			.add-friend-result {
+				width: 100%;
+				height: auto;
+				.add-friend-result-item {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+
+					.info-card-item .info .name-id {
+						margin: auto 15px;
+					}
+
+					.el-button {
+						height: 40px;
+						width: auto;
+
+						padding: 10px;
+						margin-left: 10px;
+						background-color: $fontColorDeep;
+						color: $themeColorLight;
+					}
+				}
+			}
 		}
 		.main-right-sidebar {
 			background-color: $themeColorMedium;
