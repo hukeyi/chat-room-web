@@ -8,7 +8,11 @@
 				<span id="id">{{ id }}</span>
 			</div>
 		</div>
-		<span class="status"></span>
+		<span
+			v-if="showStatus"
+			class="status"
+			:class="{ off: status === 'off', on: status === 'on' }"
+		></span>
 	</div>
 </template>
 
@@ -26,6 +30,14 @@
 			id: {
 				type: String,
 				default: '00000',
+			},
+			status: {
+				type: String,
+				default: 'on',
+			},
+			showStatus: {
+				type: Boolean,
+				default: true,
 			},
 		},
 	};
@@ -78,6 +90,12 @@
 
 			background-color: $emphasisColorA;
 			border-radius: 50%;
+		}
+		.status.off {
+			background-color: $fontColorMedium;
+		}
+		.status.on {
+			background-color: greenyellow;
 		}
 	}
 </style>

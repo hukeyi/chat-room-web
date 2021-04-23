@@ -32,3 +32,14 @@ body {
 
 	background-color: $themeColorDeep;
 }
+
+.is-message-box .el-message-box__btns .el-button--primary {
+	background-color: $emphasisColorA;
+	border: 0;
+}
+.is-message-box .el-message-box__btns .el-button:hover {
+	background-color: $emphasisColorA;
+	color: white;
+	opacity: 0.4;
+	border: 0;
+}

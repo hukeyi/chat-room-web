@@ -7,7 +7,7 @@ import Signin from '../views/login/Login.vue';
 import Home from '../views/home/index.vue';
 import FriendChatList from '../views/home/user/FriendChatList/index.vue';
 import RoomList from '../views/home/channel/RoomList.vue';
-import FriendChatBox from '../views/home/user/FriendChatBox.vue';
+import FriendChatBox from '../views/home/user/FriendChatBox/index.vue';
 import RoomChatBox from '../views/home/channel/RoomChatBox.vue';
 
 const routes = [

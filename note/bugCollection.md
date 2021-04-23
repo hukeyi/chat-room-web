@@ -1,3 +1,7 @@
+## 待解决问题
+
+- 封装一个类似 element-plus 里的 this.$alert/$message/\$confirm 的全局组件
+
 ## 项目配置问题
 
 - instead of using `import Vue from 'vue'`, use `import {createApp} from 'vue'`

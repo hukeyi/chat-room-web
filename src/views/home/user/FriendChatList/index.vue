@@ -1,10 +1,12 @@
 <template>
 	<div class="friend-chat-list">
 		<el-container style="width: 100%; height: 100%;">
+			<!-- 左边栏，好友列表头部；私信 -->
 			<el-header class="friend-chat-header">
 				<span>私信</span>
 				<span style="float: right;">+</span>
 			</el-header>
+			<!-- 好友列表 -->
 			<el-main class="chat-session-list">
 				<ChatListItem
 					v-for="item in chatList"
@@ -13,6 +15,7 @@
 				></ChatListItem>
 				<!-- <el-skeleton :rows="10" /> -->
 			</el-main>
+			<!-- 用户个人信息 -->
 			<el-footer class="user-info-setting">
 				<div class="user-info">
 					<img :src="user_avator" />

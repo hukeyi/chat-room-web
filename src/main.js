@@ -8,7 +8,7 @@ import installElementPlus from './plugins/element';
 const app = createApp(App);
 
 // axios
-app.config.globalProperties.$http = axios;
+app.config.globalProperties.$axios = axios;
 
 // vue-router & vuex
 app.use(router);
