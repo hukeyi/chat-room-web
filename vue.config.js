@@ -26,5 +26,13 @@ module.exports = {
 			},
 		},
 	},
-	//其他配置....
+	css: {
+		loaderOptions: {
+			scss: {
+				//sass loader v10+ 必须用addtionalData
+				additionalData: `@import "@/assets/styles/global.scss";`,
+			},
+		},
+		// requireModuleExtension: false, //fixme：加了这个之后element ui的样式会失效！
+	},
 };

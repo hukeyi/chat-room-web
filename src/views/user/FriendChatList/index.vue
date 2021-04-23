@@ -1,0 +1,136 @@
+<template>
+	<div class="friend-chat-list">
+		<el-container style="width: 100%; height: 100%;">
+			<!-- 头部标题：私信 -->
+			<el-header class="friend-chat-header">
+				<span>私信</span>
+				<span style="float: right;">+</span>
+			</el-header>
+			<!-- 主要：好友列表 -->
+			<el-main class="chat-session-list">
+				<div v-if="chatList.length">
+					<ChatListItem
+						v-for="item in chatList"
+						:key="item.id"
+						:name="item.name"
+					></ChatListItem>
+				</div>
+				<div v-else>
+					<el-empty
+						:imageSize="100"
+						description="暂时没有私聊窗口哦"
+					></el-empty>
+				</div>
+			</el-main>
+			<!-- 底部：用户个人信息 -->
+			<el-footer class="user-info-setting">
+				<div class="user-info">
+					<img :src="user_avator" />
+					<div class="user-name-id">
+						<span id="user-name">username</span>
+						<br />
+						<span id="user-id">userid</span>
+					</div>
+				</div>
+				<img :src="setting_icon" class="user-setting" />
+			</el-footer>
+		</el-container>
+	</div>
+</template>
+
+<script>
+	import ChatListItem from './FriendChatItem';
+	import { mapGetters, mapMutations } from 'vuex';
+
+	export default {
+		components: { ChatListItem },
+		data() {
+			return {
+				user_avator: require('@/assets/styles/common/img/user.png'),
+				setting_icon: require('@/assets/styles/common/img/international.png'),
+				chatList: [],
+			};
+		},
+		methods: {
+			...mapGetters({
+				getList: 'allFriendChatList',
+			}),
+			...mapMutations({
+				deleteListItemById: 'deleteFriendChatById',
+			}),
+		},
+		mounted() {
+			this.chatList = this.getList();
+		},
+	};
+</script>
+
+<style lang="scss" scoped>
+	.friend-chat-list {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		background-color: transparent;
+
+		* {
+			padding: 0;
+			margin: 0;
+		}
+
+		color: $fontColorDeep;
+
+		.friend-chat-header {
+			padding: 20px;
+			border-bottom: 2px solid $themeColorDeep;
+		}
+
+		.chat-session-list {
+			padding: 20px;
+
+			::v-deep .el-skeleton__item {
+				// fixme: delete me when the list is down
+				background-color: $themeColorLight;
+			}
+		}
+
+		.user-info-setting {
+			padding: 20px;
+			border-top: 2px solid $themeColorDeep;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.user-info {
+				display: flex;
+				justify-content: center;
+				width: 50%;
+
+				img {
+					width: 40px;
+					height: 40px;
+
+					background-color: $emphasisColorA;
+					border-radius: 50%;
+				}
+				.user-name-id {
+					margin: auto;
+					font-size: 12px;
+					#user-name {
+						color: $fontColorLight;
+						font-weight: bolder;
+					}
+					#user-id {
+						color: $fontColorDeep;
+					}
+				}
+			}
+			.user-setting {
+				width: 20px;
+				height: 20px;
+
+				background-color: $emphasisColorA;
+				border-radius: 50%;
+			}
+		}
+	}
+</style>
