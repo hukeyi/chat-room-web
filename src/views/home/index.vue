@@ -1,7 +1,7 @@
 <template>
 	<div class="user">
 		<el-container class="whole-area">
-			<!-- 最左侧边栏，频道选择 -->
+			<!-- 最左侧边栏，频道选择 front ok; axios:? -->
 			<el-aside class="left-sidebar-0">
 				<channel-selector></channel-selector>
 			</el-aside>
@@ -29,9 +29,6 @@
 </script>
 
 <style lang="scss" scoped>
-	// 	•	#151414 eerie black 深
-	// •	#2A2728 raisin black 中
-	// •	#3F3B3C jet 浅
 	.user {
 		overflow: hidden;
 		height: 100%;

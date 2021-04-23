@@ -1,5 +1,5 @@
 <template>
-	<div class="input-item">
+	<div class="input-item" :style="itemStyle">
 		<label :style="labelStyle" class="input-label">{{ labelValue }}</label>
 		<el-input
 			class="input-content"
@@ -10,6 +10,7 @@
 			v-model="inputValue"
 			@input="handleInput"
 		></el-input>
+		<slot></slot>
 	</div>
 </template>
 <script>
@@ -35,6 +36,11 @@
 				//输入框是否不显示密码
 				type: Boolean,
 				default: false,
+			},
+			itemStyle: {
+				// 输入器整体style修改
+				type: String,
+				default: '',
 			},
 			labelStyle: {
 				// label的style
@@ -65,9 +71,12 @@
 	.input-item {
 		text-align: left;
 		margin-bottom: 20px;
+		// padding: 20px !important;
+		// width: 300px;
 		.input-label {
 			display: inline-block;
 			color: $fontColorDeep;
+			margin-bottom: 15px;
 			font-size: 14px;
 		}
 		.input-content {
