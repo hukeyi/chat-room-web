@@ -55,12 +55,14 @@
 		methods: {
 			...mapGetters({
 				getList: 'allFriendChatList',
+				getUserId: 'getUserId',
 			}),
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
 			}),
 			handleClickItem(item) {
 				console.log('click', item.name);
+				this.$router.push(`/user/${this.getUserId()}/${item.id}`);
 			},
 		},
 		mounted() {

@@ -9,9 +9,9 @@
 			<el-aside class="left-sidebar-1">
 				<FriendChatList></FriendChatList>
 			</el-aside>
-			<!-- 主界面 好友界面 -->
+			<!-- 主界面 好友界面 这里有嵌套路由 -->
 			<el-main class="main-box">
-				<FriendChatBox @deleteFriend="handleDeleteFriend"></FriendChatBox>
+				<FriendBox></FriendBox>
 			</el-main>
 		</el-container>
 	</div>
@@ -20,15 +20,9 @@
 <script>
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
 	import FriendChatList from './FriendChatList/index';
-	import FriendChatBox from './FriendChatBox/index';
+	import FriendBox from './FriendChatBox/index';
 	export default {
-		components: { ChannelSelector, FriendChatList, FriendChatBox },
-		data() {},
-		methods: {
-			handleDeleteFriend(id) {
-				console.log('user/index.vue', id);
-			},
-		},
+		components: { ChannelSelector, FriendChatList, FriendBox },
 	};
 </script>
 

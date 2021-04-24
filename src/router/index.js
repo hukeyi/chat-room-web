@@ -7,6 +7,10 @@ import Signin from '../views/login/Login.vue';
 import Channel from '../views/channel/index.vue';
 import User from '../views/user/index.vue';
 
+// friend-box
+import FriendInfoBox from '../views/user/FriendChatBox/FriendInfoBox.vue';
+import FriendChatBox from '../views/user/FriendChatBox/FriendChatBox.vue';
+
 const routes = [
 	{
 		//网站首页-登录注册界面
@@ -26,8 +30,18 @@ const routes = [
 	},
 	{
 		// 用户首页-好友界面
-		path: '/me',
+		path: '/user/:id',
 		component: User,
+		children: [
+			{
+				path: '',
+				component: FriendInfoBox,
+			},
+			{
+				path: ':fId',
+				component: FriendChatBox,
+			},
+		],
 	},
 	{
 		// 用户首页-某频道界面

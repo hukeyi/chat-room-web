@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 
 const store = createStore({
 	state: {
+		user: { id: 'test', name: 'testName', avator: '' },
 		friendList: [
 			{ id: '0', name: 'frank', avator: '', status: 'on' },
 			{ id: '1', name: 'john', avator: '', status: 'off' },
@@ -13,6 +14,9 @@ const store = createStore({
 		],
 	},
 	getters: {
+		getUserId: (state) => state.user.id,
+		getUserName: (state) => state.user.name,
+		getUserAvator: (state) => state.user.avator,
 		/**
 		 * 返回全部好友私聊列表
 		 * @param {*} state
@@ -60,8 +64,27 @@ const store = createStore({
 			return state.friendChatList.findIndex((item) => item.id === id);
 		},
 	},
-	mutations: {},
+	mutations: {
+		SET_USERID(state, id) {
+			state.user.id = id;
+		},
+		SET_USERNAME(state, name) {
+			state.user.name = name;
+		},
+		SET_USERAVATOR(state, avator) {
+			state.user.avator = avator;
+		},
+	},
 	actions: {
+		setUserId({ commit }, id) {
+			commit('SET_USERID', id);
+		},
+		setUserName({ commit }, name) {
+			commit('SET_USERNAME', name);
+		},
+		setUserAvator({ commit }, avator) {
+			commit('SET_USERAVATOR', avator);
+		},
 		/**
 		 * 根据好友id删除好友
 		 * @param {*} state

@@ -22,6 +22,7 @@
 
 <script>
 	import InputItem from '../../components/InputItem.vue';
+	import { mapGetters, mapActions } from 'vuex';
 	export default {
 		components: { InputItem },
 		data() {
@@ -32,13 +33,16 @@
 			};
 		},
 		methods: {
+			...mapGetters(['getUserId', 'getUserName']),
+			...mapActions(['setUserId', 'setUserName']),
 			handleClickLogin() {
 				console.log('login btn clicked'); //fixme
 
 				// 传后端验证用户名和密码
-
+				this.setUserId('test');
+				this.setUserName('testName');
 				// 进入用户主页
-				this.$router.push('/me');
+				this.$router.push(`/user/${this.getUserId()}`);
 			},
 			handleCreateAcc() {
 				// change views
