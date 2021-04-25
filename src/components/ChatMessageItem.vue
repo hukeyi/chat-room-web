@@ -87,6 +87,7 @@
 		.chat-message {
 			display: flex;
 			flex-direction: column;
+			max-width: 74%;
 
 			.chat-send-time {
 				color: $fontColorMedium;
@@ -98,8 +99,9 @@
 				font-weight: bold;
 				background-color: $message-bg-color;
 				border-radius: 10px;
+
 				padding: 10px !important;
-				width: auto;
+				word-break: break-word;
 
 				position: relative;
 
