@@ -15,12 +15,12 @@
 						消息用一个聊天消息小组件渲染 -->
 						<ChatMessage
 							v-for="item in messageList"
-							:key="item.id"
-							:direction="item.direction"
+							:key="item.s_id"
+							:direction="item.s_id === fId ? 'left' : 'right'"
 							:avator="item.avator ? item.avator : undefined"
 							:name="item.name"
 							:time="item.time"
-							:message="item.message"
+							:message="item.content"
 						></ChatMessage>
 					</div>
 					<div class="chat-box-input">
@@ -53,7 +53,7 @@
 <script>
 	import { mapGetters, mapActions } from 'vuex';
 	import ChatMessage from '@/components/ChatMessageItem.vue';
-	import testData from './test-messages.json';
+	import testData from './testdata01.json';
 	import { formatDate } from '@/utils/time';
 
 	export default {
@@ -109,14 +109,14 @@
 			handleClickSendText() {
 				if (this.inputText != '') {
 					const text = {
+						s_id: this.getUserId(),
+						r_id: this.fId,
 						time: formatDate('MM/dd hh:mm:ss'),
-						direction: 'right',
 						avator: '',
 						name: this.getUserName(),
-						message: this.inputText,
+						content: this.inputText,
 					};
 					this.inputText = '';
-					// push text content into list
 					this.messageList.push(text);
 					this.scrollToEnd();
 
@@ -134,7 +134,7 @@
 			console.log('fid', this.fId);
 			this.friendList = this.getList();
 			// 显示历史消息
-			this.messageList = this.messageList.concat(testData[this.fId]);
+			this.messageList = testData[this.fId];
 			this.scrollToEnd();
 		},
 		watch: {

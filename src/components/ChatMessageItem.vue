@@ -88,6 +88,7 @@
 		.chat-message {
 			display: flex;
 			flex-direction: column;
+			align-items: flex-start;
 			max-width: calc(100% - 155px);
 
 			.chat-send-time {
