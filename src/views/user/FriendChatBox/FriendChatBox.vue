@@ -139,11 +139,12 @@
 		},
 		watch: {
 			//通过watch来监听路由变化
-			$route: function() {
-				console.log('watch', this.$route.params.fId);
-				this.fId = this.$route.params.fId;
-				this.messageList = testData[this.fId];
-				this.scrollToEnd();
+			'$route.params.fId': function() {
+				if (this.$route.params.fId) {
+					this.fId = this.$route.params.fId;
+					this.messageList = testData[this.fId];
+					this.scrollToEnd();
+				}
 			},
 		},
 	};
