@@ -32,7 +32,7 @@
 		height: 100%;
 		color: $fontColorLight;
 
-		::v-deep .whole-area {
+		:deep(.whole-area) {
 			height: 100%;
 			.left-sidebar-0 {
 				background-color: $themeColorDeep;
@@ -40,7 +40,7 @@
 			}
 			.left-sidebar-1 {
 				background-color: $themeColorMedium;
-				width: 240px !important;
+				width: 290px !important;
 			}
 			.main-box {
 				padding: 0;

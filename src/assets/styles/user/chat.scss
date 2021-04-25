@@ -39,7 +39,7 @@
 					width: 88%;
 				}
 
-				::v-deep .el-textarea__inner#input-frame {
+				:deep(.el-textarea__inner#input-frame) {
 					border: 0px;
 					resize: none;
 					background-color: transparent;
@@ -68,7 +68,7 @@
 	background-color: transparent;
 	overflow: hidden;
 
-	::v-deep .main-area {
+	:deep(.main-area) {
 		width: 100% !important;
 		height: 100%;
 

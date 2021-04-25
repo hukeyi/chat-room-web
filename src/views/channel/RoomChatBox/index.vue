@@ -20,7 +20,7 @@
 		height: 100%;
 		background-color: aqua;
 
-		::v-deep .main-area {
+		:deep(.main-area) {
 			width: 100% !important;
 			height: 100%;
 

@@ -3,7 +3,7 @@
 	text-align: center;
 	padding-top: 100px;
 
-	::v-deep #chat-logo {
+	:deep(#chat-logo) {
 		width: 300px;
 		height: 252px;
 		margin-bottom: 20px;

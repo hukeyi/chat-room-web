@@ -93,7 +93,7 @@
 		.chat-session-list {
 			padding: 20px;
 
-			::v-deep .el-skeleton__item {
+			:deep(.el-skeleton__item) {
 				// fixme: delete me when the list is down
 				background-color: $themeColorLight;
 			}

@@ -19,6 +19,7 @@
 ## Login 模块问题
 
 - 深度选择器 修改 element 内置样式 `/deep/` -> `::v-deep`
+  用`::v-deep`会报 warning：`[@vue/compiler-sfc] ::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.`，按照 warning 改为`:deep(<selector-name>)`
 
 - [provide/inject](https://v3.cn.vuejs.org/guide/component-provide-inject.html#%E5%A4%84%E7%90%86%E5%93%8D%E5%BA%94%E6%80%A7) pass value from parent component to child component
 

@@ -34,7 +34,7 @@
 		height: 100%;
 		color: $fontColorLight;
 
-		::v-deep .whole-area {
+		:deep(.whole-area) {
 			height: 100%;
 			.left-sidebar-0 {
 				background-color: $themeColorDeep;

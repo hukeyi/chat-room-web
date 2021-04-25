@@ -46,11 +46,6 @@
 		data() {
 			return {};
 		},
-		methods: {
-			getImgUrl(url) {
-				return require(url);
-			},
-		},
 	};
 </script>
 
