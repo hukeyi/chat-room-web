@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="chat-message-item"
-		:class="{ 'my-side-item': direction === 'right' }"
+		:class="{ 'my-message': direction === 'right' }"
 	>
 		<div class="chat-avator-name">
 			<!-- 头像 -->
@@ -50,6 +50,8 @@
 </script>
 
 <style lang="scss" scoped>
+	$message-bg-color: $fontColorDeep;
+	$message-font-color: $themeColorMedium;
 	.chat-message-item {
 		clear: both;
 		height: auto;
@@ -67,13 +69,14 @@
 			display: flex;
 			flex-direction: column;
 			margin: 0 15px;
+			justify-content: flex-end;
 
 			.chat-avator {
 				width: 40px;
 				height: 40px;
 				border: 1px solid $fontColorDeep;
 				border-radius: 10px;
-				background-color: $emphasisColorB;
+				background-color: $message-bg-color;
 			}
 			.chat-name {
 				margin: 0 auto;
@@ -85,19 +88,47 @@
 			display: flex;
 			flex-direction: column;
 
-			width: 100%;
 			.chat-send-time {
 				color: $fontColorMedium;
 				font-size: 12px;
 			}
+
+			.chat-content {
+				color: $message-font-color;
+				font-weight: bold;
+				background-color: $message-bg-color;
+				border-radius: 10px;
+				padding: 10px !important;
+				width: auto;
+
+				position: relative;
+
+				&::before {
+					display: block;
+					position: absolute;
+					right: 100%;
+
+					content: '';
+					width: 0;
+					height: 0;
+					border-width: 6px;
+					border-color: transparent $message-bg-color transparent transparent;
+					border-style: solid;
+				}
+			}
 		}
 	}
-	.my-side-item {
-		//reverse
+	//reverse
+	.my-message {
 		flex-direction: row-reverse;
 
 		.chat-message {
 			align-items: flex-end;
+
+			.chat-content::before {
+				left: 100%;
+				border-color: transparent transparent transparent $message-bg-color;
+			}
 		}
 	}
 </style>
