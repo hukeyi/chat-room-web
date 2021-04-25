@@ -69,9 +69,10 @@
 			display: flex;
 			flex-direction: column;
 			margin: 0 15px;
-			justify-content: flex-end;
+			justify-content: flex-start;
 
 			.chat-avator {
+				margin-top: 17px;
 				width: 40px;
 				height: 40px;
 				border: 1px solid $fontColorDeep;
@@ -87,7 +88,7 @@
 		.chat-message {
 			display: flex;
 			flex-direction: column;
-			max-width: 74%;
+			max-width: calc(100% - 155px);
 
 			.chat-send-time {
 				color: $fontColorMedium;
