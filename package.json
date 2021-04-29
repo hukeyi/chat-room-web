@@ -1,5 +1,6 @@
 {
   "name": "chat-room-web",
+  "author": "Hu Keyi <hukeyi1024@qq.com>",
   "version": "0.1.0",
   "private": true,
   "scripts": {

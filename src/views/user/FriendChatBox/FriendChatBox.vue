@@ -131,7 +131,6 @@
 		},
 		mounted() {
 			this.fId = this.$route.params.fId;
-			console.log('fid', this.fId);
 			this.friendList = this.getList();
 			// 显示历史消息
 			this.messageList = testData[this.fId];
