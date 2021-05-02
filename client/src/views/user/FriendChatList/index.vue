@@ -28,9 +28,9 @@
 				<div class="user-info">
 					<img :src="user_avator" />
 					<div class="user-name-id">
-						<span id="user-name">username</span>
+						<span id="user-name">{{ userName }}</span>
 						<br />
-						<span id="user-id">userid</span>
+						<span id="user-id">{{ userId }}</span>
 					</div>
 				</div>
 				<img :src="setting_icon" class="user-setting" />
@@ -50,12 +50,15 @@
 				user_avator: require('@/assets/styles/common/img/user.png'),
 				setting_icon: require('@/assets/styles/common/img/international.png'),
 				chatList: [],
+				userId: '',
+				userName: '',
 			};
 		},
 		methods: {
 			...mapGetters({
 				getList: 'allFriendChatList',
 				getUserId: 'getUserId',
+				getUserName: 'getUserName',
 			}),
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
@@ -67,6 +70,9 @@
 		},
 		mounted() {
 			this.chatList = this.getList();
+			this.userId = this.getUserId();
+			this.userName = this.getUserName();
+			console.log(this.userId, this.userName);
 		},
 	};
 </script>

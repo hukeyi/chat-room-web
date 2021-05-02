@@ -16,11 +16,7 @@
 				imgUrl: require('@/assets/chat-logo-trans.png'),
 			};
 		},
-		mounted() {
-			this.$axios.post('http://localhost:3000/test').then((res) => {
-				console.log('from server: ', res);
-			});
-		},
+		mounted() {},
 	};
 </script>
 

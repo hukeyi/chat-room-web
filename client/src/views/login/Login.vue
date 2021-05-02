@@ -22,6 +22,7 @@
 
 <script>
 	import InputItem from '../../components/InputItem.vue';
+	import userApi from '@/api/user.js';
 	import { mapGetters, mapActions } from 'vuex';
 	export default {
 		components: { InputItem },
@@ -38,11 +39,17 @@
 			handleClickLogin() {
 				console.log('login btn clicked'); //fixme
 
-				// 传后端验证用户名和密码
-				this.setUserId('test');
-				this.setUserName('testName');
-				// 进入用户主页
-				this.$router.push(`/user/${this.getUserId()}`);
+				userApi
+					.Login(this.userId, this.password)
+					.then((res) => {
+						console.log(res);
+						this.setUserId(res.id);
+						this.setUserName(res.name);
+						this.$router.push(`/user/${res.id}`);
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			},
 			handleCreateAcc() {
 				// change views
@@ -53,11 +60,9 @@
 			},
 			handleInputUsername(input) {
 				this.userId = input;
-				console.log('input username:', this.userId); //fixme
 			},
 			handleInputPassword(input) {
 				this.password = input;
-				console.log('input password:', this.password); //fixme
 			},
 		},
 		mounted() {},

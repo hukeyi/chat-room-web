@@ -25,6 +25,7 @@
 
 <script>
 	import InputItem from '../../components/InputItem.vue';
+	import userApi from '@/api/user.js';
 	export default {
 		components: { InputItem },
 		data() {
@@ -42,20 +43,47 @@
 			},
 			handleInputID(input) {
 				this.userID = input;
-				console.log('input id', input); //fixme
 			},
 			handleInputUsername(input) {
 				this.username = input;
-				console.log('input username', input); //fixme
 			},
 			handleInputPassword(input) {
 				this.password = input;
-				console.log('input password', input); //fixme
 			},
 			handleClickRegister() {
 				console.log('register btn clicked'); //fixme
 
+				const postData = {
+					phone: this.userID,
+					name: this.username,
+					password: this.password,
+				};
+
+				const checkIfInput = async (data) => {
+					console.log(data);
+					Object.values(data).every((item) => item !== '' && item != undefined);
+				};
 				// 传后端 axios.post
+				checkIfInput(postData)
+					.then(() => {
+						userApi
+							.Register(postData)
+							.then((res) => {
+								console.log(res);
+								if (res.data.id) {
+									alert('register success!');
+									res.data.id && this.$router.push('/login');
+								} else {
+									alert(res.data.errorMsg);
+								}
+							})
+							.catch((err) => {
+								console.log(err);
+							});
+					})
+					.catch((err) => {
+						console.log('post new user', err);
+					});
 			},
 		},
 		mounted() {},

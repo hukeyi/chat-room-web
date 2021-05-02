@@ -1,18 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// import api files
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/user');
 
 // cors
 const cors = require('cors');
 
-var app = express();
+const app = express();
 
-// cors
+// 后端设置跨域 cors
 app.use(
 	cors({
 		origin: ['http://localhost:8080'],
@@ -27,9 +29,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 引进路由
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/user', usersRouter);
 
+// 错误网络代码处理：
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	next(createError(404));
