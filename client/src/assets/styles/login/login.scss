@@ -1,7 +1,7 @@
 .entrance {
 	overflow: hidden;
 	text-align: center;
-	padding-top: 100px;
+	// padding-top: 100px;
 
 	:deep(#chat-logo) {
 		width: 300px;
@@ -21,10 +21,9 @@
 	.register {
 		overflow: hidden;
 		text-align: center;
-		padding: 0px 30% 100px;
+		padding: 0px 30% 0px;
 
 		.sign-in-link {
-			margin-top: 10px;
 			display: inline-block;
 			text-decoration: underline;
 			color: $fontColorDeep;
@@ -34,8 +33,13 @@
 		.el-button {
 			width: 250px;
 			border-radius: 25px;
+			border: 0px;
 			color: $fontColorDeep;
 			background-color: $themeColorLight;
+		}
+
+		:deep(.el-form .el-form-item label) {
+			color: $fontColorDeep;
 		}
 	}
 }

@@ -1,10 +1,11 @@
 <template>
 	<div class="entrance">
-		<el-image id="chat-logo" :src="imgUrl">
+		<div id="chat-logo"></div>
+		<!-- <el-image id="chat-logo" :src="imgUrl">
 			<template #placeholder>
 				<div class="image-slot">加载中<span class="dot">...</span></div>
 			</template>
-		</el-image>
+		</el-image> -->
 		<router-view />
 	</div>
 </template>
