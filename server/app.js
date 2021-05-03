@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 // import api files
-
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 

@@ -8,6 +8,7 @@
 		<inputItem
 			labelValue="密码"
 			placeholder="8+ characters"
+			:isPassword="true"
 			@onInput="handleInputPassword"
 		></inputItem>
 
@@ -37,19 +38,19 @@
 			...mapGetters(['getUserId', 'getUserName']),
 			...mapActions(['setUserId', 'setUserName']),
 			handleClickLogin() {
-				console.log('login btn clicked'); //fixme
-
-				userApi
-					.Login(this.userId, this.password)
-					.then((res) => {
-						console.log(res);
-						this.setUserId(res.id);
-						this.setUserName(res.name);
-						this.$router.push(`/user/${res.id}`);
-					})
-					.catch((err) => {
-						console.log(err);
-					});
+				this.userId &&
+					this.password &&
+					userApi
+						.Login(this.userId, this.password)
+						.then((res) => {
+							console.log('user api login:', res);
+							this.setUserId(res.data.id);
+							this.setUserName(res.data.name);
+							this.$router.push(`/user/${res.data.id}`);
+						})
+						.catch((err) => {
+							console.log(err);
+						});
 			},
 			handleCreateAcc() {
 				// change views
@@ -65,7 +66,14 @@
 				this.password = input;
 			},
 		},
-		mounted() {},
+		mounted() {
+			// 响应enter键
+			window.addEventListener('keyup', (event) => {
+				if (event.key === 'Enter') {
+					this.userId && this.password && this.handleClickLogin();
+				}
+			});
+		},
 	};
 </script>
 

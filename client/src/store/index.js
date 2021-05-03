@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 const store = createStore({
 	state: {
@@ -119,6 +120,7 @@ const store = createStore({
 			return index !== -1;
 		},
 	},
+	plugins: [createPersistedState({ storage: window.sessionStorage })],
 	modules: {},
 });
 

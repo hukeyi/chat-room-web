@@ -35,4 +35,7 @@ module.exports = {
 		},
 		// requireModuleExtension: false, //fixme：加了这个之后element ui的样式会失效！
 	},
+	configureWebpack: {
+		devtool: 'source-map',
+	},
 };

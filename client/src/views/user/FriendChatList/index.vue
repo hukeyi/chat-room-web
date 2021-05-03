@@ -69,10 +69,10 @@
 			},
 		},
 		mounted() {
-			this.chatList = this.getList();
-			this.userId = this.getUserId();
-			this.userName = this.getUserName();
-			console.log(this.userId, this.userName);
+			const state = JSON.parse(sessionStorage.getItem('vuex'));
+			this.chatList = state.friendChatList;
+			this.userId = state.user.id;
+			this.userName = state.user.name;
 		},
 	};
 </script>

@@ -6,7 +6,7 @@
 			:style="inputStyle"
 			:placeholder="placeholder"
 			:clearable="clearable"
-			:show-password="showPassword"
+			:show-password="isPassword"
 			v-model="inputValue"
 			@input="handleInput"
 		></el-input>
@@ -32,7 +32,7 @@
 				type: Boolean,
 				default: false,
 			},
-			showPassword: {
+			isPassword: {
 				//输入框是否不显示密码
 				type: Boolean,
 				default: false,
