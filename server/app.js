@@ -3,15 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors');
+const app = express();
 
 // import api files
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
-
-// cors
-const cors = require('cors');
-
-const app = express();
 
 // 后端设置跨域 cors
 app.use(
