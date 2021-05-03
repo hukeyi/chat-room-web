@@ -23,8 +23,7 @@ sequelize
 		console.log('mysql connection success');
 	})
 	.catch((err) => {
-		console.log('mysql connection test');
-		console.log(err);
+		throw new Error(err);
 	});
 
 module.exports = {
