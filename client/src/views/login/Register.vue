@@ -109,7 +109,7 @@
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						const postData = {
-							phone: this.ruleForm.phone,
+							userId: this.ruleForm.phone,
 							name: this.ruleForm.username,
 							password: this.ruleForm.password,
 						};

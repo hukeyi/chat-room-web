@@ -80,19 +80,24 @@
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
 						const postData = {
-							phone: this.ruleForm.phone,
+							userId: this.ruleForm.phone,
 							password: this.ruleForm.password,
 						};
 						userApi
 							.Login(postData)
 							.then((res) => {
 								console.log('user api login:', res);
-								this.setUserId(res.data.id);
-								this.setUserName(res.data.name);
-								this.$router.push(`/user/${res.data.id}`);
+								if (!res.data.errorMsg) {
+									this.setUserId(res.data.id);
+									this.setUserName(res.data.name);
+									this.$router.push(`/user/${res.data.id}`);
+								} else {
+									alert(res.data.errorMsg);
+								}
 							})
 							.catch((err) => {
-								console.log(err);
+								alert(err);
+								console.log('login.vue catch err', err.message);
 							});
 					} else {
 						console.log('error submit');

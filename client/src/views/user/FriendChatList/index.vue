@@ -33,7 +33,11 @@
 						<span id="user-id">{{ userId }}</span>
 					</div>
 				</div>
-				<img :src="setting_icon" class="user-setting" />
+				<img
+					@click="handleClickSetBtn"
+					:src="setting_icon"
+					class="user-setting"
+				/>
 			</el-footer>
 		</el-container>
 	</div>
@@ -42,6 +46,7 @@
 <script>
 	import ChatListItem from './FriendChatItem';
 	import { mapGetters, mapMutations } from 'vuex';
+	import userApi from '@/api/user.js';
 
 	export default {
 		components: { ChatListItem },
@@ -66,6 +71,20 @@
 			handleClickItem(item) {
 				console.log('click', item.name);
 				this.$router.push(`/user/${this.getUserId()}/${item.id}`);
+			},
+			handleClickSetBtn() {
+				// logout
+				console.log('setting btn clicked');
+				userApi
+					.Logout()
+					.then((res) => {
+						console.log('logout vue', res);
+						this.$router.push('/');
+					})
+					.catch((err) => {
+						alert(err);
+						console.log('logout vue', err);
+					});
 			},
 		},
 		mounted() {
