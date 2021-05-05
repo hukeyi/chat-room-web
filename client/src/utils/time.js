@@ -1,3 +1,9 @@
+/*
+ * @Author: Hu Keyi
+ * @Date: 2021-05-05 23:57:23
+ * @Last Modified by:   Hu Keyi
+ * @Last Modified time: 2021-05-05 23:57:23
+ */
 // 按照传入的fmt格式，格式化Date对象
 export function formatDate(fmt, time) {
 	if (!time) {

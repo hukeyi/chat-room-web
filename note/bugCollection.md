@@ -57,3 +57,15 @@ children: [
 home page 布局，在 main-area 想设置左右两个布局，左边自适应宽度并且规定最小宽度，右边固定宽度，一旦左右整体空间剩余宽度小于右边的固定宽度，则右边消失
 
 - 本来以为是 flex 布局做的，结果看 Discord 源码，她们是用 media query 做的
+
+### prettier 失效 报 Syntax error
+
+[类似问题](https://developers.weixin.qq.com/community/develop/doc/000e86022282701cceaa6ed385c800)
+
+就是在函数中用`await`的时候，没有加`async`，prettier 会报错
+
+```
+const user = await User.findOne();
+
+SyntaxError: Unexpected token, expected ";" (78:21)
+```

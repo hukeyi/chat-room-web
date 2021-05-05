@@ -12,7 +12,6 @@ const passport = require('./configs/passport.config.js');
 const session = require('express-session');
 
 // import api files
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 
 // 后端设置跨域 cors
@@ -44,7 +43,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // 引进路由
-app.use('/', indexRouter);
 app.use('/api/user', usersRouter);
 
 // 错误网络代码处理：

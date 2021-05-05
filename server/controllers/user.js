@@ -1,15 +1,20 @@
+/*
+ * @Author: Hu Keyi
+ * @Date: 2021-05-04 23:01:35
+ * @Last Modified by: Hu Keyi
+ * @Last Modified time: 2021-05-05 23:41:36
+ */
+
 const User = require('../models/user.js');
-const bcryptjs = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const SALT_LENGTH = 8;
 
-// Id, phone, email, password,
-// name, avatar, gender, age, birth_date,
-// status, create_date, is_active
-User.register = async function (reqData) {
-	console.log(reqData);
-	const { userId, name, password } = reqData;
+const jsonwebtoken = require('jsonwebtoken');
+
+const user_register_post = async (req, res, next) => {
+	console.log(req.body);
+	const { userId, name, password } = req.body;
 	try {
-		// check if user existed
 		const user = await User.findOne({
 			where: {
 				phone: userId,
@@ -17,21 +22,30 @@ User.register = async function (reqData) {
 			},
 		});
 		if (!user) {
-			const hash = await bcryptjs.hash(password, SALT_LENGTH);
-			return User.create({
+			const hash = await bcrypt.hash(password, SALT_LENGTH);
+			const newUser = await User.create({
 				phone: userId,
 				name: name,
 				password: hash,
 			});
+			console.log('New user created: ', newUser.id);
+			res.status(200).json({
+				data: { id: newUser.id },
+				message: 'User register success',
+			});
+		} else {
+			res.status(401).json({
+				message: 'User existed',
+			});
 		}
-		return Promise.reject('phone used');
 	} catch (err) {
 		console.log('controller user register', err);
+		res.sendStatus(500);
 	}
 };
 
-User.login = async function (reqData) {
-	const { userId, password } = reqData;
+const user_login_post = async (req, res, next) => {
+	const { userId, password } = req.body;
 	// 用手机号登录
 	try {
 		const user = await User.findOne({
@@ -40,40 +54,39 @@ User.login = async function (reqData) {
 				is_active: true,
 			},
 		});
-		if (!user || !(await bcryptjs.compare(password, user.password))) {
-			return Promise.reject('user not exists or password not right');
+		if (!user || !(await bcrypt.compare(password, user.password))) {
+			// fixme: need json?
+			res.sendStatus(401);
+		} else {
+			/**
+			 * 生成jsonwebtoken
+			 */
+			const rule = { id: user.id, userId: user.phone };
+			jsonwebtoken.sign(
+				rule,
+				process.env.PASSPORT_JWT_SECRET,
+				{
+					expiresIn: '7 days',
+				},
+				(err, token) => {
+					const jsonMsg = err
+						? {}
+						: {
+								data: user,
+								token: 'Bearer ' + token,
+								message: 'Login success',
+						  };
+					res.status(err ? 500 : 200).json(jsonMsg);
+				}
+			);
 		}
-		return user;
 	} catch (err) {
-		console.log('user login controller error', err);
-		return Promise.reject('something went wrong');
+		console.log('controller user login', err);
+		res.sendStatus(500);
 	}
 };
 
-exports.user_register_post = (req, res, next) => {
-	User.register(req.body)
-		.then((result) => {
-			res.json({ id: result.id });
-		})
-		.catch((err) => {
-			console.log(err);
-			res.json({ errorMsg: err });
-		});
-};
-
-exports.user_login_post = (req, res, next) => {
-	console.log(req.body);
-	User.login(req.body)
-		.then((result) => {
-			res.json({
-				id: result.id,
-				name: result.name,
-			});
-		})
-		.catch((err) => {
-			console.log(err);
-			res.json({
-				errorMsg: err,
-			});
-		});
+module.exports = {
+	user_register_post,
+	user_login_post,
 };

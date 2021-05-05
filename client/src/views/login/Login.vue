@@ -28,7 +28,7 @@
 			<el-form-item>
 				<p class="sign-in-link" @click="handleCreateAcc">创建账号</p>
 				<span style="color: #fff"> | </span>
-				<p class="sign-in-link">忘记密码</p>
+				<p @click="handleChangePass" class="sign-in-link">忘记密码</p>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -86,18 +86,21 @@
 						userApi
 							.Login(postData)
 							.then((res) => {
-								console.log('user api login:', res);
-								if (!res.data.errorMsg) {
-									this.setUserId(res.data.id);
-									this.setUserName(res.data.name);
-									this.$router.push(`/user/${res.data.id}`);
-								} else {
-									alert(res.data.errorMsg);
-								}
+								console.log('user api login:', res.data);
+								const { id, name } = res.data;
+								const { token } = res;
+								this.setUserId(id);
+								this.setUserName(name);
+
+								// store token in localstorage
+								localStorage.setItem('token', token);
+								// fixme: need store authenicated status in vuex?
+								this.$router.push(`/user/${id}`);
 							})
 							.catch((err) => {
+								// todo: change alert to a element ui message box
+								// and control the content, only display string type
 								alert(err);
-								console.log('login.vue catch err', err.message);
 							});
 					} else {
 						console.log('error submit');
@@ -110,20 +113,14 @@
 				this.$router.push('/register');
 			},
 			handleChangePass() {
-				// change views
-			},
-			handleInputUsername(input) {
-				this.userId = input;
-			},
-			handleInputPassword(input) {
-				this.password = input;
+				alert('Not completed');
 			},
 		},
 		mounted() {
 			// 响应enter键
 			window.addEventListener('keyup', (event) => {
 				if (event.key === 'Enter') {
-					this.userId && this.password && this.handleClickLogin();
+					this.submitForm('ruleForm');
 				}
 			});
 		},

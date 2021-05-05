@@ -79,6 +79,8 @@
 					.Logout()
 					.then((res) => {
 						console.log('logout vue', res);
+						localStorage.clear();
+						sessionStorage.clear();
 						this.$router.push('/');
 					})
 					.catch((err) => {
