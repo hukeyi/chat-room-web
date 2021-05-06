@@ -13,7 +13,7 @@ const session = require('express-session');
 
 // import api files
 const usersRouter = require('./routes/user');
-
+const friendsRouter = require('./routes/userFriend');
 // 后端设置跨域 cors
 app.use(
 	cors({
@@ -44,6 +44,7 @@ app.use(passport.session());
 
 // 引进路由
 app.use('/api/user', usersRouter);
+app.use('/api/friend', friendsRouter);
 
 // 错误网络代码处理：
 // catch 404 and forward to error handler
@@ -58,8 +59,7 @@ app.use(function (err, req, res, next) {
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 	// render the error page
-	res.status(err.status || 500);
-	res.render('error');
+	res.sendStatus(err.status || 500);
 });
 
 module.exports = app;

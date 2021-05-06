@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-05 23:39:48
+ * @Last Modified time: 2021-05-06 22:46:57
  */
 
 // passport setting
@@ -19,7 +19,6 @@ options.secretOrKey = process.env.PASSPORT_JWT_SECRET;
 // 身份验证策略
 passport.use(
 	new JwtStrategy(options, async function (jwt_payload, done) {
-		console.log('jwtstrategy validate\n', jwt_payload);
 		// fixme: 后面做邮箱验证的话，可能需要加一个字段判断是手机号还是邮箱
 		try {
 			const user = await User.findOne({ where: { id: jwt_payload.id } });

@@ -28,8 +28,8 @@
 				default: 'friendA',
 			},
 			id: {
-				type: String,
-				default: '00000',
+				type: Number,
+				default: 0,
 			},
 			status: {
 				type: String,

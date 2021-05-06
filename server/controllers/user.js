@@ -2,14 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-05 23:41:36
+ * @Last Modified time: 2021-05-06 21:51:44
  */
 
 const User = require('../models/user.js');
 const bcrypt = require('bcryptjs');
 const SALT_LENGTH = 8;
-
 const jsonwebtoken = require('jsonwebtoken');
+const { toJSON } = require('./utils.js');
 
 const user_register_post = async (req, res, next) => {
 	console.log(req.body);
@@ -20,6 +20,7 @@ const user_register_post = async (req, res, next) => {
 				phone: userId,
 				is_active: true,
 			},
+			attributes: ['id', 'phone'],
 		});
 		if (!user) {
 			const hash = await bcrypt.hash(password, SALT_LENGTH);

@@ -5,13 +5,13 @@ const store = createStore({
 	state: {
 		user: { id: 'test', name: 'testName', avator: '' },
 		friendList: [
-			{ id: '0', name: 'frank', avator: '', status: 'on' },
-			{ id: '1', name: 'john', avator: '', status: 'off' },
-			{ id: '2', name: 'mary', avator: '', status: 'on' },
+			{ id: 0, name: 'frank', avator: '', status: 'on' },
+			{ id: 1, name: 'john', avator: '', status: 'off' },
+			{ id: 2, name: 'mary', avator: '', status: 'on' },
 		],
 		friendChatList: [
-			{ id: '1', name: 'john', avator: '', status: 'off' },
-			{ id: '2', name: 'mary', avator: '', status: 'on' },
+			{ id: 1, name: 'john', avator: '', status: 'off' },
+			{ id: 2, name: 'mary', avator: '', status: 'on' },
 		],
 	},
 	getters: {

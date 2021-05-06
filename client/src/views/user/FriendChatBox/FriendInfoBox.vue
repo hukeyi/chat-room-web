@@ -136,19 +136,21 @@
 					</el-drawer>
 					<!-- 根据id搜索的好友列表 -->
 					<div v-if="showAddFriend" class="add-friend-result">
-						<template v-for="item in searchResultList" :key="item.id">
-							<div class="add-friend-result-item">
-								<InfoCardItem
-									:name="item.name"
-									:avator="item.avator ? item.avator : undefined"
-									:id="item.id"
-									:status="item.status"
-								></InfoCardItem>
-								<el-button @click="handleClickSend(item)"
-									>发送好友申请</el-button
-								>
-							</div>
-						</template>
+						<!-- <template > -->
+						<div
+							class="add-friend-result-item"
+							v-for="item in searchResultList"
+							:key="item.id"
+						>
+							<InfoCardItem
+								:name="item.name"
+								:avator="item.avator ? item.avator : undefined"
+								:id="item.id"
+								:status="item.status"
+							></InfoCardItem>
+							<el-button @click="handleClickSend(item)">发送好友申请</el-button>
+						</div>
+						<!-- </template> -->
 					</div>
 				</el-main>
 			</el-container>
@@ -160,6 +162,7 @@
 	import InputItem from '@/components/InputItem.vue';
 	import InfoCardItem from '@/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
+	import friendApi from '@/api/friend.js';
 
 	export default {
 		components: { InputItem, InfoCardItem },
@@ -215,9 +218,9 @@
 
 				// 2. change searchResultList
 				this.searchResultList = [
-					{ id: '3', name: 'hu', avator: '', status: 'on' },
-					{ id: '4', name: 'wang', avator: '', status: 'off' },
-					{ id: '5', name: 'qian', avator: '', status: 'on' },
+					{ id: 3, name: 'hu', avator: '', status: 'on' },
+					{ id: 4, name: 'wang', avator: '', status: 'off' },
+					{ id: 5, name: 'qian', avator: '', status: 'on' },
 				];
 				return true;
 			},
@@ -229,9 +232,9 @@
 
 				// 2. change searchResultList
 				this.searchResultList = [
-					{ id: '3', name: 'hu', avator: '', status: 'on' },
-					{ id: '4', name: 'wang', avator: '', status: 'off' },
-					{ id: '5', name: 'qian', avator: '', status: 'on' },
+					{ id: 3, name: 'hu', avator: '', status: 'on' },
+					{ id: 4, name: 'wang', avator: '', status: 'off' },
+					{ id: 5, name: 'qian', avator: '', status: 'on' },
 				];
 				return true;
 			},
@@ -313,7 +316,15 @@
 			},
 		},
 		mounted() {
-			this.friendList = this.getList();
+			friendApi
+				.GetFriendListAll()
+				.then((res) => {
+					console.log('get friend list', res);
+					this.friendList = res;
+				})
+				.catch((err) => {
+					console.log('error friend list', err);
+				});
 		},
 	};
 </script>
