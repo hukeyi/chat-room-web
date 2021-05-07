@@ -2,11 +2,11 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-06 23:02:16
+ * @Last Modified time: 2021-05-07 16:20:23
  */
 const UserFriend = require('../models/user_friend');
 const User = require('../models/user');
-const { toJSON, decodeToken } = require('./utils.js');
+const { toJSON } = require('./utils.js');
 
 // api for db
 async function findAllFriendsByUserId(userId) {
@@ -41,11 +41,9 @@ const friend_add_post = (req, res) => {
 };
 
 const friend_list_get = async (req, res) => {
-	let token = req.headers.authorization;
-	const decoded = decodeToken(token);
-	console.log(decoded);
-	const list = await findAllFriendsByUserId(decoded.id);
-	console.log('get list', list);
+	// req.user passed from passport.authenticated()
+	// user pass the auth and its info will be store in req.user
+	const list = await findAllFriendsByUserId(req.user.id);
 	// todo: get every friend's status through other api('on' or 'off')
 	res.status(200).json(toJSON(list));
 };
