@@ -1,7 +1,8 @@
 {
   "name": "chat-room-web",
   "author": "Hu Keyi <hukeyi1024@qq.com>",
-  "version": "0.1.0",
+  "description": "Graduation Design: Frontend for my chat system",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,7 +15,7 @@
     "element-plus": "^1.0.2-beta.28",
     "express": "^4.17.1",
     "jwt-decode": "^3.1.2",
-    "mysql": "^2.18.1",
+    "socket.io-client": "^4.0.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.6",
     "vuex": "^4.0.0",
