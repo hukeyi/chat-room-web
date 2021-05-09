@@ -4,10 +4,10 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var { app, store } = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
-var initSocketIo = require('../configs/socketio.config');
+var socketInit = require('../configs/socketio.config');
 
 /**
  * Get port from environment and store in Express.
@@ -21,7 +21,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-initSocketIo(server);
+socketInit(server, store);
 
 /**
  * Listen on provided port, on all network interfaces.

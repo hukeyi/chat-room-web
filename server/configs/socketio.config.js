@@ -2,13 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-08 16:43:51
+ * @Last Modified time: 2021-05-09 20:21:30
  */
 
 const cookieParser = require('cookie-parser');
 const passportSocketIo = require('passport.socketio');
-// fixme: test! import model and use io to init them
-const message = require('../models/message');
+// fixme: 分离代码test
+// const message = require('../models/message');
+const passport = require('../configs/passport.config');
 
 function onAuthorizeSuccess(data, accept) {
 	console.log('successful connection to socket.io');
@@ -21,31 +22,36 @@ function onAuthorizeFail(data, message, error, accept) {
 	accept(null, false);
 }
 
-module.exports = function (server) {
-	console.log('------>test socket io start<-------');
-	const io = require('socket.io')(server);
+module.exports = function (server, store) {
+	const io = require('socket.io')(server, {
+		cors: {
+			origin: ['http://localhost:8080'],
+			methods: ['GET', 'POST', 'OPTIONS'],
+			allowHeaders: ['Conten-Type', 'Authorization'],
+			credentials: true,
+		},
+	});
 
 	io.use(
 		passportSocketIo.authorize({
+			passport: passport,
 			cookieParser: cookieParser,
 			key: 'express.sid',
 			secret: process.env.SESSION_SECRET,
+			store: store,
 			success: onAuthorizeSuccess,
 			fail: onAuthorizeFail,
 		})
 	);
-
-	// init socketio model here
+	// fixme: 分离不同部分的socket代码
 	// e.g. message.js
 	// message.init(io);
-	// fixme: test client/server socket io connection
 	io.on('connection', function (socket) {
-		console.log('🎉a user connected');
-		socket.on('chat message', function (msg) {
-			io.emit('chat message', msg);
-		});
+		console.log('🎉 Yeah! User connected');
+		// fixme: logout cannot trigger 'disconnect'
+		// it'll be trigger after logout and refresh page
 		socket.on('disconnect', function () {
-			console.log('user disconnected');
+			console.log('😈 Oops! User disconnected');
 		});
 	});
 };
