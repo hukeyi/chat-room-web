@@ -88,7 +88,7 @@ SyntaxError: Unexpected token, expected ";" (78:21)
 
 错误有以下表现：
 
-1. websocket 会一直发 101，浏览器 network 会看到一长串 websocket 的请求和响应；而正确的状况是只有三条 websocket
+1. websocket 会一直发 101，浏览器 network 会看到一长串 websocket 的请求和响应；而正确的状况是只有一条 websocket
 2. io.on()监听不到 connect 事件
 3. passport-socket.io 监听不到 connection 事件
 4. 当然前端也监听不到 connect
