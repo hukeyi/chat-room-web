@@ -1,6 +1,6 @@
 const config = require('../configs/db.config.js');
 const Sequelize = require('sequelize');
-const { Model, DataTypes } = Sequelize;
+const { Model, DataTypes, Op } = Sequelize;
 
 const SALT_LENGTH = 8;
 const sequelize = new Sequelize(
@@ -31,4 +31,5 @@ module.exports = {
 	Model,
 	DataTypes,
 	SALT_LENGTH,
+	$: Op,
 };

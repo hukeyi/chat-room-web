@@ -2,11 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 19:20:43
+ * @Last Modified time: 2021-05-19 22:38:24
  */
 
 // Model的统一出口
 // for config tables' associations
+const { $, sequelize } = require('./db');
 const User = require('./user.js');
 const UserFriend = require('./user_friend.js');
 const { Message } = require('./message.js');
@@ -86,4 +87,6 @@ module.exports = {
 	UserFriend,
 	Message,
 	MessageRecipient,
+	$,
+	sequelize,
 };

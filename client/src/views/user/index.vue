@@ -23,6 +23,8 @@
 	import FriendBox from './FriendChatBox/index';
 	// import { io } from 'socket.io-client';
 
+	import MsgApi from '@/api/message';
+
 	export default {
 		components: { ChannelSelector, FriendChatList, FriendBox },
 		// sockets: {
@@ -39,6 +41,15 @@
 			// socket.on('connect', () => {
 			// 	console.log('connect!');
 			// });
+
+			// todo: update chat history
+			MsgApi.GetFChatHistoryAll()
+				.then((res) => {
+					console.log('front get history', res);
+				})
+				.catch((err) => {
+					console.log('front get history', err);
+				});
 		},
 	};
 </script>
