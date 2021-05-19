@@ -2,11 +2,10 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 23:06:31
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 17:30:47
+ * @Last Modified time: 2021-05-19 19:17:56
  */
 const db = require('./db.js');
 const { Model, DataTypes, sequelize } = db;
-const User = require('./user.js');
 
 class UserFriend extends Model {}
 
@@ -16,21 +15,21 @@ UserFriend.init(
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true,
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 		},
 		user_id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 			allowNull: false,
 			references: {
-				model: User,
+				model: 'user',
 				key: 'id',
 			},
 		},
 		friend_id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 			allowNull: false,
 			references: {
-				model: User,
+				model: 'user',
 				key: 'id',
 			},
 		},
@@ -47,9 +46,5 @@ UserFriend.init(
 	},
 	{ sequelize, modelName: 'UserFriend', tableName: 'user_friend' }
 );
-
-UserFriend.sync()
-	.then(() => console.log('UserFriend sync success'))
-	.catch((err) => console.log('UserFriend sync error', err));
 
 module.exports = UserFriend;

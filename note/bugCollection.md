@@ -94,3 +94,9 @@ SyntaxError: Unexpected token, expected ";" (78:21)
 4. 当然前端也监听不到 connect
 5. 如果在登录后的状态下，把数据库中的 sessions 表删掉，会突然 connect，上述事件全部响应；但是一旦 logout 然后再 login，问题就再次出现（因为此时数据库又把 sessions 表建回来了，但是为什么没有表反而能 work 就不知道了）
 6. 登录跳转 user 首页后，后端会报`Passport is not initialized`
+
+## ！数据库加外键问题！
+
+id 是 unsigned int！！！注意 unsigned！！不是 int！
+
+因此所有 id 的外键都要强调：`type: DataTypes.INTEGER.UNSIGNED`！！！

@@ -9,7 +9,7 @@ User.init(
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true,
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 		},
 		name: {
 			type: DataTypes.STRING(20),
@@ -25,8 +25,5 @@ User.init(
 	},
 	{ sequelize, modelName: 'User', tableName: 'user' }
 );
-User.sync()
-	.then(() => console.log('User sync success'))
-	.catch((err) => console.log('User sync error', err));
 
 module.exports = User;

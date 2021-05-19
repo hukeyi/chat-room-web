@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 17:28:45
+ * @Last Modified time: 2021-05-19 19:18:16
  */
 
 // 聊天消息接受者相关model
@@ -17,7 +17,23 @@ MessageRecipient.init(
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true,
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
+		},
+		message_id: {
+			allowNull: false,
+			type: DataTypes.INTEGER.UNSIGNED,
+			references: {
+				model: 'message',
+				key: 'id',
+			},
+		},
+		recipient_id: {
+			allowNull: false,
+			type: DataTypes.INTEGER.UNSIGNED,
+			references: {
+				model: 'user',
+				key: 'id',
+			},
 		},
 		is_receive: {
 			type: DataTypes.BOOLEAN,
@@ -25,9 +41,5 @@ MessageRecipient.init(
 	},
 	{ sequelize, modelName: 'MessageRecipient', tableName: 'message_recipient' }
 );
-
-MessageRecipient.sync()
-	.then(() => console.log('MessageRecipient sync success'))
-	.catch((err) => console.log('MessageRecipient sync error', err));
 
 module.exports = MessageRecipient;

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 17:20:28
+ * @Last Modified time: 2021-05-19 19:18:07
  */
 
 // 聊天消息相关model
@@ -28,7 +28,6 @@ const init = function (io) {
  * database相关model
  */
 const db = require('./db.js');
-const User = require('./user.js');
 const { Model, DataTypes, sequelize } = db;
 
 class Message extends Model {}
@@ -39,13 +38,13 @@ Message.init(
 			allowNull: false,
 			autoIncrement: true,
 			primaryKey: true,
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 		},
 		sender_id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 			allowNull: false,
 			references: {
-				model: User,
+				model: 'user',
 				key: 'id',
 			},
 		},
@@ -56,7 +55,7 @@ Message.init(
 			type: DataTypes.TEXT,
 		},
 		parent_message_id: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.INTEGER.UNSIGNED,
 		},
 		create_date: {
 			type: DataTypes.DATE,
@@ -67,10 +66,6 @@ Message.init(
 	},
 	{ sequelize, modelName: 'Message', tableName: 'message' }
 );
-
-Message.sync()
-	.then(() => console.log('Message sync success'))
-	.catch((err) => console.log('Message sync error', err));
 
 module.exports = {
 	Message,
