@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-08 22:28:59
+ * @Last Modified time: 2021-05-15 11:06:33
  */
 
 const User = require('../models/user.js');
@@ -46,45 +46,29 @@ const user_register_post = async (req, res, next) => {
 };
 
 const user_login_post = async (req, res, next) => {
-	const { userId, password } = req.body;
-	// 用手机号登录
-	try {
-		const user = await User.findOne({
-			where: {
-				phone: userId,
-				is_active: true,
-			},
-		});
-		if (!user || !(await bcrypt.compare(password, user.password))) {
-			// fixme: need json?
-			res.sendStatus(401);
-		} else {
-			/**
-			 * 生成jsonwebtoken
-			 */
-			const rule = { id: user.id, userId: user.phone };
-			jsonwebtoken.sign(
-				rule,
-				process.env.PASSPORT_JWT_SECRET,
-				{
-					expiresIn: '7 days',
-				},
-				(err, token) => {
-					const jsonMsg = err
-						? {}
-						: {
-								data: user,
-								token: 'Bearer ' + token,
-								message: 'Login success',
-						  };
-					res.status(err ? 500 : 200).json(jsonMsg);
-				}
-			);
+	const { id, phone } = req.user;
+
+	/**
+	 * 生成jsonwebtoken
+	 */
+	const rule = { id: id, userId: phone };
+	jsonwebtoken.sign(
+		rule,
+		process.env.PASSPORT_JWT_SECRET,
+		{
+			expiresIn: '7 days',
+		},
+		(err, token) => {
+			const jsonMsg = err
+				? {}
+				: {
+						data: req.user,
+						token: 'Bearer ' + token,
+						message: 'Login success',
+				  };
+			res.status(err ? 500 : 200).json(jsonMsg);
 		}
-	} catch (err) {
-		console.log('controller user login', err);
-		res.sendStatus(500);
-	}
+	);
 };
 
 module.exports = {

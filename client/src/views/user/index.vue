@@ -21,24 +21,24 @@
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
 	import FriendChatList from './FriendChatList/index';
 	import FriendBox from './FriendChatBox/index';
-	import { io } from 'socket.io-client';
+	// import { io } from 'socket.io-client';
 
 	export default {
 		components: { ChannelSelector, FriendChatList, FriendBox },
-		sockets: {
-			connect() {
-				console.log('client socket connect');
-			},
-		},
+		// sockets: {
+		// 	connect() {
+		// 		console.log('client socket connect');
+		// 	},
+		// },
 		mounted() {
 			// fixme: test socket.io connection
-			let socket = io('http://localhost:3000', {
-				withCredentials: true,
-				transports: ['websocket'],
-			});
-			socket.on('connect', () => {
-				console.log('connect!');
-			});
+			// let socket = io('http://localhost:3000', {
+			// 	withCredentials: true,
+			// 	transports: ['websocket'],
+			// });
+			// socket.on('connect', () => {
+			// 	console.log('connect!');
+			// });
 		},
 	};
 </script>

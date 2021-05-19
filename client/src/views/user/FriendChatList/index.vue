@@ -47,6 +47,7 @@
 	import ChatListItem from './FriendChatItem';
 	import { mapGetters, mapMutations } from 'vuex';
 	import userApi from '@/api/user.js';
+	import friendApi from '@/api/friend.js';
 
 	export default {
 		components: { ChatListItem },
@@ -91,7 +92,14 @@
 		},
 		mounted() {
 			const state = JSON.parse(sessionStorage.getItem('vuex'));
-			this.chatList = state.friendChatList;
+			friendApi
+				.GetFriendChatAll()
+				.then((res) => {
+					this.chatList = res;
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 			this.userId = state.user.id;
 			this.userName = state.user.name;
 		},

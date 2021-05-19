@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-08 23:50:49
+ * @Last Modified time: 2021-05-19 12:00:33
  */
 
 // passport setting
@@ -57,7 +57,6 @@ passport.use(
 			passwordField: 'password',
 		},
 		async function (username, password, done) {
-			console.log('-----> passport validate', username, password);
 			// fixme: 后面做邮箱验证的话，可能需要加一个字段判断是手机号还是邮箱
 			try {
 				const user = await User.findOne({ where: { phone: username } });

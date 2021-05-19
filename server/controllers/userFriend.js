@@ -2,13 +2,15 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-07 16:20:23
+ * @Last Modified time: 2021-05-19 12:54:52
  */
 const UserFriend = require('../models/user_friend');
 const User = require('../models/user');
 const { toJSON } = require('./utils.js');
 
-// api for db
+/**
+ * api for Database
+ */
 async function findAllFriendsByUserId(userId) {
 	const friends = await UserFriend.findAll({
 		where: {
@@ -32,7 +34,33 @@ async function findAllFriendsByUserId(userId) {
 	return toJSON(friends_info);
 }
 
+async function findAllFriendChatByUserId(userId) {
+	const friends = await UserFriend.findAll({
+		where: {
+			user_id: userId,
+			status: 'chat',
+			is_active: true,
+		},
+		attributes: ['friend_id'],
+	});
+
+	const idList = toJSON(friends).map((item) => item.friend_id);
+	const chats_info = await User.findAll({
+		where: {
+			id: idList,
+		},
+		attributes: ['id', 'name', 'avator', 'status'],
+	});
+	return toJSON(chats_info);
+}
+
+/**
+ * Controllers for user_friend routes
+ * @param {*} req
+ * @param {*} res
+ */
 const friend_add_post = (req, res) => {
+	// todo: add friend test
 	// find friend id in table user
 	// if not exist, return a error json with status 200
 	// if exist friend xx
@@ -44,11 +72,16 @@ const friend_list_get = async (req, res) => {
 	// req.user passed from passport.authenticated()
 	// user pass the auth and its info will be store in req.user
 	const list = await findAllFriendsByUserId(req.user.id);
-	// todo: get every friend's status through other api('on' or 'off')
+	// get every friend's status through other api('on' or 'off')
 	res.status(200).json(toJSON(list));
 };
 
+const friend_chatlist_get = async (req, res) => {
+	const list = await findAllFriendChatByUserId(req.user.id);
+	res.status(200).json(toJSON(list));
+};
 module.exports = {
 	friend_add_post,
 	friend_list_get,
+	friend_chatlist_get,
 };
