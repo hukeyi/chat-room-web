@@ -1,6 +1,6 @@
 <template>
 	<div class="chat-list-item">
-		<img :src="avator" />
+		<img :src="avatar" />
 		<div class="friend-info">
 			<span id="friend-name">{{ name }}</span>
 		</div>
@@ -10,7 +10,7 @@
 <script>
 	export default {
 		props: {
-			avator: {
+			avatar: {
 				type: String,
 				default: require('@/assets/styles/common/img/user.png'),
 			},

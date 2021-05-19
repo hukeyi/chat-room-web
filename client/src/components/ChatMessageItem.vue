@@ -3,9 +3,9 @@
 		class="chat-message-item"
 		:class="{ 'my-message': direction === 'right' }"
 	>
-		<div class="chat-avator-name">
+		<div class="chat-avatar-name">
 			<!-- 头像 -->
-			<img :src="avator" class="chat-avator" />
+			<img :src="avatar" class="chat-avatar" />
 			<!-- 昵称 -->
 			<span class="chat-name">{{ name }}</span>
 		</div>
@@ -26,7 +26,7 @@
 				type: String,
 				default: 'left',
 			},
-			avator: {
+			avatar: {
 				type: String,
 				default: require('@/assets/styles/common/img/user.png'),
 			},
@@ -65,13 +65,13 @@
 		display: flex;
 		justify-content: flex-start;
 
-		.chat-avator-name {
+		.chat-avatar-name {
 			display: flex;
 			flex-direction: column;
 			margin: 0 15px;
 			justify-content: flex-start;
 
-			.chat-avator {
+			.chat-avatar {
 				margin-top: 17px;
 				width: 40px;
 				height: 40px;

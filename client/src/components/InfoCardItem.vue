@@ -1,7 +1,7 @@
 <template>
 	<div class="info-card-item">
 		<div class="info">
-			<img :src="avator" />
+			<img :src="avatar" />
 			<div class="name-id">
 				<span id="name">{{ name }}</span>
 				<br />
@@ -19,7 +19,7 @@
 <script>
 	export default {
 		props: {
-			avator: {
+			avatar: {
 				type: String,
 				default: require('@/assets/styles/common/img/user.png'),
 			},

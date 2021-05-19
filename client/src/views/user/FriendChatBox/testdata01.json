@@ -4,7 +4,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:01:09",
         "content": "hi, how are you",
         "direction": "left"
@@ -13,7 +13,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:02:19",
         "content": "hi, who are you",
         "direction": "left"
@@ -22,7 +22,7 @@
         "s_id": "test",
         "r_id":"1",
         "name": "testName",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:04:09",
         "content": "yeah",
         "direction": "right"
@@ -31,7 +31,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:05:21",
         "content": "hello world",
         "direction": "left"
@@ -40,7 +40,7 @@
         "s_id": "test",
         "r_id":"1",
         "name": "testName",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:07:19",
         "content": "not good",
         "direction": "right"
@@ -49,7 +49,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:11:09",
         "content": "blahblahaahahha",
         "direction": "left"
@@ -58,7 +58,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:11:44",
         "content": "dafsghdgjkghjghgfdasdfghgjhgsfadssghjkhsasfdghfjgkjasdghfjgkgasdghfjgkhgdssgjuyterwqdcxvcbvnkghgd",
         "direction": "left"
@@ -67,7 +67,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:20:09",
         "content": "crazy",
         "direction": "left"
@@ -76,7 +76,7 @@
         "s_id": "test",
         "r_id":"1",
         "name": "testName",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:21:35",
         "content": "yep, i agree",
         "direction": "right"
@@ -85,7 +85,7 @@
         "s_id": "1",
         "r_id":"test",
         "name": "john",
-        "avator": "",
+        "avatar": "",
         "time": "21/04/24 12:30:09",
         "content": "yep",
         "direction": "left"

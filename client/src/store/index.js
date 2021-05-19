@@ -1,23 +1,16 @@
 import { createStore } from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
-const store = createStore({
+const userModule = {
 	state: {
-		user: { id: 'test', name: 'testName', avator: '' },
-		friendList: [
-			{ id: 0, name: 'frank', avator: '', status: 'on' },
-			{ id: 1, name: 'john', avator: '', status: 'off' },
-			{ id: 2, name: 'mary', avator: '', status: 'on' },
-		],
-		friendChatList: [
-			{ id: 1, name: 'john', avator: '', status: 'off' },
-			{ id: 2, name: 'mary', avator: '', status: 'on' },
-		],
+		userInfo: { id: 'test', name: 'test', avatar: '' },
+		friendList: [],
+		friendChatList: [],
 	},
 	getters: {
-		getUserId: (state) => state.user.id,
-		getUserName: (state) => state.user.name,
-		getUserAvator: (state) => state.user.avator,
+		getUserId: (state) => state.userInfo.id,
+		getUserName: (state) => state.userInfo.name,
+		getUserAvator: (state) => state.userInfo.avatar,
 		/**
 		 * 返回全部好友私聊列表
 		 * @param {*} state
@@ -67,13 +60,13 @@ const store = createStore({
 	},
 	mutations: {
 		SET_USERID(state, id) {
-			state.user.id = id;
+			state.userInfo.id = id;
 		},
 		SET_USERNAME(state, name) {
-			state.user.name = name;
+			state.userInfo.name = name;
 		},
-		SET_USERAVATOR(state, avator) {
-			state.user.avator = avator;
+		SET_USERAVATOR(state, avatar) {
+			state.userInfo.avatar = avatar;
 		},
 	},
 	actions: {
@@ -83,8 +76,8 @@ const store = createStore({
 		setUserName({ commit }, name) {
 			commit('SET_USERNAME', name);
 		},
-		setUserAvator({ commit }, avator) {
-			commit('SET_USERAVATOR', avator);
+		setUserAvator({ commit }, avatar) {
+			commit('SET_USERAVATOR', avatar);
 		},
 		/**
 		 * 根据好友id删除好友
@@ -120,8 +113,33 @@ const store = createStore({
 			return index !== -1;
 		},
 	},
+};
+
+const msgModule = {
+	state: {
+		friendMsgList: {},
+		roomMsgList: {},
+	},
+	getters: {
+		getFMsgList: (state) => state.friendMsgList,
+	},
+	mutations: {
+		PUSH_NEW_FMSG(state, f_id, history) {
+			state.friendMsgList[f_id] = history ? history : [];
+			// fixme: delete when finished
+			console.log('test mutations push new fmsg', state.friendMsgList);
+		},
+	},
+	actions: {
+		updateFMsgList({ commit }, f_id, history) {
+			commit('PUSH_NEW_FMSG', f_id, history);
+		},
+	},
+};
+
+const store = createStore({
 	plugins: [createPersistedState({ storage: window.sessionStorage })],
-	modules: {},
+	modules: { user: userModule, message: msgModule },
 });
 
 export default store;

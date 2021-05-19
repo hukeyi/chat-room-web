@@ -2,10 +2,10 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 12:54:52
+ * @Last Modified time: 2021-05-19 17:23:58
  */
-const UserFriend = require('../models/user_friend');
-const User = require('../models/user');
+
+const { UserFriend, User } = require('../models/index');
 const { toJSON } = require('./utils.js');
 
 /**
@@ -24,12 +24,12 @@ async function findAllFriendsByUserId(userId) {
 
 	// then find them all in table user
 	// to generate a new array with attributes
-	// id, username, avator, gender, age, birth_date
+	// id, username, avatar, gender, age, birth_date
 	const friends_info = await User.findAll({
 		where: {
 			id: idList,
 		},
-		attributes: ['id', 'name', 'avator', 'gender', 'age', 'birth_date'],
+		attributes: ['id', 'name', 'avatar', 'gender', 'age', 'birth_date'],
 	});
 	return toJSON(friends_info);
 }
@@ -49,7 +49,7 @@ async function findAllFriendChatByUserId(userId) {
 		where: {
 			id: idList,
 		},
-		attributes: ['id', 'name', 'avator', 'status'],
+		attributes: ['id', 'name', 'avatar', 'status'],
 	});
 	return toJSON(chats_info);
 }

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 12:00:33
+ * @Last Modified time: 2021-05-19 17:23:24
  */
 
 // passport setting
@@ -13,7 +13,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
 
-const User = require('../models/user.js');
+const { User } = require('../models/index.js');
 
 const options = {};
 options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();

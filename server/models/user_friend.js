@@ -1,8 +1,8 @@
 /*
  * @Author: Hu Keyi
  * @Date: 2021-05-06 23:06:31
- * @Last Modified by:   Hu Keyi
- * @Last Modified time: 2021-05-06 23:06:31
+ * @Last Modified by: Hu Keyi
+ * @Last Modified time: 2021-05-19 17:30:47
  */
 const db = require('./db.js');
 const { Model, DataTypes, sequelize } = db;
@@ -47,16 +47,6 @@ UserFriend.init(
 	},
 	{ sequelize, modelName: 'UserFriend', tableName: 'user_friend' }
 );
-User.belongsToMany(User, {
-	as: 'user',
-	through: UserFriend,
-	foreignKey: 'user_id',
-});
-User.belongsToMany(User, {
-	as: 'friend',
-	through: UserFriend,
-	foreignKey: 'friend_id',
-});
 
 UserFriend.sync()
 	.then(() => console.log('UserFriend sync success'))

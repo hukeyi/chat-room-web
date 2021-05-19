@@ -45,7 +45,7 @@
 
 <script>
 	import ChatListItem from './FriendChatItem';
-	import { mapGetters, mapMutations } from 'vuex';
+	import { mapGetters, mapMutations, mapActions } from 'vuex';
 	import userApi from '@/api/user.js';
 	import friendApi from '@/api/friend.js';
 
@@ -68,6 +68,9 @@
 			}),
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
+			}),
+			...mapActions({
+				updateMsgList: 'updateFMsgList',
 			}),
 			handleClickItem(item) {
 				console.log('click', item.name);
@@ -92,16 +95,22 @@
 		},
 		mounted() {
 			const state = JSON.parse(sessionStorage.getItem('vuex'));
+			console.log(state);
 			friendApi
 				.GetFriendChatAll()
 				.then((res) => {
 					this.chatList = res;
+					res.forEach((obj) => {
+						console.log('chatlist', obj);
+						// todo: update msgModule's friendmsglist with chatHistory
+						this.updateMsgList(obj.id.toString(), obj.chatHistory);
+					});
 				})
 				.catch((err) => {
 					console.log(err);
 				});
-			this.userId = state.user.id;
-			this.userName = state.user.name;
+			this.userId = state.user.userInfo.id;
+			this.userName = state.user.userInfo.name;
 		},
 	};
 </script>

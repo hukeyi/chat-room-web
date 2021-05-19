@@ -17,7 +17,7 @@
 							v-for="item in messageList"
 							:key="item.s_id"
 							:direction="item.s_id === fId ? 'left' : 'right'"
-							:avator="item.avator ? item.avator : undefined"
+							:avatar="item.avatar ? item.avatar : undefined"
 							:name="item.name"
 							:time="item.time"
 							:message="item.content"
@@ -53,7 +53,7 @@
 <script>
 	import { mapGetters, mapActions } from 'vuex';
 	import ChatMessage from '@/components/ChatMessageItem.vue';
-	import testData from './testdata01.json';
+	// import testData from './testdata01.json';
 	import { formatDate } from '@/utils/time';
 
 	export default {
@@ -85,6 +85,7 @@
 				getOffList: 'offFriends',
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
+				getMsgList: 'getFMsgList',
 			}),
 			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
 
@@ -112,7 +113,7 @@
 						s_id: this.getUserId(),
 						r_id: this.fId,
 						time: formatDate('MM/dd hh:mm:ss'),
-						avator: '',
+						avatar: '',
 						name: this.getUserName(),
 						content: this.inputText,
 					};
@@ -133,7 +134,8 @@
 			this.fId = this.$route.params.fId;
 			this.friendList = this.getList();
 			// 显示历史消息
-			this.messageList = testData[this.fId];
+			// this.messageList = testData[this.fId];
+			this.messageList = this.getMsgList()[this.fId];
 			this.scrollToEnd();
 		},
 		watch: {
@@ -141,7 +143,7 @@
 			'$route.params.fId': function() {
 				if (this.$route.params.fId) {
 					this.fId = this.$route.params.fId;
-					this.messageList = testData[this.fId];
+					this.messageList = this.getMsgList()[this.fId];
 					this.scrollToEnd();
 				}
 			},

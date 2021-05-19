@@ -2,10 +2,10 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-15 11:06:33
+ * @Last Modified time: 2021-05-19 17:18:18
  */
 
-const User = require('../models/user.js');
+const { User } = require('../models/index.js');
 const bcrypt = require('bcryptjs');
 const SALT_LENGTH = 8;
 const jsonwebtoken = require('jsonwebtoken');

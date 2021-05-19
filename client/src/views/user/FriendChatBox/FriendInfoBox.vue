@@ -78,7 +78,7 @@
 							v-for="item in friendList"
 							:key="item.id"
 							:name="item.name"
-							:avator="item.avator ? item.avator : undefined"
+							:avatar="item.avatar ? item.avatar : undefined"
 							:id="item.id"
 							:status="item.status"
 							@click="handleClickFriendCard(item)"
@@ -90,7 +90,7 @@
 							v-for="item in getOnList()"
 							:key="item.id"
 							:name="item.name"
-							:avator="item.avator ? item.avator : undefined"
+							:avatar="item.avatar ? item.avatar : undefined"
 							:id="item.id"
 							:status="item.status"
 							@click="handleClickFriendCard(item)"
@@ -102,7 +102,7 @@
 							v-for="item in getOffList()"
 							:key="item.id"
 							:name="item.name"
-							:avator="item.avator ? item.avator : undefined"
+							:avatar="item.avatar ? item.avatar : undefined"
 							:id="item.id"
 							:status="item.status"
 							@click="handleClickFriendCard(item)"
@@ -117,7 +117,7 @@
 						destroy-on-close
 					>
 						<el-row type="flex" justify="center"
-							><img :src="drawerInfo.avator ? drawerInfo.avator : icon_friend"
+							><img :src="drawerInfo.avatar ? drawerInfo.avatar : icon_friend"
 						/></el-row>
 						<el-row type="flex" justify="center">{{ drawerInfo.id }}</el-row>
 						<el-row type="flex" justify="center">{{ drawerInfo.name }}</el-row>
@@ -144,7 +144,7 @@
 						>
 							<InfoCardItem
 								:name="item.name"
-								:avator="item.avator ? item.avator : undefined"
+								:avatar="item.avatar ? item.avatar : undefined"
 								:id="item.id"
 								:status="item.status"
 							></InfoCardItem>
@@ -218,9 +218,9 @@
 
 				// 2. change searchResultList
 				this.searchResultList = [
-					{ id: 3, name: 'hu', avator: '', status: 'on' },
-					{ id: 4, name: 'wang', avator: '', status: 'off' },
-					{ id: 5, name: 'qian', avator: '', status: 'on' },
+					{ id: 3, name: 'hu', avatar: '', status: 'on' },
+					{ id: 4, name: 'wang', avatar: '', status: 'off' },
+					{ id: 5, name: 'qian', avatar: '', status: 'on' },
 				];
 				return true;
 			},
@@ -232,9 +232,9 @@
 
 				// 2. change searchResultList
 				this.searchResultList = [
-					{ id: 3, name: 'hu', avator: '', status: 'on' },
-					{ id: 4, name: 'wang', avator: '', status: 'off' },
-					{ id: 5, name: 'qian', avator: '', status: 'on' },
+					{ id: 3, name: 'hu', avatar: '', status: 'on' },
+					{ id: 4, name: 'wang', avatar: '', status: 'off' },
+					{ id: 5, name: 'qian', avatar: '', status: 'on' },
 				];
 				return true;
 			},
