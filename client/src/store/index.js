@@ -85,6 +85,13 @@ const userModule = {
 		INIT_FRIENDCHATLIST(state, chatList) {
 			state.friendChatList = chatList;
 		},
+		REMOVE_FRIENDBYID(state, id) {
+			const index = state.friendList.findIndex((item) => item.id == id);
+			state.friendList.splice(index, 1);
+		},
+		REMOVE_FRIENDCHATBYID(state, id) {
+			delete state.friendChatList[id];
+		},
 	},
 	actions: {
 		setUserId({ commit }, id) {
@@ -111,13 +118,11 @@ const userModule = {
 		 * 根据好友id删除好友d
 		 * @param {*} state
 		 * @param {*} id 要删除等好友id
-		 * @returns 删除的好友信息对象；若id不存在，返回null
+		 * @returns 删除的好友信息对象和私聊列表；若id不存在，返回null
 		 */
-		deleteFriendById({ getters, state }, id) {
-			const index = getters.getFriendIndexById(id);
-			console.log('firendlist', id, index, state.friendList[index]);
-
-			return index !== -1 ? state.friendList.splice(index, 1) : null;
+		deleteFriendById({ commit }, id) {
+			commit('REMOVE_FRIENDBYID', id);
+			commit('REMOVE_FRIENDCHATBYID', id);
 		},
 		/**
 		 * 根据id删除对应好友私聊框
@@ -125,10 +130,8 @@ const userModule = {
 		 * @param {*} id 好友id
 		 * @returns
 		 */
-		deleteFriendChatById({ state }, id) {
-			console.log('friendChatList', id, state.friendChatList[id]);
-			//todo: before delete, store records to database
-			return delete state.friendChatList[id];
+		deleteFriendChatById({ commit }, id) {
+			commit('REMOVE_FRIENDCHATBYID', id);
 		},
 		/**
 		 * 用好友id查找，当前私聊列表中是否有该好友

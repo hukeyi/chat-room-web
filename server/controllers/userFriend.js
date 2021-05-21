@@ -2,10 +2,10 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-21 17:41:39
+ * @Last Modified time: 2021-05-21 22:33:37
  */
 
-const { UserFriend, User, sequelize } = require('../models/index');
+const { UserFriend, User, sequelize, $ } = require('../models/index');
 const { toJSON } = require('./utils.js');
 
 /**
@@ -62,8 +62,18 @@ async function findAllFriendChatByUserId(userId) {
 		const label = chats_info[0].id.toString();
 		results[label] = chats_info.shift();
 	}
-	// console.log('chatlist', results);
 	return results;
+}
+
+async function removeFriendById(uid, fid) {
+	return UserFriend.destroy({
+		where: {
+			[$.or]: [
+				{ user_id: uid, friend_id: fid },
+				{ user_id: fid, friend_id: uid },
+			],
+		},
+	});
 }
 
 /**
@@ -84,12 +94,21 @@ const friend_list_get = async (req, res) => {
 	// req.user passed from passport.authenticated()
 	// user pass the auth and its info will be store in req.user
 	const list = await findAllFriendsByUserId(req.user.id);
-	// console.log('list', list);
-	// get every friend's status through other api('on' or 'off')
 	res.status(200).json(list);
 };
+
+const friend_delete_post = async (req, res) => {
+	try {
+		await removeFriendById(req.user.id, req.body.fid);
+		res.sendStatus(200);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+};
+
 module.exports = {
 	friend_add_post,
 	friend_list_get,
 	findAllFriendChatByUserId,
+	friend_delete_post,
 };

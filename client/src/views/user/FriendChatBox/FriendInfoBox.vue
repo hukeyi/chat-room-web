@@ -45,8 +45,8 @@
 							overflow: hidden;
 							"
 							inputStyle="float: left; width: 60%;"
-							labelValue="您可以通过搜索好友ID或昵称来添加好友："
-							placeholder="请输入用户ID或昵称"
+							labelValue="您可以通过搜索好友ID或手机号来添加好友："
+							placeholder="请输入用户ID或手机号"
 							:clearable="true"
 							@onInput="handleInputId"
 						>
@@ -162,6 +162,7 @@
 	import InputItem from '@/components/InputItem.vue';
 	import InfoCardItem from '@/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
+	import friendApi from '@/api/friend';
 
 	export default {
 		components: { InputItem, InfoCardItem },
@@ -190,17 +191,21 @@
 				getOnList: 'onFriends',
 				getOffList: 'offFriends',
 			}),
-			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
+			...mapActions(['deleteFriendById']),
 
 			//删除好友
-			deleteFriend(id) {
-				console.log('start delete friend', id);
+			async deleteFriend(id) {
+				try {
+					console.log('start delete friend', id);
 
-				this.showRightDrawer = false;
-				this.deleteFriendById(id);
-				this.deleteFriendChatById(id);
+					this.showRightDrawer = false;
+					this.deleteFriendById(id);
 
-				// 4. fixme: axios, request backend to delete friend-id in the database
+					const postData = { fid: id };
+					await friendApi.PostDeleteFriend(postData);
+				} catch (err) {
+					console.log('delete err', id, err);
+				}
 			},
 			// 判断一个字符串是否可能是id
 			canBeID(str) {
@@ -266,8 +271,8 @@
 					cancelButtonText: '取消',
 					type: 'warning',
 				})
-					.then(() => {
-						this.deleteFriend(id);
+					.then(async () => {
+						await this.deleteFriend(id);
 						this.$message({
 							type: 'success',
 							message: '删除成功!',

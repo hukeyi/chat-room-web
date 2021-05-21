@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:20:16
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-21 17:42:25
+ * @Last Modified time: 2021-05-21 22:25:37
  */
 const express = require('express');
 const router = express.Router();
@@ -14,6 +14,11 @@ router.get(
 	'/list',
 	passport.authenticate('jwt', { session: false }),
 	friendController.friend_list_get
+);
+router.post(
+	'/del',
+	passport.authenticate('jwt', { session: false }),
+	friendController.friend_delete_post
 );
 
 module.exports = router;

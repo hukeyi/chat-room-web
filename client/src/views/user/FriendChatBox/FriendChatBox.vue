@@ -12,8 +12,8 @@
 				<el-main class="main-central">
 					<div class="chat-box-window" ref="chatBox">
 						<ChatMessage
-							v-for="item in messageList"
-							:key="item.s_id"
+							v-for="(item, key) in messageList"
+							:key="key"
 							:direction="item.s_id == fId ? 'left' : 'right'"
 							:avatar="item.avatar ? item.avatar : undefined"
 							:name="item.name"

@@ -66,7 +66,6 @@
 		},
 		methods: {
 			...mapGetters({
-				getList: 'allFriendChatList',
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
 				getChatList: 'getFriendChatInfoList',
@@ -74,9 +73,7 @@
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
 			}),
-			...mapActions({
-				updateMsgList: 'updateFMsgList',
-			}),
+			...mapActions({}),
 			handleClickItem(item) {
 				console.log('click', item.name);
 				this.$router.push(`/user/${this.getUserId()}/${item.id}`);

@@ -53,6 +53,15 @@
 				}
 			},
 		},
+		watch: {
+			friendList: {
+				//watch friendlist, sync chatlist
+				handler() {
+					this.chatInfoList = this.getChatInfoList();
+				},
+				deep: true,
+			},
+		},
 		mounted() {
 			this.initLists();
 			// fixme: test socket.io connection
