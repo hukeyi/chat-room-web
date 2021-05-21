@@ -2,14 +2,38 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 17:18:18
+ * @Last Modified time: 2021-05-21 23:13:50
  */
 
-const { User } = require('../models/index.js');
+const { User, $ } = require('../models/index.js');
 const bcrypt = require('bcryptjs');
 const SALT_LENGTH = 8;
 const jsonwebtoken = require('jsonwebtoken');
 const { toJSON } = require('./utils.js');
+
+/**
+ * api for database
+ */
+function findUsers(id) {
+	return User.findAll({
+		where: {
+			[$.or]: [{ id: id }, { phone: id }],
+		},
+		attributes: ['id', 'name', 'avatar', 'status'],
+	});
+}
+
+const user_search_post = async (req, res, next) => {
+	const { id } = req.body;
+	console.log('search post', req.body);
+	try {
+		const users = await findUsers(id);
+		console.log('user search post', toJSON(users));
+		res.status(200).json(toJSON(users));
+	} catch (err) {
+		res.status(500).send(err);
+	}
+};
 
 const user_register_post = async (req, res, next) => {
 	console.log(req.body);
@@ -74,4 +98,5 @@ const user_login_post = async (req, res, next) => {
 module.exports = {
 	user_register_post,
 	user_login_post,
+	user_search_post,
 };

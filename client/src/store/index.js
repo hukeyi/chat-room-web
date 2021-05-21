@@ -3,13 +3,14 @@ import createPersistedState from 'vuex-persistedstate';
 
 const userModule = {
 	state: {
-		userInfo: { id: 'default', name: 'default', avatar: '' },
+		userInfo: { id: 'default', phone: 'xxxxxx', name: 'default', avatar: '' },
 		friendList: [],
 		friendChatList: {},
 	},
 	getters: {
 		getUserId: (state) => state.userInfo.id,
 		getUserName: (state) => state.userInfo.name,
+		getUserPhone: (state) => state.userInfo.phone,
 		getUserAvator: (state) => state.userInfo.avatar,
 		/**
 		 * 返回全部好友私聊列表
@@ -76,6 +77,9 @@ const userModule = {
 		SET_USERNAME(state, name) {
 			state.userInfo.name = name;
 		},
+		SET_USERPHONE(state, phone) {
+			state.userInfo.phone = phone;
+		},
 		SET_USERAVATOR(state, avatar) {
 			state.userInfo.avatar = avatar;
 		},
@@ -99,6 +103,9 @@ const userModule = {
 		},
 		setUserName({ commit }, name) {
 			commit('SET_USERNAME', name);
+		},
+		setUserPhone({ commit }, phone) {
+			commit('SET_USERPHONE', phone);
 		},
 		setUserAvator({ commit }, avatar) {
 			commit('SET_USERAVATOR', avatar);

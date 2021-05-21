@@ -75,7 +75,7 @@
 		},
 		methods: {
 			...mapGetters(['getUserId', 'getUserName']),
-			...mapActions(['setUserId', 'setUserName']),
+			...mapActions(['setUserId', 'setUserName', 'setUserPhone']),
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
@@ -87,10 +87,11 @@
 							.Login(postData)
 							.then((res) => {
 								console.log('user api login:', res.data);
-								const { id, name } = res.data;
+								const { id, name, phone } = res.data;
 								const { token } = res;
 								this.setUserId(id);
 								this.setUserName(name);
+								this.setUserPhone(phone);
 
 								// todo: provide a choice that whether or not remember this account
 								// if it checked, store the info in localstorage

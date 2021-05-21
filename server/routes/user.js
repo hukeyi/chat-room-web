@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:42:19
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-08 23:24:17
+ * @Last Modified time: 2021-05-21 23:11:08
  */
 const express = require('express');
 const router = express.Router();
@@ -21,14 +21,10 @@ router.get('/logout', (req, res) => {
 	res.status(200).clearCookie('express.sid').json({ msg: 'logout success' });
 });
 
-router.get(
-	'/testjwt',
+router.post(
+	'/search',
 	passport.authenticate('jwt', { session: false }),
-	(req, res) => {
-		res.json({
-			message: 'test jwt',
-		});
-	}
+	userController.user_search_post
 );
 
 module.exports = router;

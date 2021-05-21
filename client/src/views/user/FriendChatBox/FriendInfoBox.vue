@@ -146,7 +146,7 @@
 								:name="item.name"
 								:avatar="item.avatar ? item.avatar : undefined"
 								:id="item.id"
-								:status="item.status"
+								:status="item.status ? item.status : 'off'"
 							></InfoCardItem>
 							<el-button @click="handleClickSend(item)">发送好友申请</el-button>
 						</div>
@@ -163,6 +163,7 @@
 	import InfoCardItem from '@/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
 	import friendApi from '@/api/friend';
+	import userApi from '@/api/user';
 
 	export default {
 		components: { InputItem, InfoCardItem },
@@ -187,6 +188,9 @@
 		},
 		methods: {
 			...mapGetters({
+				getUserId: 'getUserId',
+				getUserName: 'getUserName',
+				getUserPhone: 'getUserPhone',
 				getList: 'allFriends',
 				getOnList: 'onFriends',
 				getOffList: 'offFriends',
@@ -207,41 +211,15 @@
 					console.log('delete err', id, err);
 				}
 			},
-			// 判断一个字符串是否可能是id
-			canBeID(str) {
-				console.log('is id', str);
-				return true;
-				// 1. is all number
+			async searchFriends(id) {
+				try {
+					console.log('start search by id', id);
 
-				// 2. is within the id length limits
-			},
-			// fixme
-			searchFriendById(id) {
-				console.log('start search by id', id);
-
-				// 1. request to backend find friend by id
-
-				// 2. change searchResultList
-				this.searchResultList = [
-					{ id: 3, name: 'hu', avatar: '', status: 'on' },
-					{ id: 4, name: 'wang', avatar: '', status: 'off' },
-					{ id: 5, name: 'qian', avatar: '', status: 'on' },
-				];
-				return true;
-			},
-			// fixme
-			searchFriendByName(name) {
-				console.log('start search by name', name);
-
-				// 1. request to backend find friend by name
-
-				// 2. change searchResultList
-				this.searchResultList = [
-					{ id: 3, name: 'hu', avatar: '', status: 'on' },
-					{ id: 4, name: 'wang', avatar: '', status: 'off' },
-					{ id: 5, name: 'qian', avatar: '', status: 'on' },
-				];
-				return true;
+					const postData = { id: id };
+					this.searchResultList = await userApi.SearchUsers(postData);
+				} catch (err) {
+					console.log('search user', err);
+				}
 			},
 			// 发送好友请求
 			sendAddRequest(id) {
@@ -289,16 +267,16 @@
 			// 搜索好友按钮点击事件的回调函数
 			handleClickSearchFriend() {
 				console.log('click search', this.searchId);
+				const selfId = this.getUserId();
+				const selfPhone = this.getUserPhone();
 				const id = this.searchId;
-				// 判断是否可能为id
-				// 1. 是，先搜id，若无搜name
-				// 2. 否，只搜name
-				if (this.canBeID(id)) {
-					if (!this.searchFriendById(id)) {
-						this.searchFriendByName(id);
-					}
+				if (id != selfId && id != selfPhone) {
+					this.searchFriends(id);
 				} else {
-					this.searchFriendByName(id);
+					this.$message({
+						type: 'warning',
+						message: '不能添加自己为好友哦!',
+					});
 				}
 			},
 			// 发送好友请求按钮的回调函数
