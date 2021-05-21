@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 17:23:24
+ * @Last Modified time: 2021-05-20 15:21:01
  */
 
 // passport setting
@@ -14,6 +14,7 @@ const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
 
 const { User } = require('../models/index.js');
+const { toJSON } = require('../controllers/utils');
 
 const options = {};
 options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -21,11 +22,11 @@ options.secretOrKey = process.env.PASSPORT_JWT_SECRET;
 
 // 序列化与反序列化
 passport.serializeUser((user, done) => {
-	console.log('serialize user', user);
+	console.log('-----> serialize user', toJSON(user));
 	done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
-	console.log('deserialize user', id);
+	console.log('-----> deserialize user', id);
 	const user = await User.findOne({
 		where: {
 			id: id,
@@ -37,9 +38,9 @@ passport.deserializeUser(async (id, done) => {
 // 在需要拦截未验证的用户的请求的时候调用
 passport.ensureAthenticated = function ensureAthenticated() {
 	return function (req, res, next) {
-		console.log('in ensureSthenticated process:');
+		console.log('-----> in ensureSthenticated process:');
 		if (req.isAuthenticated()) {
-			console.log('Permission allowed');
+			console.log('-----> Permission allowed');
 			//这里是passport在登录验证时已经设置好的加密cookie
 			return next();
 		}
@@ -92,12 +93,12 @@ passport.use(
 
 			// 用户不存在
 			if (!user) {
-				console.log('user not existed');
+				console.log('-----> user not existed');
 				return done(null, false);
 			}
 			return done(null, user);
 		} catch (err) {
-			console.log('jwtstrategy went wrong', err);
+			console.log('-----> jwtstrategy went wrong', err);
 			return done(err);
 		}
 	})

@@ -8,9 +8,9 @@
 			</el-header>
 			<!-- 主要：好友列表 -->
 			<el-main class="chat-session-list">
-				<div v-if="chatList.length">
+				<div v-if="chatInfoList.length">
 					<ChatListItem
-						v-for="item in chatList"
+						v-for="item in chatInfoList"
 						:key="item.id"
 						:name="item.name"
 						@click="handleClickItem(item)"
@@ -47,15 +47,19 @@
 	import ChatListItem from './FriendChatItem';
 	import { mapGetters, mapMutations, mapActions } from 'vuex';
 	import userApi from '@/api/user.js';
-	import friendApi from '@/api/friend.js';
 
 	export default {
 		components: { ChatListItem },
+		props: {
+			chatInfoList: {
+				type: Array,
+				default: () => [],
+			},
+		},
 		data() {
 			return {
 				user_avator: require('@/assets/styles/common/img/user.png'),
 				setting_icon: require('@/assets/styles/common/img/international.png'),
-				chatList: [],
 				userId: '',
 				userName: '',
 			};
@@ -65,6 +69,7 @@
 				getList: 'allFriendChatList',
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
+				getChatList: 'getFriendChatInfoList',
 			}),
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
@@ -95,20 +100,7 @@
 		},
 		mounted() {
 			const state = JSON.parse(sessionStorage.getItem('vuex'));
-			console.log(state);
-			friendApi
-				.GetFriendChatAll()
-				.then((res) => {
-					this.chatList = res;
-					res.forEach((obj) => {
-						console.log('chatlist', obj);
-						// todo: update msgModule's friendmsglist with chatHistory
-						this.updateMsgList(obj.id.toString(), obj.chatHistory);
-					});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
+			console.log('session storage: ', state);
 			this.userId = state.user.userInfo.id;
 			this.userName = state.user.userInfo.name;
 		},

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-05 23:36:38
+ * @Last Modified time: 2021-05-21 17:37:54
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -80,8 +80,6 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	// fixme: delete after
-	// console.log('to', to, 'from', from);
 	const id = to.params.id;
 	if (!to.meta.requiresAuth) {
 		next();
@@ -94,8 +92,6 @@ router.beforeEach((to, from, next) => {
 			// 存在，判断是否过期
 			const decoded = jwt_decode(token);
 			const currentTime = Date.now() / 1000;
-			// fixme: delete after
-			console.log('Token_Decode', decoded);
 			console.log('id in token', decoded.id, ';id in url', id);
 			if (!id || id != decoded.id) {
 				// url的id与token中是否匹配

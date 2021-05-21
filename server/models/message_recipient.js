@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 19:18:16
+ * @Last Modified time: 2021-05-20 12:51:01
  */
 
 // 聊天消息接受者相关model
@@ -37,6 +37,7 @@ MessageRecipient.init(
 		},
 		is_receive: {
 			type: DataTypes.BOOLEAN,
+			defaultValue: 0,
 		},
 	},
 	{ sequelize, modelName: 'MessageRecipient', tableName: 'message_recipient' }

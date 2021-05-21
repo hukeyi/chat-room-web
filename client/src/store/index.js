@@ -3,9 +3,9 @@ import createPersistedState from 'vuex-persistedstate';
 
 const userModule = {
 	state: {
-		userInfo: { id: 'test', name: 'test', avatar: '' },
+		userInfo: { id: 'default', name: 'default', avatar: '' },
 		friendList: [],
-		friendChatList: [],
+		friendChatList: {},
 	},
 	getters: {
 		getUserId: (state) => state.userInfo.id,
@@ -46,16 +46,27 @@ const userModule = {
 		 * @returns
 		 */
 		getFriendIndexById: (state) => (id) => {
-			return state.friendList.findIndex((item) => item.id === id);
+			return state.friendList.findIndex((item) => item.id == id);
 		},
 		/**
-		 * 查找对应好友ID的好友私聊数组下标
+		 * 根据好友id查找与好友的聊天历史记录
 		 * @param {*} state
 		 * @param {*} id
 		 * @returns
 		 */
-		getFriendChatIndexById: (state) => (id) => {
-			return state.friendChatList.findIndex((item) => item.id === id);
+		getFriendChatHistoryById: (state) => (id) => {
+			return state.friendChatList[id].chatHistory;
+		},
+		/**
+		 * 返回全部好友私聊信息数组，不包括记录
+		 */
+		getFriendChatInfoList: (state, getters) => {
+			const chatInfoList = [];
+			for (let key in state.friendChatList) {
+				const index = getters.getFriendIndexById(key);
+				chatInfoList.push(state.friendList[index]);
+			}
+			return chatInfoList;
 		},
 	},
 	mutations: {
@@ -68,6 +79,12 @@ const userModule = {
 		SET_USERAVATOR(state, avatar) {
 			state.userInfo.avatar = avatar;
 		},
+		INIT_FRIENDLIST(state, friendList) {
+			state.friendList = friendList;
+		},
+		INIT_FRIENDCHATLIST(state, chatList) {
+			state.friendChatList = chatList;
+		},
 	},
 	actions: {
 		setUserId({ commit }, id) {
@@ -79,8 +96,19 @@ const userModule = {
 		setUserAvator({ commit }, avatar) {
 			commit('SET_USERAVATOR', avatar);
 		},
+		setFriendListAll({ commit }, friendList) {
+			commit('INIT_FRIENDLIST', friendList);
+		},
 		/**
-		 * 根据好友id删除好友
+		 * 初始化好友私聊列表
+		 * @param {} param0
+		 * @param {*} chatList
+		 */
+		setFriendChatListAll({ commit }, chatList) {
+			commit('INIT_FRIENDCHATLIST', chatList);
+		},
+		/**
+		 * 根据好友id删除好友d
 		 * @param {*} state
 		 * @param {*} id 要删除等好友id
 		 * @returns 删除的好友信息对象；若id不存在，返回null
@@ -97,10 +125,10 @@ const userModule = {
 		 * @param {*} id 好友id
 		 * @returns
 		 */
-		deleteFriendChatById({ getters, state }, id) {
-			const index = getters.getFriendChatIndexById(id);
-			console.log('friendChatList', id, index, state.friendChatList[index]);
-			return index !== -1 ? state.friendChatList.splice(index, 1) : null;
+		deleteFriendChatById({ state }, id) {
+			console.log('friendChatList', id, state.friendChatList[id]);
+			//todo: before delete, store records to database
+			return delete state.friendChatList[id];
 		},
 		/**
 		 * 用好友id查找，当前私聊列表中是否有该好友
@@ -109,37 +137,25 @@ const userModule = {
 		 * @return true: 是；false：否
 		 */
 		findFriendChatById({ getters }, id) {
-			const index = getters.getFriendChatIndexById(id);
-			return index !== -1;
+			const index = getters.getFriendChatHistoryById(id);
+			return index != undefined && index != [] && index != null;
 		},
 	},
 };
 
-const msgModule = {
+const roomModule = {
 	state: {
-		friendMsgList: {},
-		roomMsgList: {},
+		roomList: [],
+		roomChatList: {},
 	},
-	getters: {
-		getFMsgList: (state) => state.friendMsgList,
-	},
-	mutations: {
-		PUSH_NEW_FMSG(state, f_id, history) {
-			state.friendMsgList[f_id] = history ? history : [];
-			// fixme: delete when finished
-			console.log('test mutations push new fmsg', state.friendMsgList);
-		},
-	},
-	actions: {
-		updateFMsgList({ commit }, f_id, history) {
-			commit('PUSH_NEW_FMSG', f_id, history);
-		},
-	},
+	getters: {},
+	mutations: {},
+	actions: {},
 };
 
 const store = createStore({
 	plugins: [createPersistedState({ storage: window.sessionStorage })],
-	modules: { user: userModule, message: msgModule },
+	modules: { user: userModule, room: roomModule },
 });
 
 export default store;

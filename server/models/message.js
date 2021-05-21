@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 19:18:07
+ * @Last Modified time: 2021-05-20 12:50:53
  */
 
 // 聊天消息相关model
@@ -59,9 +59,11 @@ Message.init(
 		},
 		create_date: {
 			type: DataTypes.DATE,
+			defaultValue: DataTypes.NOW,
 		},
 		is_active: {
 			type: DataTypes.BOOLEAN,
+			defaultValue: 1,
 		},
 	},
 	{ sequelize, modelName: 'Message', tableName: 'message' }

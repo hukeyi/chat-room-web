@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 23:06:31
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 19:17:56
+ * @Last Modified time: 2021-05-20 13:02:05
  */
 const db = require('./db.js');
 const { Model, DataTypes, sequelize } = db;
@@ -36,7 +36,11 @@ UserFriend.init(
 		// todo: define status hash to string name
 		status: {
 			type: DataTypes.STRING(20),
-			defaultValue: 'ok',
+			defaultValue: 'friend',
+		},
+		create_date: {
+			type: DataTypes.DATE,
+			defaultValue: DataTypes.NOW,
 		},
 		is_active: {
 			type: DataTypes.BOOLEAN,

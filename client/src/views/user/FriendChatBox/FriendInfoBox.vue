@@ -162,13 +162,17 @@
 	import InputItem from '@/components/InputItem.vue';
 	import InfoCardItem from '@/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
-	import friendApi from '@/api/friend.js';
 
 	export default {
 		components: { InputItem, InfoCardItem },
+		props: {
+			friendList: {
+				type: Array,
+				default: () => [],
+			},
+		},
 		data() {
 			return {
-				friendList: [],
 				searchResultList: [],
 				searchId: '',
 
@@ -191,13 +195,9 @@
 			//删除好友
 			deleteFriend(id) {
 				console.log('start delete friend', id);
-				// 1. close right drawer
+
 				this.showRightDrawer = false;
-
-				// 2. delete friendlist'id
 				this.deleteFriendById(id);
-
-				// 3. delete 左边栏的私信中的friend chat item（如果有的话）
 				this.deleteFriendChatById(id);
 
 				// 4. fixme: axios, request backend to delete friend-id in the database
@@ -315,17 +315,7 @@
 					});
 			},
 		},
-		mounted() {
-			friendApi
-				.GetFriendListAll()
-				.then((res) => {
-					console.log('get friend list', res);
-					this.friendList = res;
-				})
-				.catch((err) => {
-					console.log('error friend list', err);
-				});
-		},
+		mounted() {},
 	};
 </script>
 

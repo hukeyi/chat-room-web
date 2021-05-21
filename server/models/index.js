@@ -2,12 +2,13 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 22:38:24
+ * @Last Modified time: 2021-05-20 16:23:58
  */
 
 // Model的统一出口
 // for config tables' associations
 const { $, sequelize } = require('./db');
+const createTest = require('./create_test');
 const User = require('./user.js');
 const UserFriend = require('./user_friend.js');
 const { Message } = require('./message.js');
@@ -22,14 +23,30 @@ const MessageRecipient = require('./message_recipient.js');
  */
 
 User.belongsToMany(User, {
-	as: 'user', // must be defined in self-associations
+	as: 'user_n_m', // must be defined in self-associations
 	through: UserFriend,
 	foreignKey: 'user_id',
 });
 User.belongsToMany(User, {
-	as: 'friend', // must be defined in self-associations
+	as: 'friend_n_m', // must be defined in self-associations
 	through: UserFriend,
 	foreignKey: 'friend_id',
+});
+User.hasMany(UserFriend, {
+	foreignKey: 'user_id',
+	as: 'user_1_n',
+});
+UserFriend.belongsTo(User, {
+	foreignKey: 'user_id',
+	as: 'user_1_n',
+});
+User.hasMany(UserFriend, {
+	foreignKey: 'friend_id',
+	as: 'friend_1_n',
+});
+UserFriend.belongsTo(User, {
+	foreignKey: 'friend_id',
+	as: 'friend_1_n',
 });
 
 /**
@@ -66,21 +83,14 @@ MessageRecipient.belongsTo(User, {
  * Sync tables
  */
 
-User.sync()
-	.then(() => console.log('User sync success'))
-	.catch((err) => console.log('User sync error', err));
-
-UserFriend.sync()
-	.then(() => console.log('UserFriend sync success'))
-	.catch((err) => console.log('UserFriend sync error', err));
-
-Message.sync()
-	.then(() => console.log('Message sync success'))
-	.catch((err) => console.log('Message sync error', err));
-
-MessageRecipient.sync()
-	.then(() => console.log('MessageRecipient sync success'))
-	.catch((err) => console.log('MessageRecipient sync error', err));
+sequelize
+	.sync()
+	.then(() => {
+		console.log('All tables sync success');
+		// fixme: remember to delete this
+		// createTest({ User, UserFriend, Message, MessageRecipient });
+	})
+	.catch((err) => console.log('Some tables sync error', err));
 
 module.exports = {
 	User,

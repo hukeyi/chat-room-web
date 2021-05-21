@@ -11,12 +11,10 @@
 			<el-container>
 				<el-main class="main-central">
 					<div class="chat-box-window" ref="chatBox">
-						<!-- fixme: 根据传来的聊天信息数组，用v-for渲染消息，
-						消息用一个聊天消息小组件渲染 -->
 						<ChatMessage
 							v-for="item in messageList"
 							:key="item.s_id"
-							:direction="item.s_id === fId ? 'left' : 'right'"
+							:direction="item.s_id == fId ? 'left' : 'right'"
 							:avatar="item.avatar ? item.avatar : undefined"
 							:name="item.name"
 							:time="item.time"
@@ -53,7 +51,6 @@
 <script>
 	import { mapGetters, mapActions } from 'vuex';
 	import ChatMessage from '@/components/ChatMessageItem.vue';
-	// import testData from './testdata01.json';
 	import { formatDate } from '@/utils/time';
 
 	export default {
@@ -61,31 +58,17 @@
 		data() {
 			return {
 				fId: '',
-
-				friendList: [],
-				searchResultList: [],
-				searchId: '',
-
 				icon_friend: require('@/assets/styles/common/img/user.png'),
 
-				showAddFriend: false,
-				selectFriendStatus: 'all',
-				showRightDrawer: false,
-				drawerInfo: undefined, //drawer展示的好友的id
-
 				inputText: '',
-
 				messageList: [],
 			};
 		},
 		methods: {
 			...mapGetters({
-				getList: 'allFriends',
-				getOnList: 'onFriends',
-				getOffList: 'offFriends',
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
-				getMsgList: 'getFMsgList',
+				getHistory: 'getFriendChatHistoryById',
 			}),
 			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
 
@@ -95,11 +78,6 @@
 					let box = this.$refs.chatBox;
 					box.scrollTop = box.scrollHeight;
 				});
-			},
-			// 发送好友请求
-			sendAddRequest(id, text) {
-				console.log('send request to', id, text);
-				// fixme: request to backend send request
 			},
 			// 清除回车键默认事件
 			handleEnterClear(e) {
@@ -129,22 +107,21 @@
 				this.drawerInfo = info;
 				this.showRightDrawer = !this.showRightDrawer;
 			},
+			refreshView() {
+				this.fId = this.$route.params.fId;
+				// 显示历史消息
+				this.messageList = this.getHistory()(this.fId);
+				this.scrollToEnd();
+			},
 		},
 		mounted() {
-			this.fId = this.$route.params.fId;
-			this.friendList = this.getList();
-			// 显示历史消息
-			// this.messageList = testData[this.fId];
-			this.messageList = this.getMsgList()[this.fId];
-			this.scrollToEnd();
+			this.refreshView();
 		},
 		watch: {
 			//通过watch来监听路由变化
 			'$route.params.fId': function() {
 				if (this.$route.params.fId) {
-					this.fId = this.$route.params.fId;
-					this.messageList = this.getMsgList()[this.fId];
-					this.scrollToEnd();
+					this.refreshView();
 				}
 			},
 		},

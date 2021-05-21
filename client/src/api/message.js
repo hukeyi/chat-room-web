@@ -1,11 +1,11 @@
 import axios from '@/utils/axios.js';
 
-const GetFChatHistoryAll = () =>
+const GetFriendChatAll = () =>
 	axios({
-		url: '/api/msg/all',
+		url: '/api/msg/friend/all',
 		method: 'get',
 	});
 
 export default {
-	GetFChatHistoryAll,
+	GetFriendChatAll,
 };

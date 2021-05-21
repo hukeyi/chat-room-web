@@ -11,6 +11,7 @@ const sequelize = new Sequelize(
 		host: config.host,
 		port: config.port,
 		dialect: 'mysql',
+		timezone: '+08:00', //时区
 		define: {
 			timestamps: false,
 		},

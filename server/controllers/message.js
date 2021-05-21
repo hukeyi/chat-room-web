@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 23:18:51
+ * @Last Modified time: 2021-05-20 20:45:19
  */
 const {
 	Message,
@@ -12,6 +12,7 @@ const {
 	sequelize,
 } = require('../models/index.js');
 const { toJSON } = require('./utils.js');
+const { findAllFriendChatByUserId } = require('./userFriend');
 
 /**
  * api for database
@@ -45,6 +46,7 @@ async function findFChatHistoryById(userId) {
 			['create_date', 'time'],
 			'content',
 		],
+		order: [['create_date', 'ASC']],
 	});
 
 	return toJSON(chatList);
@@ -64,11 +66,28 @@ async function findFChatHistoryById(userId) {
         "content": "hi, how are you",
     }
  */
+function sortChatHistoryByRId(uid, msgList, chatList) {
+	while (msgList.length) {
+		const f_id =
+			uid === msgList[0].s_id
+				? msgList[0].r_id.toString()
+				: msgList[0].s_id.toString();
+		if (!chatList[f_id].chatHistory) {
+			chatList[f_id].chatHistory = [];
+		}
+		chatList[f_id].chatHistory.push(msgList.shift());
+	}
+	console.log('test sort history', chatList);
+	return chatList;
+}
+
 const friend_chatHistory_get = async (req, res) => {
-	const list = {};
-	list['37'] = await findFChatHistoryById(req.user.id);
-	console.log('list', list);
-	res.status(200).json(list);
+	const uid = req.user.id;
+	const list = await findFChatHistoryById(uid);
+	const chatList = await findAllFriendChatByUserId(uid);
+	// console.log('list', list);
+	const resList = sortChatHistoryByRId(uid, list, chatList);
+	res.status(200).json(resList);
 };
 module.exports = {
 	friend_chatHistory_get,
