@@ -4,7 +4,7 @@
 			<el-header class="main-header">
 				<div class="main-header-title">
 					<img :src="icon_friend" /><span style="margin: auto 10px;"
-						># {{ $route.params.fId }}</span
+						># {{ fName }}</span
 					>
 				</div>
 			</el-header>
@@ -58,6 +58,7 @@
 		data() {
 			return {
 				fId: '',
+				fName: '',
 				icon_friend: require('@/assets/styles/common/img/user.png'),
 
 				inputText: '',
@@ -69,6 +70,7 @@
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
 				getHistory: 'getFriendChatHistoryById',
+				getFriendName: 'getFriendNameById',
 			}),
 			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
 
@@ -109,6 +111,7 @@
 			},
 			refreshView() {
 				this.fId = this.$route.params.fId;
+				this.fName = this.getFriendName()(this.fId);
 				// 显示历史消息
 				this.messageList = this.getHistory()(this.fId);
 				this.scrollToEnd();

@@ -125,7 +125,12 @@
 							drawerInfo.status
 						}}</el-row>
 						<el-row class="btn-group" type="flex" justify="center">
-							<el-button id="start-chat" size="medium">发起私聊</el-button>
+							<el-button
+								@click="handleClickStartChat(drawerInfo.id)"
+								id="start-chat"
+								size="medium"
+								>发起私聊</el-button
+							>
 							<el-button
 								id="delete-friend"
 								size="medium"
@@ -221,10 +226,20 @@
 					console.log('search user', err);
 				}
 			},
+			async startChatWith(id) {
+				try {
+					const postData = {
+						fid: id,
+					};
+					return friendApi.PostChatWithFriend(postData);
+				} catch (err) {
+					console.log('start chat with', err);
+				}
+			},
 			// 发送好友请求
 			sendAddRequest(id) {
 				console.log('send request to', id);
-				// fixme: request to backend send request
+				// todo: request to backend send request
 			},
 			//添加好友按钮的点击事件回调函数
 			handleClickAddFriend() {
@@ -241,6 +256,13 @@
 			handleClickFriendCard(info) {
 				this.drawerInfo = info;
 				this.showRightDrawer = !this.showRightDrawer;
+			},
+			// 点击发起私聊按钮的回调函数
+			async handleClickStartChat(id) {
+				this.showRightDrawer = false;
+				await this.startChatWith(id);
+				const uid = this.getUserId();
+				this.$emit('startChat', uid, id);
 			},
 			//点击删除好友按钮的回调函数
 			handleClickDeleteFriend(id, name) {

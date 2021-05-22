@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-21 22:48:37
+ * @Last Modified time: 2021-05-22 09:46:05
  */
 
 const { UserFriend, User, sequelize, $ } = require('../models/index');
@@ -76,6 +76,20 @@ async function removeFriendById(uid, fid) {
 	});
 }
 
+async function updateStatusChat(uid, fid, status) {
+	return UserFriend.update(
+		{ status: status },
+		{
+			where: {
+				[$.or]: [
+					{ user_id: uid, friend_id: fid },
+					{ user_id: fid, friend_id: uid },
+				],
+			},
+		}
+	);
+}
+
 /**
  * Controllers for user_friend routes
  * @param {*} req
@@ -83,11 +97,6 @@ async function removeFriendById(uid, fid) {
  */
 const friend_add_post = (req, res) => {
 	// todo: add friend test
-	// find friend id in table user
-	// if not exist, return a error json with status 200
-	// if exist friend xx
-	// first, send a message to xx
-	// return a success json with status 200, remind user to wait for reply
 };
 
 const friend_list_get = async (req, res) => {
@@ -106,9 +115,17 @@ const friend_delete_post = async (req, res) => {
 	}
 };
 
+const friend_startChat_post = async (req, res) => {
+	console.log('start chat', req.user.id, req.body.fid);
+	updateStatusChat(req.user.id, req.body.fid, 'chat')
+		.then(() => res.sendStatus(200))
+		.catch((err) => res.status(500).send(err));
+};
+
 module.exports = {
 	friend_add_post,
 	friend_list_get,
 	findAllFriendChatByUserId,
 	friend_delete_post,
+	friend_startChat_post,
 };

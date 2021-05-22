@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-20 20:45:19
+ * @Last Modified time: 2021-05-22 10:20:12
  */
 const {
 	Message,
@@ -55,26 +55,13 @@ async function findFChatHistoryById(userId) {
 /**
  * controllers for route
  */
-/**
- * "1": [
-        {
-        "s_id": "1",
-        "r_id":"test",
-        "name": "john",
-        "avatar": "",
-        "time": "21/04/24 12:01:09",
-        "content": "hi, how are you",
-    }
- */
+
 function sortChatHistoryByRId(uid, msgList, chatList) {
 	while (msgList.length) {
 		const f_id =
 			uid === msgList[0].s_id
 				? msgList[0].r_id.toString()
 				: msgList[0].s_id.toString();
-		if (!chatList[f_id].chatHistory) {
-			chatList[f_id].chatHistory = [];
-		}
 		chatList[f_id].chatHistory.push(msgList.shift());
 	}
 	console.log('test sort history', chatList);
@@ -85,7 +72,9 @@ const friend_chatHistory_get = async (req, res) => {
 	const uid = req.user.id;
 	const list = await findFChatHistoryById(uid);
 	const chatList = await findAllFriendChatByUserId(uid);
-	// console.log('list', list);
+	for (let key in chatList) {
+		chatList[key].chatHistory = [];
+	}
 	const resList = sortChatHistoryByRId(uid, list, chatList);
 	res.status(200).json(resList);
 };

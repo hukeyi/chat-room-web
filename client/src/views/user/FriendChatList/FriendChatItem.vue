@@ -1,5 +1,5 @@
 <template>
-	<div class="chat-list-item">
+	<div :class="['chat-list-item', $route.params.fId == id ? 'clicked' : '']">
 		<img :src="avatar" />
 		<div class="friend-info">
 			<span id="friend-name">{{ name }}</span>
@@ -18,6 +18,10 @@
 				type: String,
 				default: 'friendA',
 			},
+			id: {
+				type: String,
+				default: '',
+			},
 		},
 	};
 </script>
@@ -29,6 +33,7 @@
 
 		display: flex;
 		margin-bottom: 10px !important;
+		padding-left: 5px !important;
 
 		align-items: center;
 		justify-content: flex-start;
@@ -52,5 +57,8 @@
 				font-size: 14px;
 			}
 		}
+	}
+	.clicked {
+		border-color: $fontColorDeep;
 	}
 </style>

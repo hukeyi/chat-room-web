@@ -11,7 +11,11 @@
 			</el-aside>
 			<!-- 主界面 好友界面 这里有嵌套路由 -->
 			<el-main class="main-box">
-				<FriendBox :friendList="friendList" :chatList="chatList"></FriendBox>
+				<FriendBox
+					@startChat="startChat"
+					:friendList="friendList"
+					:chatList="chatList"
+				></FriendBox>
 			</el-main>
 		</el-container>
 	</div>
@@ -41,6 +45,11 @@
 			...mapGetters({
 				getChatInfoList: 'getFriendChatInfoList',
 			}),
+			async startChat(uid, fid) {
+				console.log('start chat', uid, fid);
+				await this.initLists();
+				this.$router.push(`/user/${uid}/${fid}`);
+			},
 			async initLists() {
 				try {
 					this.friendList = await friendApi.GetFriendListAll();

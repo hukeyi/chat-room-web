@@ -12,6 +12,7 @@
 					<ChatListItem
 						v-for="item in chatInfoList"
 						:key="item.id"
+						:id="item.id"
 						:name="item.name"
 						@click="handleClickItem(item)"
 					></ChatListItem>
