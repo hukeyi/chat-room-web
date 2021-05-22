@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 10:20:12
+ * @Last Modified time: 2021-05-22 13:19:01
  */
 const {
 	Message,
@@ -52,10 +52,6 @@ async function findFChatHistoryById(userId) {
 	return toJSON(chatList);
 }
 
-/**
- * controllers for route
- */
-
 function sortChatHistoryByRId(uid, msgList, chatList) {
 	while (msgList.length) {
 		const f_id =
@@ -64,9 +60,25 @@ function sortChatHistoryByRId(uid, msgList, chatList) {
 				: msgList[0].s_id.toString();
 		chatList[f_id].chatHistory.push(msgList.shift());
 	}
-	console.log('test sort history', chatList);
 	return chatList;
 }
+
+async function updateMsgToFriend(s_id, r_id, content, time) {
+	const msgRes = await Message.create({
+		sender_id: s_id,
+		content: content,
+		create_date: time,
+	});
+
+	return MessageRecipient.create({
+		message_id: msgRes.id,
+		recipient_id: r_id,
+	});
+}
+
+/**
+ * controllers for route
+ */
 
 const friend_chatHistory_get = async (req, res) => {
 	const uid = req.user.id;
@@ -78,6 +90,18 @@ const friend_chatHistory_get = async (req, res) => {
 	const resList = sortChatHistoryByRId(uid, list, chatList);
 	res.status(200).json(resList);
 };
+
+const friend_sendMsg_post = async (req, res) => {
+	try {
+		const { s_id, r_id, content, time } = req.body;
+		await updateMsgToFriend(s_id, r_id, content, time);
+		res.sendStatus(200);
+	} catch (err) {
+		res.status(500).send(err);
+	}
+};
+
 module.exports = {
 	friend_chatHistory_get,
+	friend_sendMsg_post,
 };
