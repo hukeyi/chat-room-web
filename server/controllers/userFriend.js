@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 09:46:05
+ * @Last Modified time: 2021-05-22 13:08:30
  */
 
 const { UserFriend, User, sequelize, $ } = require('../models/index');
@@ -90,36 +90,67 @@ async function updateStatusChat(uid, fid, status) {
 	);
 }
 
+async function updateAddFriend(u_id, f_id) {
+	const relation = await UserFriend.findOne({
+		where: { user_id: u_id, friend_id: f_id },
+	});
+	if (relation) {
+		return { message: 'Friend existed' };
+	} else {
+		return UserFriend.bulkCreate(
+			[
+				{ user_id: u_id, friend_id: f_id },
+				{ user_id: f_id, friend_id: u_id },
+			],
+			{ validate: true }
+		);
+	}
+}
+
 /**
  * Controllers for user_friend routes
  * @param {*} req
  * @param {*} res
+ * 	req.user passed from passport.authenticated()
+ *  user pass the auth and
+ *  its info will be store in req.user
  */
-const friend_add_post = (req, res) => {
-	// todo: add friend test
+
+const friend_add_post = async (req, res) => {
+	try {
+		const result = await updateAddFriend(req.user.id, req.body.fid);
+		res.status(200).json(result);
+	} catch (err) {
+		res.status(500).send(err);
+	}
 };
 
 const friend_list_get = async (req, res) => {
-	// req.user passed from passport.authenticated()
-	// user pass the auth and its info will be store in req.user
-	const list = await findAllFriendsByUserId(req.user.id);
-	res.status(200).json(list);
+	try {
+		const list = await findAllFriendsByUserId(req.user.id);
+		res.status(200).json(list);
+	} catch (err) {
+		res.status(500).send(err);
+	}
 };
 
 const friend_delete_post = async (req, res) => {
 	try {
-		await removeFriendById(req.user.id, req.body.fid);
-		res.sendStatus(200);
+		const result = await removeFriendById(req.user.id, req.body.fid);
+		res.status(200).json(result);
 	} catch (err) {
 		res.status(500).json(err);
 	}
 };
 
 const friend_startChat_post = async (req, res) => {
-	console.log('start chat', req.user.id, req.body.fid);
-	updateStatusChat(req.user.id, req.body.fid, 'chat')
-		.then(() => res.sendStatus(200))
-		.catch((err) => res.status(500).send(err));
+	try {
+		console.log('start chat', req.user.id, req.body.fid);
+		await updateStatusChat(req.user.id, req.body.fid, 'chat');
+		res.sendStatus(200);
+	} catch (err) {
+		res.status(500).send(err);
+	}
 };
 
 module.exports = {

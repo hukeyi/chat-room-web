@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-21 23:13:50
+ * @Last Modified time: 2021-05-22 13:09:02
  */
 
 const { User, $ } = require('../models/index.js');
@@ -36,9 +36,9 @@ const user_search_post = async (req, res, next) => {
 };
 
 const user_register_post = async (req, res, next) => {
-	console.log(req.body);
-	const { userId, name, password } = req.body;
 	try {
+		console.log(req.body);
+		const { userId, name, password } = req.body;
 		const user = await User.findOne({
 			where: {
 				phone: userId,
