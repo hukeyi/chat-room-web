@@ -86,11 +86,11 @@ MessageRecipient.belongsTo(User, {
 sequelize
 	.sync()
 	.then(() => {
-		console.log('All tables sync success');
+		console.log('\nAll tables sync success');
 		// fixme: remember to delete this
 		// createTest({ User, UserFriend, Message, MessageRecipient });
 	})
-	.catch((err) => console.log('Some tables sync error', err));
+	.catch((err) => console.log('\nSome tables sync error', err));
 
 module.exports = {
 	User,

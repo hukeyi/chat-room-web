@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-19 21:12:35
+ * @Last Modified time: 2021-05-22 17:26:42
  */
 
 /**
@@ -56,7 +56,7 @@ const messagesRouter = require('./routes/message');
  */
 app.use(
 	cors({
-		origin: ['http://localhost:8080'],
+		origin: [process.env.CLIENT_URL],
 		methods: ['GET', 'POST', 'OPTIONS'],
 		allowHeaders: ['Conten-Type', 'Authorization'],
 	})

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-20 12:50:53
+ * @Last Modified time: 2021-05-22 20:50:48
  */
 
 // 聊天消息相关model
@@ -12,15 +12,11 @@
  * socket相关函数
  * @param {*} io
  */
-const init = function (io) {
-	io.on('connection', function (socket) {
-		console.log('🎉a user connected');
-		socket.on('chat message', function (msg) {
-			io.emit('chat message', msg);
-		});
-		socket.on('disconnect', function () {
-			console.log('user disconnected');
-		});
+const init = (io, socket) => {
+	// todo: 私聊发送消息
+	socket.on('private message', (otherSocketId, msg) => {
+		console.log('\n🌹received!', otherSocketId, msg);
+		// socket.to(otherSocketId).emit('private message', socket.id, msg);
 	});
 };
 
@@ -71,7 +67,7 @@ Message.init(
 
 module.exports = {
 	Message,
-	socket: {
+	msgSocket: {
 		init,
 	},
 };

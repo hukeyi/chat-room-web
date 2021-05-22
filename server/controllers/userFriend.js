@@ -145,7 +145,7 @@ const friend_delete_post = async (req, res) => {
 
 const friend_startChat_post = async (req, res) => {
 	try {
-		console.log('start chat', req.user.id, req.body.fid);
+		console.log('\nstart chat', req.user.id, req.body.fid);
 		await updateStatusChat(req.user.id, req.body.fid, 'chat');
 		res.sendStatus(200);
 	} catch (err) {

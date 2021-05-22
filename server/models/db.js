@@ -21,7 +21,7 @@ const sequelize = new Sequelize(
 sequelize
 	.authenticate()
 	.then(() => {
-		console.log('mysql connection success');
+		console.log('\nmysql connection success');
 	})
 	.catch((err) => {
 		throw new Error(err);

@@ -2,23 +2,23 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-09 20:21:30
+ * @Last Modified time: 2021-05-22 20:51:22
  */
 
 const cookieParser = require('cookie-parser');
 const passportSocketIo = require('passport.socketio');
 // fixme: 分离代码test
-// const message = require('../models/message');
+const { msgSocket } = require('../models/message');
 const passport = require('../configs/passport.config');
 
 function onAuthorizeSuccess(data, accept) {
-	console.log('successful connection to socket.io');
+	console.log('\nsuccessful connection to socket.io');
 	accept(null, true);
 }
 
 function onAuthorizeFail(data, message, error, accept) {
 	if (error) throw new Error(message);
-	console.log('failed connection to socket.io:', message);
+	console.log('\nfailed connection to socket.io:', message);
 	accept(null, false);
 }
 
@@ -43,15 +43,13 @@ module.exports = function (server, store) {
 			fail: onAuthorizeFail,
 		})
 	);
-	// fixme: 分离不同部分的socket代码
-	// e.g. message.js
-	// message.init(io);
 	io.on('connection', function (socket) {
-		console.log('🎉 Yeah! User connected');
+		console.log('\n🎉 Yeah! User connected');
 		// fixme: logout cannot trigger 'disconnect'
 		// it'll be trigger after logout and refresh page
+		msgSocket.init(io, socket);
 		socket.on('disconnect', function () {
-			console.log('😈 Oops! User disconnected');
+			console.log('\n😈 Oops! User disconnected');
 		});
 	});
 };

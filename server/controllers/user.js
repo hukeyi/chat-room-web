@@ -25,10 +25,10 @@ function findUsers(id) {
 
 const user_search_post = async (req, res, next) => {
 	const { id } = req.body;
-	console.log('search post', req.body);
+	console.log('\nsearch post', req.body);
 	try {
 		const users = await findUsers(id);
-		console.log('user search post', toJSON(users));
+		console.log('\nuser search post', toJSON(users));
 		res.status(200).json(toJSON(users));
 	} catch (err) {
 		res.status(500).send(err);
@@ -53,7 +53,7 @@ const user_register_post = async (req, res, next) => {
 				name: name,
 				password: hash,
 			});
-			console.log('New user created: ', newUser.id);
+			console.log('\nNew user created: ', newUser.id);
 			res.status(200).json({
 				data: { id: newUser.id },
 				message: 'User register success',
@@ -64,7 +64,7 @@ const user_register_post = async (req, res, next) => {
 			});
 		}
 	} catch (err) {
-		console.log('controller user register', err);
+		console.log('\ncontroller user register', err);
 		res.sendStatus(500);
 	}
 };
