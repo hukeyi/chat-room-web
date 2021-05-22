@@ -14,12 +14,6 @@ const app = createApp(App);
 // 	autoConnect: false, //close auto connect
 // };
 
-// app.use(
-// 	new VueSocketIO({
-// 		debug: true,
-// 		connection: SocketIO('http://localhost:3000', socketOptions),
-// 	})
-// );
 // axios
 app.config.globalProperties.$axios = axios;
 

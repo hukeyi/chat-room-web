@@ -98,7 +98,6 @@
 								// otherwise in sesssionstorage
 								// remember to change the store location in vuex
 								localStorage.setItem('token', token);
-								// fixme: need store authenicated status in vuex?
 								this.$router.push(`/user/${id}`);
 							})
 							.catch((err) => {

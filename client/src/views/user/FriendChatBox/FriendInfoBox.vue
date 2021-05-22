@@ -141,7 +141,6 @@
 					</el-drawer>
 					<!-- 根据id搜索的好友列表 -->
 					<div v-if="showAddFriend" class="add-friend-result">
-						<!-- <template > -->
 						<div
 							class="add-friend-result-item"
 							v-for="item in searchResultList"
@@ -155,7 +154,11 @@
 							></InfoCardItem>
 							<el-button @click="handleClickSend(item)">发送好友申请</el-button>
 						</div>
-						<!-- </template> -->
+						<el-empty
+							v-if="showEmptyRes"
+							description="该ID或手机号不存在"
+							:image-size="100"
+						></el-empty>
 					</div>
 				</el-main>
 			</el-container>
@@ -182,6 +185,7 @@
 			return {
 				searchResultList: [],
 				searchId: '',
+				showEmptyRes: false,
 
 				icon_friend: require('@/assets/styles/common/img/user.png'),
 
@@ -222,6 +226,7 @@
 
 					const postData = { id: id };
 					this.searchResultList = await userApi.SearchUsers(postData);
+					if (!this.searchResultList.length) this.showEmptyRes = true;
 				} catch (err) {
 					console.log('search user', err);
 				}
@@ -244,6 +249,7 @@
 			//添加好友按钮的点击事件回调函数
 			handleClickAddFriend() {
 				this.showAddFriend = true;
+				this.showEmptyRes = false;
 				this.selectFriendStatus = '';
 			},
 			//好友界面头顶栏好友状态菜单选择事件回调函数
@@ -289,6 +295,7 @@
 			// 搜索好友按钮点击事件的回调函数
 			handleClickSearchFriend() {
 				console.log('click search', this.searchId);
+				this.showEmptyRes = false;
 				const selfId = this.getUserId();
 				const selfPhone = this.getUserPhone();
 				const id = this.searchId;

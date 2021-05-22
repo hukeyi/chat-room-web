@@ -19,8 +19,7 @@
 				default: 'friendA',
 			},
 			id: {
-				type: String,
-				default: '',
+				type: Number,
 			},
 		},
 	};

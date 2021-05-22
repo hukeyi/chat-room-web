@@ -73,7 +73,6 @@
 		},
 		mounted() {
 			this.initLists();
-			// fixme: test socket.io connection
 			// let socket = io('http://localhost:3000', {
 			// 	withCredentials: true,
 			// 	transports: ['websocket'],
