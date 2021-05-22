@@ -97,11 +97,10 @@
 						name: this.getUserName(),
 						content: this.inputText,
 					};
+					this.$socket.emitter('private message', ['test', this.inputText]);
 					this.inputText = '';
 					this.messageList.push(text);
 					this.scrollToEnd();
-
-					this.sendAddRequest(this.getUserId(), text);
 				}
 			},
 			//点击好友card，显示好友信息事件回调函数

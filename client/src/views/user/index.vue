@@ -25,7 +25,6 @@
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
 	import FriendChatList from './FriendChatList/index';
 	import FriendBox from './FriendChatBox/index';
-	import { io } from 'socket.io-client';
 	import { mapGetters, mapActions } from 'vuex';
 
 	import friendApi from '@/api/friend.js';
@@ -61,22 +60,6 @@
 					console.log('user/index.vue init err', err);
 				}
 			},
-			initSocket() {
-				let socket = io(process.env.VUE_APP_SERVER_URL, {
-					withCredentials: true,
-					transports: ['websocket'],
-				});
-				socket.on('connect', () => {
-					console.log(socket.id, 'connect!');
-					console.log(socket);
-				});
-				const fSocketId = 'test';
-				const msg = 'socket connected!';
-				socket.emit('private message', fSocketId, msg);
-				// socket.on('private message', (fSocketId, msg) => {
-				// 	console.log('send!', fSocketId, msg);
-				// });
-			},
 		},
 		watch: {
 			friendList: {
@@ -89,7 +72,8 @@
 		},
 		mounted() {
 			this.initLists();
-			this.initSocket();
+			this.$socket.open();
+			this.$socket.connect();
 		},
 	};
 </script>

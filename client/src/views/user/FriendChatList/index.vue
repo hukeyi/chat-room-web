@@ -86,6 +86,7 @@
 					.Logout()
 					.then((res) => {
 						console.log('logout vue', res);
+						this.$socket.close();
 						localStorage.clear();
 						sessionStorage.clear();
 						this.$router.push('/');

@@ -2,13 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 20:51:22
+ * @Last Modified time: 2021-05-23 00:39:22
  */
 
 const cookieParser = require('cookie-parser');
 const passportSocketIo = require('passport.socketio');
-// fixme: 分离代码test
-const { msgSocket } = require('../models/message');
+const initSocket = require('../utils/socket');
 const passport = require('../configs/passport.config');
 
 function onAuthorizeSuccess(data, accept) {
@@ -25,7 +24,7 @@ function onAuthorizeFail(data, message, error, accept) {
 module.exports = function (server, store) {
 	const io = require('socket.io')(server, {
 		cors: {
-			origin: ['http://localhost:8080'],
+			origin: [process.env.CLIENT_URL],
 			methods: ['GET', 'POST', 'OPTIONS'],
 			allowHeaders: ['Conten-Type', 'Authorization'],
 			credentials: true,
@@ -43,13 +42,5 @@ module.exports = function (server, store) {
 			fail: onAuthorizeFail,
 		})
 	);
-	io.on('connection', function (socket) {
-		console.log('\n🎉 Yeah! User connected');
-		// fixme: logout cannot trigger 'disconnect'
-		// it'll be trigger after logout and refresh page
-		msgSocket.init(io, socket);
-		socket.on('disconnect', function () {
-			console.log('\n😈 Oops! User disconnected');
-		});
-	});
+	initSocket(io);
 };

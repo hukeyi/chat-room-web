@@ -4,15 +4,12 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import installElementPlus from './plugins/element';
-// import SocketIO from 'socket.io-client';
+import { Socket } from './utils/socket';
 
 const app = createApp(App);
 
-// fixme: connect socketio via -client
-// socket 连接参数
-// const socketOptions = {
-// 	autoConnect: false, //close auto connect
-// };
+const socket = new Socket();
+app.config.globalProperties.$socket = socket;
 
 // axios
 app.config.globalProperties.$axios = axios;
