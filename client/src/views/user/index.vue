@@ -43,6 +43,7 @@
 			...mapActions(['setFriendChatListAll', 'setFriendListAll']),
 			...mapGetters({
 				getChatInfoList: 'getFriendChatInfoList',
+				getUserId: 'getUserId',
 			}),
 			async startChat(uid, fid) {
 				console.log('start chat', uid, fid);
@@ -73,7 +74,6 @@
 		mounted() {
 			this.initLists();
 			this.$socket.open();
-			this.$socket.connect();
 		},
 	};
 </script>

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-21 17:37:54
+ * @Last Modified time: 2021-05-27 00:49:33
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -87,7 +87,7 @@ router.beforeEach((to, from, next) => {
 		// 判断是否存在token
 		// 存在则鉴权判断
 		// 不存在则返回登录页
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem(`token_${id}`);
 		if (token) {
 			// 存在，判断是否过期
 			const decoded = jwt_decode(token);

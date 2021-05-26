@@ -2,23 +2,8 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 20:50:48
+ * @Last Modified time: 2021-05-23 21:45:46
  */
-
-// 聊天消息相关model
-// model/message.js
-
-/**
- * socket相关函数
- * @param {*} io
- */
-const init = (io, socket) => {
-	// todo: 私聊发送消息
-	socket.on('private message', (otherSocketId, msg) => {
-		console.log('\n🌹received!', otherSocketId, msg);
-		// socket.to(otherSocketId).emit('private message', socket.id, msg);
-	});
-};
 
 /**
  * database相关model
@@ -67,7 +52,4 @@ Message.init(
 
 module.exports = {
 	Message,
-	msgSocket: {
-		init,
-	},
 };

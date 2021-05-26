@@ -10,13 +10,19 @@
 			:hide-required-asterisk="true"
 		>
 			<el-form-item label="手机号" prop="phone">
-				<el-input v-model.number="ruleForm.phone"></el-input>
+				<el-input
+					v-model.number="ruleForm.phone"
+					@keydown.enter="handleEnterClear"
+					@keyup.enter="submitForm('ruleForm')"
+				></el-input>
 			</el-form-item>
 			<el-form-item label="密码" prop="password">
 				<el-input
 					type="password"
 					v-model="ruleForm.password"
 					autocomplete="off"
+					@keydown.enter="handleEnterClear"
+					@keyup.enter="submitForm('ruleForm')"
 				></el-input>
 			</el-form-item>
 
@@ -97,7 +103,7 @@
 								// if it checked, store the info in localstorage
 								// otherwise in sesssionstorage
 								// remember to change the store location in vuex
-								localStorage.setItem('token', token);
+								localStorage.setItem(`token_${id}`, token);
 								this.$router.push(`/user/${id}`);
 							})
 							.catch((err) => {
@@ -118,14 +124,19 @@
 			handleChangePass() {
 				alert('Not completed');
 			},
+			// 清除回车键默认事件
+			handleEnterClear(e) {
+				if (e.preventDefault) e.preventDefault();
+				else window.event.value = false;
+			},
 		},
 		mounted() {
 			// 响应enter键
-			window.addEventListener('keyup', (event) => {
-				if (event.key === 'Enter') {
-					this.submitForm('ruleForm');
-				}
-			});
+			// window.addEventListener('keyup', (event) => {
+			// 	if (event.key === 'Enter') {
+			// 		this.submitForm('ruleForm');
+			// 	}
+			// });
 		},
 	};
 </script>

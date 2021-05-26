@@ -97,7 +97,7 @@
 						name: this.getUserName(),
 						content: this.inputText,
 					};
-					this.$socket.emitter('private message', ['test', this.inputText]);
+					this.$socket.emitter('private message', [this.fId, this.inputText]);
 					this.inputText = '';
 					this.messageList.push(text);
 					this.scrollToEnd();

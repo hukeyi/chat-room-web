@@ -2,9 +2,10 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-21 22:18:22
+ * @Last Modified time: 2021-05-27 00:39:21
  */
 import axios from 'axios';
+import store from '../store/index';
 
 // 前后端规定的code message 对照表
 const statusHash = {
@@ -34,9 +35,10 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(
 	(config) => {
+		const userId = store.getters.getUserId;
 		// todo: loading or not, add after
-		if (localStorage.getItem('token')) {
-			config.headers.Authorization = localStorage.getItem('token');
+		if (localStorage.getItem(`token_${userId}`)) {
+			config.headers.Authorization = localStorage.getItem(`token_${userId}`);
 		}
 		return config;
 	},

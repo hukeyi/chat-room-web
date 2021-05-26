@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-20 16:23:58
+ * @Last Modified time: 2021-05-26 23:00:26
  */
 
 // Model的统一出口
@@ -13,6 +13,7 @@ const User = require('./user.js');
 const UserFriend = require('./user_friend.js');
 const { Message } = require('./message.js');
 const MessageRecipient = require('./message_recipient.js');
+const Socket = require('./socket');
 
 /**
  * Association configs
@@ -80,6 +81,16 @@ MessageRecipient.belongsTo(User, {
 // todo: add foreign key for recipient_group_id
 
 /**
+ * Socket
+ */
+User.hasOne(Socket, {
+	foreignKey: 'user_id',
+});
+Socket.belongsTo(User, {
+	foreignKey: 'user_id',
+});
+
+/**
  * Sync tables
  */
 
@@ -97,6 +108,7 @@ module.exports = {
 	UserFriend,
 	Message,
 	MessageRecipient,
+	Socket,
 	$,
 	sequelize,
 };

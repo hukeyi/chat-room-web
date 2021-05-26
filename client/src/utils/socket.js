@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-23 00:15:43
+ * @Last Modified time: 2021-05-27 00:51:08
  */
 
 import { io } from 'socket.io-client';
@@ -19,17 +19,17 @@ export class Socket {
 			withCredentials: true,
 			transports: ['websocket'],
 		});
+		this.onConnect();
+		this.onDisconnect();
+		this.listener('private message', (fid, msg) => {
+			console.log('receive!', fid, msg);
+		});
 	}
 	/**
-	 * 监听socket连接
+	 * 断开连接
 	 */
-	connect() {
-		if (this.socket) {
-			this.socket.on('connect', () => {
-				console.log(this.socket.id, 'connect!');
-				console.log('socket: ', this.socket);
-			});
-		}
+	close() {
+		this.socket.disconnect();
 	}
 	/**
 	 * 自定义事件监听器
@@ -52,39 +52,24 @@ export class Socket {
 		}
 	}
 	/**
-	 * 发送好友私聊消息
-	 * @param {string} friendSocketId
-	 * @param {string} msg
+	 * 监听socket连接
 	 */
-	sendFriendMsg(friendSocketId, msg) {
+	onConnect() {
 		if (this.socket) {
-			this.socket.emit('private message', friendSocketId, msg);
-		}
-	}
-	/**
-	 * 接收好友私聊消息
-	 */
-	receiveFriendMsg() {
-		if (this.socket) {
-			this.socket.on('private message', (fid, msg) => {
-				console.log('receive!', fid, msg);
+			this.socket.on('connect', () => {
+				console.log(this.socket.id, 'connect!');
+				console.log('socket: ', this.socket);
 			});
 		}
 	}
 	/**
 	 * 监听断开连接
 	 */
-	disconnect() {
+	onDisconnect() {
 		if (this.socket) {
 			this.socket.on('disconnect', () => {
 				console.log(this.socket.id, 'disconnect!');
 			});
 		}
-	}
-	/**
-	 * 断开连接
-	 */
-	close() {
-		this.socket.disconnect();
 	}
 }

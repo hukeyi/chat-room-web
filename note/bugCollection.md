@@ -100,3 +100,13 @@ SyntaxError: Unexpected token, expected ";" (78:21)
 id 是 unsigned int！！！注意 unsigned！！不是 int！
 
 因此所有 id 的外键都要强调：`type: DataTypes.INTEGER.UNSIGNED`！！！
+
+## token 存 local storage 问题
+
+在登陆的时候，把用户 token 存浏览器内存，名字全设的`LocalStorage.setItem('token')`
+导致的结果是，在同一个浏览器打开的 tab 或者 window，因为共享一个内存数据库，A 登陆了，B 在登陆，
+B 的 token 就会把 A 的覆盖！导致 A 一旦切换路由就会被强制退出。
+
+不过好处是，莫名其妙地解决了不能在同一个浏览器打开同一个用户的问题。
+
+解决方案是，名字改为`token_${userId}`，这样每个 user 就不一样了
