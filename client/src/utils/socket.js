@@ -2,10 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 01:06:55
+ * @Last Modified time: 2021-05-28 00:51:21
  */
 
 import { io } from 'socket.io-client';
+import store from '../store/index';
+import friendApi from '../api/friend';
 
 export class Socket {
 	constructor() {
@@ -19,10 +21,52 @@ export class Socket {
 			withCredentials: true,
 			transports: ['websocket'],
 		});
+		/**
+		 * 挂载监听
+		 */
 		this.onConnect();
 		this.onDisconnect();
 		this.listener('private message', (fid, msg) => {
+			console.log('store in socket.js', store.getters.allFriendChatList);
 			console.log('receive!', fid, msg);
+		});
+		this.listener('add friend request', async (friendInfo, msg) => {
+			console.log('get friend request!', friendInfo, msg);
+			const detail = {
+				id: friendInfo.id,
+				name: friendInfo.name,
+				avatar: friendInfo.avatar,
+				gender: friendInfo.gender,
+				age: friendInfo.age,
+				birth_date: friendInfo.birth_date,
+			};
+			const notice = {
+				title: '新好友申请',
+				type: 'apply',
+				content: `${friendInfo.name} 想要和你成为朋友！`,
+				detail: detail,
+			};
+			await store.dispatch('addNoticeList', notice);
+		});
+		this.listener('add friend response', async (friendInfo, res) => {
+			console.log('get friend response!', friendInfo, res);
+			const result = res
+				? `${friendInfo.name}同意了你的好友请求！`
+				: `${friendInfo.name}拒绝了你的好友请求。`;
+			const notice = {
+				type: 'apply_result',
+				title: '好友申请结果',
+				content: result,
+			};
+			if (res) {
+				// 如果同意，更新好友列表
+				const friendList = await friendApi.GetFriendListAll();
+				await store.dispatch('setFriendListAll', friendList);
+			}
+			await store.dispatch('addNoticeList', notice);
+		});
+		this.listener('update friend list', async () => {
+			store.dispatch('setFriendListAll', await friendApi.GetFriendListAll());
 		});
 	}
 	/**
@@ -58,7 +102,6 @@ export class Socket {
 		if (this.socket) {
 			this.socket.on('connect', () => {
 				console.log(this.socket.id, 'connect!');
-				console.log('socket: ', this.socket);
 			});
 		}
 	}

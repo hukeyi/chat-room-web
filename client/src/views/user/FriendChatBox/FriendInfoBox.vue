@@ -31,6 +31,19 @@
 					:class="{ 'is-active': showAddFriend }"
 					>添加朋友</el-button
 				>
+				<el-badge
+					v-if="noticeList.length"
+					:value="noticeList.length"
+					class="main-header-badge"
+				>
+					<el-button
+						@click="handleClickNotice"
+						size="medium"
+						class="main-header-btn"
+						:class="{ 'is-active': showNotice }"
+						>通知</el-button
+					>
+				</el-badge>
 			</el-header>
 			<!-- 添加好友；显示好友列表界面 -->
 			<el-container>
@@ -160,6 +173,30 @@
 							:image-size="100"
 						></el-empty>
 					</div>
+					<div v-if="showNotice" class="friend-notice">
+						<span v-if="noticeList.length" class="friend-notice-title"
+							>好友申请</span
+						>
+						<div
+							class="friend-notice-item"
+							v-for="(item, key) in noticeList"
+							:key="key"
+						>
+							<br />
+							<InfoCardItem
+								:name="item.detail.name"
+								:avatar="item.detail.avatar ? item.detail.avatar : undefined"
+								:id="item.detail.id"
+								:showStatus="false"
+							></InfoCardItem>
+							<el-button class="yes-btn" @click="handleClickYes(item, key)"
+								>同意</el-button
+							>
+							<el-button class="no-btn" @click="handleClickNo(item, key)"
+								>拒绝</el-button
+							>
+						</div>
+					</div>
 				</el-main>
 			</el-container>
 		</el-container>
@@ -172,6 +209,7 @@
 	import { mapGetters, mapActions } from 'vuex';
 	import friendApi from '@/api/friend';
 	import userApi from '@/api/user';
+	import { h } from 'vue';
 
 	export default {
 		components: { InputItem, InfoCardItem },
@@ -183,16 +221,22 @@
 		},
 		data() {
 			return {
+				// 好友搜索
 				searchResultList: [],
 				searchId: '',
 				showEmptyRes: false,
 
 				icon_friend: require('@/assets/styles/common/img/user.png'),
 
+				// 添加好友 好友状态表
 				showAddFriend: false,
 				selectFriendStatus: 'all',
+				// 好友信息
 				showRightDrawer: false,
 				drawerInfo: undefined, //drawer展示的好友的id
+				// 用户通知
+				noticeList: [], //通知列表
+				showNotice: false,
 			};
 		},
 		methods: {
@@ -200,11 +244,16 @@
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
 				getUserPhone: 'getUserPhone',
+				getNotice: 'getNewNotice',
 				getList: 'allFriends',
 				getOnList: 'onFriends',
 				getOffList: 'offFriends',
 			}),
-			...mapActions(['deleteFriendById']),
+			...mapActions([
+				'deleteFriendById',
+				'deleteNoticeByIndex',
+				'deleteNewNotice',
+			]),
 
 			//删除好友
 			async deleteFriend(id) {
@@ -244,18 +293,26 @@
 			// 发送好友请求
 			sendAddRequest(id) {
 				console.log('send request to', id);
-				// todo: request to backend send request
+				this.$socket.emitter('add friend request', [id, 'friend request']);
 			},
 			//添加好友按钮的点击事件回调函数
 			handleClickAddFriend() {
 				this.showAddFriend = true;
 				this.showEmptyRes = false;
+				this.showNotice = false;
 				this.selectFriendStatus = '';
+			},
+			handleClickNotice() {
+				this.showAddFriend = false;
+				this.showEmptyRes = false;
+				this.selectFriendStatus = '';
+				this.showNotice = true;
 			},
 			//好友界面头顶栏好友状态菜单选择事件回调函数
 			handleSelectStatus(key) {
 				this.selectFriendStatus = key;
 				this.showAddFriend = false;
+				this.showNotice = false;
 			},
 
 			//点击好友card，显示好友信息事件回调函数
@@ -325,6 +382,37 @@
 					.catch((err) => {
 						console.log('cancel send request', item.id, err);
 					});
+			},
+			openNotice(notice) {
+				console.log('open notice', notice);
+				this.$notify({
+					title: notice.title,
+					message: h('i', { style: 'color: teal' }, notice.content),
+				});
+			},
+			handleClickYes(item, key) {
+				console.log('yes to ', item.detail.name, key);
+				this.noticeList.splice(key, 1);
+				this.$socket.emitter('add friend response', [item.detail.id, true]);
+			},
+			handleClickNo(item, key) {
+				console.log('no to ', item.detail.name, key);
+				this.noticeList.splice(key, 1);
+				this.$socket.emitter('add friend response', [item.detail.id, false]);
+			},
+		},
+		watch: {
+			'$store.state.user.noticeList': {
+				handler() {
+					console.log('noticelist changes');
+
+					const notice = this.getNotice();
+					if (notice.type == 'apply') {
+						this.noticeList.push(notice);
+					}
+					this.openNotice(notice);
+				},
+				deep: true,
 			},
 		},
 		mounted() {},

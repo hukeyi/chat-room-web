@@ -6,12 +6,15 @@ const userModule = {
 		userInfo: { id: 'default', phone: 'xxxxxx', name: 'default', avatar: '' },
 		friendList: [],
 		friendChatList: {},
+		noticeList: [],
 	},
 	getters: {
 		getUserId: (state) => state.userInfo.id,
 		getUserName: (state) => state.userInfo.name,
 		getUserPhone: (state) => state.userInfo.phone,
 		getUserAvator: (state) => state.userInfo.avatar,
+		getNoticeList: (state) => state.noticeList,
+		getNewNotice: (state) => state.noticeList[state.noticeList.length - 1],
 		/**
 		 * 返回全部好友私聊列表
 		 * @param {*} state
@@ -86,6 +89,18 @@ const userModule = {
 		SET_USERAVATOR(state, avatar) {
 			state.userInfo.avatar = avatar;
 		},
+		SET_NOTICELIST(state, noticeList) {
+			state.userInfo.noticeList = noticeList;
+		},
+		DELETE_NOTICEBYINDEX(state, index) {
+			state.noticeList.splice(index, 1);
+		},
+		DELETE_NEWNOTICE(state) {
+			state.noticeList.pop();
+		},
+		INSERT_NOTICELIST(state, notice) {
+			state.noticeList.push(notice);
+		},
 		INIT_FRIENDLIST(state, friendList) {
 			state.friendList = friendList;
 		},
@@ -115,6 +130,18 @@ const userModule = {
 		},
 		setFriendListAll({ commit }, friendList) {
 			commit('INIT_FRIENDLIST', friendList);
+		},
+		setNoticeList({ commit }, noticeList) {
+			commit('SET_NOTICELIST', noticeList);
+		},
+		deleteNoticeByIndex({ commit }, index) {
+			commit('DELETE_NOTICEBYINDEX', index);
+		},
+		deleteNewNotice({ commit }) {
+			commit('DELETE_NEWNOTICE');
+		},
+		addNoticeList({ commit }, notice) {
+			commit('INSERT_NOTICELIST', notice);
 		},
 		/**
 		 * 初始化好友私聊列表

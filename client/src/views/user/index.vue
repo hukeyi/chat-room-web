@@ -44,6 +44,7 @@
 			...mapGetters({
 				getChatInfoList: 'getFriendChatInfoList',
 				getUserId: 'getUserId',
+				getFriendList: 'allFriends',
 			}),
 			async startChat(uid, fid) {
 				console.log('start chat', uid, fid);
@@ -61,12 +62,22 @@
 					console.log('user/index.vue init err', err);
 				}
 			},
+			async initListsFromStore() {
+				this.friendList = this.getFriendList();
+			},
 		},
 		watch: {
 			friendList: {
 				//watch friendlist, sync chatlist
 				handler() {
 					this.chatInfoList = this.getChatInfoList();
+				},
+				deep: true,
+			},
+			'$store.state.user.friendList': {
+				handler() {
+					console.log('store friendlist change');
+					this.initListsFromStore();
 				},
 				deep: true,
 			},

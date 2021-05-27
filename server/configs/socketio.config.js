@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-23 00:39:22
+ * @Last Modified time: 2021-05-27 18:30:08
  */
 
 const cookieParser = require('cookie-parser');
@@ -35,7 +35,7 @@ module.exports = function (server, store) {
 		passportSocketIo.authorize({
 			passport: passport,
 			cookieParser: cookieParser,
-			key: 'express.sid',
+			key: process.env.COOKIE_NAME,
 			secret: process.env.SESSION_SECRET,
 			store: store,
 			success: onAuthorizeSuccess,

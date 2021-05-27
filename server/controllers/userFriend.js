@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:18:26
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 13:08:30
+ * @Last Modified time: 2021-05-27 23:51:42
  */
 
 const { UserFriend, User, sequelize, $ } = require('../models/index');
@@ -159,4 +159,5 @@ module.exports = {
 	findAllFriendChatByUserId,
 	friend_delete_post,
 	friend_startChat_post,
+	updateAddFriend,
 };

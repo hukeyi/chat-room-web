@@ -5,7 +5,7 @@
 			<div class="name-id">
 				<span id="name">{{ name }}</span>
 				<br />
-				<span id="id">{{ id }}</span>
+				<span id="id">#{{ id }}</span>
 			</div>
 		</div>
 		<span

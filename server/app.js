@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 17:26:42
+ * @Last Modified time: 2021-05-27 18:30:09
  */
 
 /**
@@ -50,7 +50,6 @@ const messagesRouter = require('./routes/message');
 /**
  * Middleware
  */
-
 /**
  * CORS
  */
@@ -70,6 +69,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 /**
  * Init session and passport
  */
+
 app.use(
 	session({
 		secret: process.env.SESSION_SECRET,
@@ -77,9 +77,10 @@ app.use(
 		saveUninitialized: true,
 		cookie: { secure: false },
 		store: store,
-		key: 'express.sid',
+		name: process.env.COOKIE_NAME,
 	})
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 

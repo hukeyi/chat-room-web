@@ -130,6 +130,19 @@
 					border-bottom: 2px solid $fontColorDeep;
 				}
 			}
+			.main-header-badge {
+				margin-left: 10px;
+				margin-right: 20px;
+				.main-header-btn {
+					margin-right: 10px;
+				}
+				.el-badge__content {
+					width: 19px;
+					right: 20px;
+					top: 3px;
+					background-color: #9d2933;
+				}
+			}
 
 			.main-header-btn {
 				background-color: $emphasisColorA;
@@ -221,6 +234,44 @@
 						margin-left: 10px;
 						background-color: $fontColorDeep;
 						color: $themeColorLight;
+					}
+				}
+			}
+
+			.friend-notice {
+				width: 100%;
+				height: auto;
+
+				.friend-notice-title {
+					color: $fontColorDeep;
+					margin-left: 12px;
+					font-weight: bolder;
+				}
+
+				.friend-notice-item {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+
+					.info-card-item .info .name-id {
+						margin: auto 15px;
+					}
+
+					.el-button {
+						height: 40px;
+						width: auto;
+						font-weight: bolder;
+
+						padding: 10px;
+						margin-left: 10px;
+						background-color: $fontColorDeep;
+						color: $themeColorLight;
+						border-width: 2px;
+						border-color: $themeColorMedium;
+						border-radius: 5px;
+					}
+					.yes-btn {
+						background-color: $emphasisColorA;
 					}
 				}
 			}
