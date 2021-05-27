@@ -17,7 +17,7 @@
 							:direction="item.s_id == fId ? 'left' : 'right'"
 							:avatar="item.avatar ? item.avatar : undefined"
 							:name="item.name"
-							:time="item.time"
+							:time="toDate(item.time)"
 							:message="item.content"
 						></ChatMessage>
 					</div>
@@ -73,7 +73,20 @@
 				getFriendName: 'getFriendNameById',
 			}),
 			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
-
+			// 格式化时间日期
+			// 同一天：只显示时间
+			// 同一年：只显示月日+时间
+			toDate(time) {
+				const now = new Date();
+				const then = new Date(time);
+				let formation =
+					now.getFullYear() !== then.getFullYear()
+						? 'yy/MM/dd hh:mm:ss'
+						: now.toDateString() !== then.toDateString()
+						? 'MM/dd hh:mm:ss'
+						: 'hh:mm:ss';
+				return formatDate(formation, then);
+			},
 			// 滚动条到底部
 			scrollToEnd() {
 				this.$nextTick(() => {
@@ -92,7 +105,7 @@
 					const text = {
 						s_id: this.getUserId(),
 						r_id: this.fId,
-						time: formatDate('MM/dd hh:mm:ss'),
+						time: Date.now(),
 						avatar: '',
 						name: this.getUserName(),
 						content: this.inputText,
@@ -125,6 +138,13 @@
 				if (this.$route.params.fId) {
 					this.refreshView();
 				}
+			},
+			'$store.state.user.friendChatList': {
+				//watch friendlist, sync chatlist
+				handler() {
+					console.log('test chat list');
+				},
+				deep: true,
 			},
 		},
 	};

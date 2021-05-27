@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 00:51:08
+ * @Last Modified time: 2021-05-27 01:06:55
  */
 
 import { io } from 'socket.io-client';
@@ -68,7 +68,7 @@ export class Socket {
 	onDisconnect() {
 		if (this.socket) {
 			this.socket.on('disconnect', () => {
-				console.log(this.socket.id, 'disconnect!');
+				console.log('disconnect!');
 			});
 		}
 	}
