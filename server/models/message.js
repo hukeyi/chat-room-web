@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 11:44:50
+ * @Last Modified time: 2021-05-28 23:16:21
  */
 
 /**
@@ -48,12 +48,12 @@ Message.init(
 				console.log('\n⏰get create_date msg', res);
 				return res;
 			},
-			set: function (value) {
-				const formate = 'yy/MM/dd hh:mm:ss';
-				const resDate = formateDate(formate, value);
-				console.log('\n⏰set create_date msg', resDate);
-				this.setDataValue('create_date', resDate);
-			},
+			// set: function (value) {
+			// 	const formate = 'yy/MM/dd hh:mm:ss';
+			// 	const resDate = formateDate(formate, value);
+			// 	console.log('\n⏰set create_date msg', resDate);
+			// 	this.setDataValue('create_date', resDate);
+			// },
 		},
 		is_active: {
 			type: DataTypes.BOOLEAN,

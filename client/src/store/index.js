@@ -104,6 +104,9 @@ const userModule = {
 		INIT_FRIENDLIST(state, friendList) {
 			state.friendList = friendList;
 		},
+		CLEAR_FRIENDLIST(state) {
+			state.friendList.splice(0, state.friendList.length);
+		},
 		INIT_FRIENDCHATLIST(state, chatList) {
 			state.friendChatList = chatList;
 		},
@@ -113,6 +116,10 @@ const userModule = {
 		},
 		REMOVE_FRIENDCHATBYID(state, id) {
 			delete state.friendChatList[id];
+		},
+		INSERT_FRIENDCHATMSG(state, { fid, msg }) {
+			console.log('store insert list', state.friendChatList, fid, msg);
+			state.friendChatList[fid].chatHistory.push(msg);
 		},
 	},
 	actions: {
@@ -129,6 +136,7 @@ const userModule = {
 			commit('SET_USERAVATOR', avatar);
 		},
 		setFriendListAll({ commit }, friendList) {
+			commit('CLEAR_FRIENDLIST');
 			commit('INIT_FRIENDLIST', friendList);
 		},
 		setNoticeList({ commit }, noticeList) {
@@ -151,6 +159,9 @@ const userModule = {
 		setFriendChatListAll({ commit }, chatList) {
 			commit('INIT_FRIENDCHATLIST', chatList);
 		},
+		addMsgToFriendChatList({ commit }, { fid, msg }) {
+			commit('INSERT_FRIENDCHATMSG', { fid, msg });
+		},
 		/**
 		 * 根据好友id删除好友d
 		 * @param {*} state
@@ -160,6 +171,9 @@ const userModule = {
 		deleteFriendById({ commit }, id) {
 			commit('REMOVE_FRIENDBYID', id);
 			commit('REMOVE_FRIENDCHATBYID', id);
+		},
+		clearFriendList({ commit }) {
+			commit('CLEAR_FRIENDLIST');
 		},
 		/**
 		 * 根据id删除对应好友私聊框

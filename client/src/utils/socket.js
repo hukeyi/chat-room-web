@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-28 00:51:21
+ * @Last Modified time: 2021-05-28 23:34:45
  */
 
 import { io } from 'socket.io-client';
@@ -24,12 +24,22 @@ export class Socket {
 		/**
 		 * 挂载监听
 		 */
+		/**
+		 * 监听连接和断连
+		 */
 		this.onConnect();
 		this.onDisconnect();
-		this.listener('private message', (fid, msg) => {
+		/**
+		 * 监听好友私聊
+		 */
+		this.listener('private message', async (fid, msg) => {
 			console.log('store in socket.js', store.getters.allFriendChatList);
 			console.log('receive!', fid, msg);
+			await store.dispatch('addMsgToFriendChatList', { fid, msg });
 		});
+		/**
+		 * 监听好友申请请求
+		 */
 		this.listener('add friend request', async (friendInfo, msg) => {
 			console.log('get friend request!', friendInfo, msg);
 			const detail = {
@@ -48,6 +58,9 @@ export class Socket {
 			};
 			await store.dispatch('addNoticeList', notice);
 		});
+		/**
+		 * 监听好友申请响应
+		 */
 		this.listener('add friend response', async (friendInfo, res) => {
 			console.log('get friend response!', friendInfo, res);
 			const result = res
@@ -58,15 +71,20 @@ export class Socket {
 				title: '好友申请结果',
 				content: result,
 			};
-			if (res) {
-				// 如果同意，更新好友列表
-				const friendList = await friendApi.GetFriendListAll();
-				await store.dispatch('setFriendListAll', friendList);
-			}
+			// if (res) {
+			// 	// 如果同意，更新好友列表
+			// 	const friendList = await friendApi.GetFriendListAll();
+			// 	await store.dispatch('setFriendListAll', friendList);
+			// }
 			await store.dispatch('addNoticeList', notice);
 		});
+		/**
+		 * 监听服务器要求更新好友列表
+		 */
 		this.listener('update friend list', async () => {
-			store.dispatch('setFriendListAll', await friendApi.GetFriendListAll());
+			// store.dispatch('setFriendListAll', await friendApi.GetFriendListAll());
+			const friendList = await friendApi.GetFriendListAll();
+			await store.dispatch('setFriendListAll', friendList);
 		});
 	}
 	/**
@@ -88,7 +106,7 @@ export class Socket {
 	/**
 	 * 自定义事件触发器
 	 * @param {string} eventName 触发事件名称
-	 * @param {array} args 参数数组
+	 * @param {array} args 参数数组：把所有参数放在一个数组里
 	 */
 	emitter(eventName, args) {
 		if (this.socket) {

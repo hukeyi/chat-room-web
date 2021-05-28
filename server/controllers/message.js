@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-22 20:45:13
+ * @Last Modified time: 2021-05-28 23:02:12
  */
 const {
 	Message,
@@ -104,4 +104,5 @@ const friend_sendMsg_post = async (req, res) => {
 module.exports = {
 	friend_chatHistory_get,
 	friend_sendMsg_post,
+	updateMsgToFriend,
 };

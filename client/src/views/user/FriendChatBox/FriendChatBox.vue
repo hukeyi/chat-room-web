@@ -110,7 +110,7 @@
 						name: this.getUserName(),
 						content: this.inputText,
 					};
-					this.$socket.emitter('private message', [this.fId, this.inputText]);
+					this.$socket.emitter('private message', [this.fId, text]);
 					this.inputText = '';
 					this.messageList.push(text);
 					this.scrollToEnd();
@@ -128,6 +128,10 @@
 				this.messageList = this.getHistory()(this.fId);
 				this.scrollToEnd();
 			},
+			refreshMsg() {
+				this.messageList = this.getHistory()(this.fId);
+				this.scrollToEnd();
+			},
 		},
 		mounted() {
 			this.refreshView();
@@ -142,6 +146,7 @@
 			'$store.state.user.friendChatList': {
 				//watch friendlist, sync chatlist
 				handler() {
+					this.refreshMsg();
 					console.log('test chat list');
 				},
 				deep: true,

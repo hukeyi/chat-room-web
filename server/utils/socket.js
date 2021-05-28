@@ -2,13 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-28 00:41:54
+ * @Last Modified time: 2021-05-28 23:29:07
  */
 
 /**
  * database controller
  */
 const { updateAddFriend } = require('../controllers/userFriend');
+const { updateMsgToFriend } = require('../controllers/message');
 
 // hash_key = user_id; hash_value = socket
 // 同时，通过socketHash.keys()，可以发现用户的在线状态
@@ -17,9 +18,18 @@ const socketMap = new Map();
 
 const onSendFriendMsg = (socket) => {
 	// 好友私聊
-	socket.on('private message', (targetId, msg) => {
-		console.log('\n🌹received!', targetId, msg, socketMap.get(targetId));
-		socket.to(socketMap.get(targetId)).emit('private message', socket.id, msg);
+	socket.on('private message', async (targetId, msg) => {
+		console.log(
+			'\n🌹received!',
+			targetId,
+			msg,
+			socketMap.get(Number(targetId))
+		);
+		const s_id = socket.request.user.id;
+		await updateMsgToFriend(s_id, targetId, msg.content, msg.time);
+		socket
+			.to(socketMap.get(Number(targetId)))
+			.emit('private message', String(s_id), msg);
 	});
 };
 const onDisconnect = (socket) => {
@@ -42,16 +52,24 @@ const onSendNotice = (socket) => {
 
 	// 回应申请
 	socket.on('add friend response', async (targetId, res) => {
-		console.log("\n👌let's be friend", socket.request.user.id, targetId, res);
-		// insert new record to userfriend
-		if (res) {
-			await updateAddFriend(targetId, socket.request.user.id);
-			socket.to(socket.id).emit('update friend list');
-		}
+		console.log(
+			"\n👌let's be friend",
+			socket.request.user.id,
+			targetId,
+			socket.id,
+			res
+		);
 		// notify proposer
 		socket
 			.to(socketMap.get(targetId))
 			.emit('add friend response', socket.request.user, res);
+		// insert new record to userfriend
+		if (res) {
+			// accept
+			await updateAddFriend(targetId, socket.request.user.id);
+			socket.to(socketMap.get(targetId)).emit('update friend list');
+			socket.emit('update friend list');
+		}
 	});
 };
 
@@ -64,7 +82,7 @@ module.exports = function (io) {
 		socketMap.set(userId, socketId);
 		console.log(socketMap);
 		/**
-		 * listeners
+		 * 挂载监听
 		 */
 		onSendFriendMsg(socket);
 		onDisconnect(socket);
