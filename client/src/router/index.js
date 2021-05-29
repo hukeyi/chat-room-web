@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 00:49:33
+ * @Last Modified time: 2021-05-29 10:16:05
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -92,7 +92,6 @@ router.beforeEach((to, from, next) => {
 			// 存在，判断是否过期
 			const decoded = jwt_decode(token);
 			const currentTime = Date.now() / 1000;
-			console.log('id in token', decoded.id, ';id in url', id);
 			if (!id || id != decoded.id) {
 				// url的id与token中是否匹配
 				next('/error/403');

@@ -99,7 +99,6 @@
 		},
 		mounted() {
 			const state = JSON.parse(sessionStorage.getItem('vuex'));
-			console.log('session storage: ', state);
 			this.userId = state.user.userInfo.id;
 			this.userName = state.user.userInfo.name;
 		},

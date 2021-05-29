@@ -4,11 +4,7 @@
 		<!-- 用户主页 -->
 		<SelectorItem :icon="icon_userhome" :link="getUserHomeUrl()"></SelectorItem>
 		<hr width="60%" class="level-divider" />
-		<!-- 已加入频道主页 -->
-		<SelectorItem></SelectorItem>
-		<!-- 添加频道 -->
-		<SelectorItem></SelectorItem>
-		<!-- 探索公开频道 -->
+		<!-- 聊天室主页 -->
 		<SelectorItem :icon="icon_explore"></SelectorItem>
 	</div>
 </template>
@@ -19,7 +15,7 @@
 	export default {
 		data() {
 			return {
-				icon_userhome: require('@/assets/styles/common/img/search.png'),
+				icon_userhome: require('@/assets/styles/common/img/user.png'),
 				icon_explore: require('@/assets/styles/common/img/international.png'),
 			};
 		},

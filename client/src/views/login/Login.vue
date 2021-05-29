@@ -92,7 +92,6 @@
 						userApi
 							.Login(postData)
 							.then((res) => {
-								console.log('user api login:', res.data);
 								const { id, name, phone } = res.data;
 								const { token } = res;
 								this.setUserId(id);
