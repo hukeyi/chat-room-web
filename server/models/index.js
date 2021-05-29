@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-26 23:00:26
+ * @Last Modified time: 2021-05-30 00:39:12
  */
 
 // Model的统一出口
@@ -13,7 +13,9 @@ const User = require('./user.js');
 const UserFriend = require('./user_friend.js');
 const { Message } = require('./message.js');
 const MessageRecipient = require('./message_recipient.js');
-const Socket = require('./socket');
+// const Socket = require('./socket');
+const Room = require('./room');
+const UserRoom = require('./user_room');
 
 /**
  * Association configs
@@ -51,6 +53,46 @@ UserFriend.belongsTo(User, {
 });
 
 /**
+ * Room：一个用户可以创建多个聊天室；
+ * 		一个聊天室只能有一个创建者
+ */
+User.hasMany(Room, {
+	foreignKey: 'creator_id',
+});
+Room.belongsTo(User, {
+	foreignKey: 'creator_id',
+});
+
+/**
+ * UserRoom
+ */
+User.belongsToMany(Room, {
+	as: 'user_room_n_m', // must be defined in self-associations
+	through: UserRoom,
+	foreignKey: 'user_id',
+});
+Room.belongsToMany(User, {
+	as: 'room_user_n_m', // must be defined in self-associations
+	through: UserRoom,
+	foreignKey: 'room_id',
+});
+User.hasMany(UserRoom, {
+	foreignKey: 'user_id',
+	as: 'user_room_1_n',
+});
+UserRoom.belongsTo(User, {
+	foreignKey: 'user_id',
+	as: 'user_room_1_n',
+});
+Room.hasMany(UserRoom, {
+	foreignKey: 'room_id',
+	as: 'room_user_1_n',
+});
+UserRoom.belongsTo(Room, {
+	foreignKey: 'room_id',
+	as: 'room_user_1_n',
+});
+/**
  * Message
  */
 
@@ -72,23 +114,47 @@ MessageRecipient.belongsTo(Message, {
 	foreignKey: 'message_id',
 });
 
-User.hasOne(MessageRecipient, {
+User.hasMany(MessageRecipient, {
 	foreignKey: 'recipient_id',
 });
 MessageRecipient.belongsTo(User, {
 	foreignKey: 'recipient_id',
 });
-// todo: add foreign key for recipient_group_id
+UserRoom.hasMany(MessageRecipient, {
+	foreignKey: 'recipient_group_id',
+});
+MessageRecipient.belongsTo(UserRoom, {
+	foreignKey: 'recipient_group_id',
+});
 
 /**
  * Socket
  */
-User.hasOne(Socket, {
-	foreignKey: 'user_id',
-});
-Socket.belongsTo(User, {
-	foreignKey: 'user_id',
-});
+// User.hasOne(Socket, {
+// 	foreignKey: 'user_id',
+// });
+// Socket.belongsTo(User, {
+// 	foreignKey: 'user_id',
+// });
+
+/**
+ * 初始化 用户1和聊天室1，用于MessageRecipient表的区别
+ */
+async function InitUserAndRoom() {
+	await User.create({
+		name: 'null',
+	});
+
+	await Room.create({
+		name: 'null',
+		creator_id: 1,
+	});
+	return UserRoom.create({
+		user_id: 1,
+		room_id: 1,
+		is_admin: true,
+	});
+}
 
 /**
  * Sync tables
@@ -99,7 +165,7 @@ sequelize
 	.then(() => {
 		console.log('\nAll tables sync success');
 		// fixme: remember to delete this
-		// createTest({ User, UserFriend, Message, MessageRecipient });
+		// createTest({ User, UserFriend, Message, MessageRecipient, Room, UserRoom });
 	})
 	.catch((err) => console.log('\nSome tables sync error', err));
 
@@ -108,7 +174,7 @@ module.exports = {
 	UserFriend,
 	Message,
 	MessageRecipient,
-	Socket,
+	// Socket,
 	$,
 	sequelize,
 };

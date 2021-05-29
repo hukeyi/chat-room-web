@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:43:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-20 12:51:01
+ * @Last Modified time: 2021-05-30 00:30:16
  */
 
 // 聊天消息接受者相关model
@@ -30,8 +30,18 @@ MessageRecipient.init(
 		recipient_id: {
 			allowNull: false,
 			type: DataTypes.INTEGER.UNSIGNED,
+			defaultValue: 1,
 			references: {
 				model: 'user',
+				key: 'id',
+			},
+		},
+		recipient_group_id: {
+			allowNull: false,
+			type: DataTypes.INTEGER.UNSIGNED,
+			defaultValue: 1,
+			references: {
+				model: 'user_room',
 				key: 'id',
 			},
 		},

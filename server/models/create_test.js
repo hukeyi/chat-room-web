@@ -2,13 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-20 12:19:14
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-20 16:07:26
+ * @Last Modified time: 2021-05-30 00:30:02
  */
 // create test data
 const { $ } = require('./db');
 
 module.exports = async function (models) {
-	const { User, UserFriend, Message, MessageRecipient } = models;
+	const { User, UserFriend, Message, MessageRecipient, Room, UserRoom } =
+		models;
 	const bcrypt = require('bcryptjs');
 	const SALT_LENGTH = 8;
 	const { toJSON } = require('../controllers/utils');
@@ -19,6 +20,18 @@ module.exports = async function (models) {
 			phone: phone,
 			name: name,
 			password: hash,
+		});
+	};
+	const createTestRoom = async (name, creator_id, intro) => {
+		const room = await Room.create({
+			intro: intro,
+			name: name,
+			creator_id: creator_id,
+		});
+		return UserRoom.create({
+			user_id: creator_id,
+			room_id: room.id,
+			is_admin: true,
 		});
 	};
 
@@ -71,12 +84,13 @@ module.exports = async function (models) {
 		return MessageRecipient.create({
 			message_id: msgRes.id,
 			recipient_id: rid,
+			recipient_group_id: 1,
 		});
 	};
 	/**
 	 * test data for User
 	 */
-	await createTestUser('test00', '13300000000', 'test');
+	await createTestUser('null', '', '');
 	await createTestUser('test01', '13300000001', 'test');
 	await createTestUser('test02', '13300000002', 'test');
 	await createTestUser('test03', '13300000003', 'test');
@@ -85,14 +99,23 @@ module.exports = async function (models) {
 	await createTestUser('test06', '13300000006', 'test');
 
 	/**
+	 * test data for Room and UserRoom
+	 */
+	await createTestRoom('null', 1, '');
+	await createTestRoom('test-room1', 1, 'for test use');
+	await createTestRoom('test-room2', 2, 'for test use');
+	await createTestRoom('test-room3', 3, 'for test use');
+	await createTestRoom('test-room4', 4, 'for test use');
+	await createTestRoom('test-room5', 5, 'for test use');
+
+	/**
 	 * test data for user_friend
 	 */
-	await createTestUserFriend('13300000000', '13300000001');
-	await createTestUserFriend('13300000000', '13300000002');
-	await createTestUserFriend('13300000000', '13300000003');
-	await createTestUserFriend('13300000000', '13300000004');
-	await createTestUserFriend('13300000000', '13300000006');
+	await createTestUserFriend('13300000001', '13300000002');
 	await createTestUserFriend('13300000001', '13300000003');
+	await createTestUserFriend('13300000001', '13300000004');
+	await createTestUserFriend('13300000001', '13300000006');
+	await createTestUserFriend('13300000002', '13300000003');
 	await createTestUserFriend('13300000002', '13300000004');
 	await createTestUserFriend('13300000003', '13300000006');
 	await createTestUserFriend('13300000005', '13300000006');
@@ -100,39 +123,39 @@ module.exports = async function (models) {
 	/**
 	 * test data for message
 	 */
-	await createTestMessage('13300000000', '13300000001', 'hi', undefined);
+	await createTestMessage('13300000001', '13300000002', 'hi', undefined);
 	await createTestMessage(
+		'13300000002',
 		'13300000001',
-		'13300000000',
 		'hello back',
 		undefined
 	);
 	await createTestMessage(
-		'13300000000',
 		'13300000001',
+		'13300000002',
 		'how are you',
 		undefined
 	);
-	await createTestMessage('13300000001', '13300000000', 'not bad', undefined);
-	await createTestMessage('13300000000', '13300000004', 'hey you', undefined);
+	await createTestMessage('13300000002', '13300000001', 'not bad', undefined);
+	await createTestMessage('13300000001', '13300000004', 'hey you', undefined);
 	await createTestMessage(
-		'13300000000',
+		'13300000001',
 		'13300000004',
 		'did you have a nice day',
 		undefined
 	);
 	await createTestMessage(
 		'13300000004',
-		'13300000000',
+		'13300000001',
 		'nah, just fine',
 		undefined
 	);
-	await createTestMessage('13300000000', '13300000004', 'ok', undefined);
+	await createTestMessage('13300000001', '13300000004', 'ok', undefined);
 	await createTestMessage(
-		'13300000000',
+		'13300000001',
 		'13300000004',
 		'wish you luck',
 		undefined
 	);
-	await createTestMessage('13300000004', '13300000000', 'thanks', undefined);
+	await createTestMessage('13300000004', '13300000001', 'thanks', undefined);
 };

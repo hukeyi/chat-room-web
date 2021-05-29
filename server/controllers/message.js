@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-28 23:02:12
+ * @Last Modified time: 2021-05-30 00:38:34
  */
 const {
 	Message,
@@ -73,6 +73,7 @@ async function updateMsgToFriend(s_id, r_id, content, time) {
 	return MessageRecipient.create({
 		message_id: msgRes.id,
 		recipient_id: r_id,
+		recipient_group_id: 1,
 	});
 }
 
