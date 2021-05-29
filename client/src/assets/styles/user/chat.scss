@@ -151,15 +151,17 @@
 				border: 0px;
 
 				font-size: 14px;
-				width: 75px;
+				width: 90px;
 				height: 15px !important;
 
 				color: $fontColorLight;
-				opacity: 0.75;
+				opacity: 0.45;
 			}
 
 			.main-header-btn.is-active {
 				opacity: 1;
+				border-color: $fontColorLight;
+				border-width: 2px;
 			}
 		}
 		.main-central {
@@ -174,6 +176,11 @@
 			.add-room,
 			.add-friend {
 				border-bottom: 1px solid $themeColorDeep;
+
+				.input-item .el-input .el-input__inner {
+					border: 0px;
+					padding: 10px;
+				}
 			}
 			.add-room-btn,
 			.add-friend-btn {
@@ -222,6 +229,7 @@
 			.add-friend-result {
 				width: 100%;
 				height: auto;
+
 				.add-room-result-item,
 				.add-friend-result-item {
 					display: flex;
@@ -243,6 +251,44 @@
 					}
 				}
 			}
+
+			.create-room-form {
+				padding-top: 19px;
+				padding-left: 100px;
+				.el-form-item {
+					.el-form-item__label {
+						color: $fontColorDeep;
+						font-weight: bold;
+						font-size: 15px;
+					}
+					.el-form-item__content {
+						.el-input__inner {
+							background-color: white;
+							padding: 10px;
+							border-color: $themeColorMedium;
+							border-width: 2px;
+							border-radius: 5px;
+							width: 500px;
+						}
+						.el-textarea__inner {
+							background-color: white;
+							padding: 10px;
+							border-color: $themeColorLight;
+							border-width: 1px;
+							border-radius: 5px;
+							width: 500px;
+							height: 100px;
+						}
+						.el-button {
+							background-color: $emphasisColorA;
+							border: 0;
+							width: 80px;
+							color: $fontColorLight;
+						}
+					}
+				}
+			}
+
 			.room-notice,
 			.friend-notice {
 				width: 100%;

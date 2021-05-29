@@ -28,7 +28,7 @@
 					size="medium"
 					class="main-header-btn"
 					:class="{ 'is-active': showAddRoom }"
-					>搜索聊天室</el-button
+					>加入聊天室</el-button
 				>
 				<el-button
 					@click="handleClickCreateRoom"
@@ -51,7 +51,7 @@
 					>
 				</el-badge>
 			</el-header>
-			<!-- 添加聊天室；显示聊天室列表界面 -->
+			<!-- 添加聊天室+显示聊天室列表+创建聊天室界面 -->
 			<el-container>
 				<el-main class="main-central">
 					<!-- 添加聊天室+搜索聊天室 -->
@@ -64,7 +64,7 @@
 							overflow: hidden;
 							"
 							inputStyle="float: left; width: 60%;"
-							labelValue="您可以通过搜索聊天室ID来加入聊天室："
+							labelValue="请输入聊天室ID搜索聊天室："
 							placeholder="请输入聊天室ID"
 							:clearable="true"
 							@onInput="handleInputId"
@@ -116,8 +116,30 @@
 						></InfoCardItem>
 					</div>
 					<!-- 创建聊天室 -->
-					<div v-else-if="showCreateRoom" class="add-room-result">
-						创建聊天室
+					<div
+						v-else-if="showCreateRoom"
+						ref="ruleForm"
+						class="create-room-form"
+					>
+						<el-form
+							label-position="top"
+							label-width="80px"
+							:model="ruleForm"
+							:rules="rules"
+						>
+							<el-form-item label="名称" prop="name">
+								<el-input v-model="ruleForm.name"></el-input>
+							</el-form-item>
+							<el-form-item label="简介" prop="intro">
+								<el-input type="textarea" v-model="ruleForm.intro"></el-input>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="primary" @click="submitForm('ruleForm')"
+									>立即创建</el-button
+								>
+								<el-button @click="resetForm('ruleForm')">重置</el-button>
+							</el-form-item>
+						</el-form>
 					</div>
 					<!-- 通知 -->
 					<div v-if="showNotice" class="room-notice">
@@ -238,6 +260,17 @@
 				// 用户通知
 				noticeList: [], //通知列表
 				showNotice: false,
+
+				//创建聊天室
+				ruleForm: {
+					name: '',
+					intro: '',
+				},
+				rules: {
+					name: [
+						{ required: true, message: '请输入聊天室名称', trigger: 'blur' },
+					],
+				},
 			};
 		},
 		methods: {
@@ -253,6 +286,23 @@
 				'deleteNoticeByIndex',
 				'deleteNewNotice',
 			]),
+
+			/**
+			 * 创建聊天室相关
+			 */
+			submitForm(formName) {
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						alert('submit!');
+					} else {
+						console.log('error submit');
+						return false;
+					}
+				});
+			},
+			resetForm(formName) {
+				this.$refs[formName].resetFields();
+			},
 
 			//删除聊天室
 			async deleteRoom(id) {
@@ -290,12 +340,14 @@
 			//添加聊天室按钮的点击事件回调函数
 			handleClickAddRoom() {
 				this.showAddRoom = true;
+				this.showCreateRoom = false;
 				this.showEmptyRes = false;
 				this.showNotice = false;
 				this.selectRoomStatus = '';
 			},
 			handleClickNotice() {
 				this.showAddRoom = false;
+				this.showCreateRoom = false;
 				this.showEmptyRes = false;
 				this.selectRoomStatus = '';
 				this.showNotice = true;
@@ -304,6 +356,7 @@
 			handleSelectStatus(key) {
 				this.selectRoomStatus = key;
 				this.showAddRoom = false;
+				this.showCreateRoom = false;
 				this.showNotice = false;
 			},
 
@@ -374,6 +427,7 @@
 				this.showCreateRoom = true;
 				this.showAddRoom = false;
 				this.selectRoomStatus = '';
+				this.showNotice = false;
 			},
 			openNotice(notice) {
 				console.log('open notice', notice);

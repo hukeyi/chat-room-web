@@ -1,5 +1,5 @@
 <template>
-	<div :class="['chat-list-item', $route.params.fId == id ? 'clicked' : '']">
+	<div :class="['chat-list-item', $route.params.rId == id ? 'clicked' : '']">
 		<img :src="avatar" />
 		<div class="friend-info">
 			<span id="friend-name">{{ name }}</span>
