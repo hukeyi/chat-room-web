@@ -77,7 +77,7 @@
 			...mapActions({}),
 			handleClickItem(item) {
 				console.log('click', item.name);
-				this.$router.push(`/user/${this.getUserId()}/${item.id}`);
+				this.$router.push(`/user/${this.getUserId()}/friend/${item.id}`);
 			},
 			handleClickSetBtn() {
 				// logout

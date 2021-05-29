@@ -1,4 +1,5 @@
-.friend-chat-box {
+.friend-chat-box,
+.room-chat-box {
 	.main-area {
 		.el-container .main-central {
 			position: relative;
@@ -60,7 +61,8 @@
 		}
 	}
 }
-
+.room-info-box,
+.room-chat-box,
 .friend-info-box,
 .friend-chat-box {
 	width: 100%;
@@ -165,13 +167,15 @@
 			min-width: 600px;
 			padding: 20px;
 
-			.no-friends {
+			.no-friends,
+			.no-rooms {
 				margin: 50px;
 			}
-
+			.add-room,
 			.add-friend {
 				border-bottom: 1px solid $themeColorDeep;
 			}
+			.add-room-btn,
 			.add-friend-btn {
 				float: left;
 				margin-left: 10px;
@@ -183,10 +187,11 @@
 				background-color: $emphasisColorA;
 				color: $fontColorDeep;
 			}
+			.add-room-btn:hover,
 			.add-friend-btn:hover {
 				color: $fontColorLight;
 			}
-
+			.room-info-drawer,
 			.friend-info-drawer {
 				background-color: $themeColorMedium;
 				.el-drawer__body:first-child :last-child {
@@ -213,10 +218,11 @@
 					}
 				}
 			}
-
+			.add-room-result,
 			.add-friend-result {
 				width: 100%;
 				height: auto;
+				.add-room-result-item,
 				.add-friend-result-item {
 					display: flex;
 					justify-content: flex-start;
@@ -237,17 +243,17 @@
 					}
 				}
 			}
-
+			.room-notice,
 			.friend-notice {
 				width: 100%;
 				height: auto;
-
+				.room-notice-title,
 				.friend-notice-title {
 					color: $fontColorDeep;
 					margin-left: 12px;
 					font-weight: bolder;
 				}
-
+				.room-notice-item,
 				.friend-notice-item {
 					display: flex;
 					justify-content: flex-start;

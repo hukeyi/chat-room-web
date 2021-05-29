@@ -21,7 +21,7 @@
 		},
 		methods: {
 			handleClick() {
-				console.log('selector item clickd', this.link);
+				// console.log('selector item clickd', this.link);
 				this.link && this.goPage(this.link);
 			},
 			goPage(url) {

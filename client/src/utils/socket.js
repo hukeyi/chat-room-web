@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-28 23:34:45
+ * @Last Modified time: 2021-05-29 15:33:12
  */
 
 import { io } from 'socket.io-client';
@@ -12,6 +12,12 @@ import friendApi from '../api/friend';
 export class Socket {
 	constructor() {
 		this.socket = null;
+	}
+	/**
+	 * 判断是否开启socket
+	 */
+	isOpen() {
+		return this.socket !== null;
 	}
 	/**
 	 * 开启socket

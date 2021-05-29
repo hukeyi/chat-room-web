@@ -1,10 +1,10 @@
 <template>
-	<div class="friend-chat-box">
+	<div class="room-chat-box">
 		<el-container class="main-area">
 			<el-header class="main-header">
 				<div class="main-header-title">
-					<img :src="icon_friend" /><span style="margin: auto 10px;"
-						># {{ fName }}</span
+					<img :src="icon_room" /><span style="margin: auto 10px;"
+						># {{ roomInfo.name }}</span
 					>
 				</div>
 			</el-header>
@@ -14,7 +14,7 @@
 						<ChatMessage
 							v-for="(item, key) in messageList"
 							:key="key"
-							:direction="item.s_id == fId ? 'left' : 'right'"
+							:direction="item.s_id == rId ? 'left' : 'right'"
 							:avatar="item.avatar ? item.avatar : undefined"
 							:name="item.name"
 							:time="toDate(item.time)"
@@ -57,9 +57,9 @@
 		components: { ChatMessage },
 		data() {
 			return {
-				fId: '',
-				fName: '',
-				icon_friend: require('@/assets/styles/common/img/user.png'),
+				rId: '',
+				roomInfo: '',
+				icon_room: require('@/assets/styles/common/img/user.png'),
 
 				inputText: '',
 				messageList: [],
@@ -68,11 +68,11 @@
 		methods: {
 			...mapGetters({
 				getUserId: 'getUserId',
-				getUserName: 'getUserName',
-				getHistory: 'getFriendChatHistoryById',
-				getFriendName: 'getFriendNameById',
+				getRoomInfo: 'getRoomInfoById',
+				getHistory: 'getRoomChatHistoryById',
+				getMemberList: 'getRoomMembersById',
 			}),
-			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
+			...mapActions(['deleteRoomById']),
 			// 格式化时间日期
 			// 同一天：只显示时间
 			// 同一年：只显示月日+时间
@@ -104,27 +104,28 @@
 				if (this.inputText != '') {
 					const text = {
 						s_id: this.getUserId(),
-						r_id: this.fId,
+						r_id: this.rId,
 						time: Date.now(),
 						avatar: '',
 						name: this.getUserName(),
 						content: this.inputText,
 					};
-					this.$socket.emitter('private message', [this.fId, text]);
+					this.$socket.emitter('group message', [this.rId, text]);
 					this.inputText = '';
 					this.messageList.push(text);
 					this.scrollToEnd();
 				}
 			},
 			refreshView() {
-				this.fId = this.$route.params.fId;
-				this.fName = this.getFriendName()(this.fId);
+				this.rId = this.$route.params.rId;
+				this.roomInfo = this.getRoomInfo()(this.rId);
+				console.log(this.roomInfo, 'get room info');
 				// 显示历史消息
-				this.messageList = this.getHistory()(this.fId);
+				this.messageList = this.getHistory()(this.rId);
 				this.scrollToEnd();
 			},
 			refreshMsg() {
-				this.messageList = this.getHistory()(this.fId);
+				this.messageList = this.getHistory()(this.rId);
 				this.scrollToEnd();
 			},
 		},
@@ -133,13 +134,13 @@
 		},
 		watch: {
 			//通过watch来监听路由变化
-			'$route.params.fId': function() {
-				if (this.$route.params.fId) {
+			'$route.params.rId': function() {
+				if (this.$route.params.rId) {
 					this.refreshView();
 				}
 			},
-			'$store.state.user.friendChatList': {
-				//watch friendlist, sync chatlist
+			'$store.state.room.roomChatList': {
+				//watch roomlist, sync chatlist
 				handler() {
 					this.refreshMsg();
 					console.log('test chat list');

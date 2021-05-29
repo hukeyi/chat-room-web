@@ -11,11 +11,7 @@
 			</el-aside>
 			<!-- 主界面 好友界面 这里有嵌套路由 -->
 			<el-main class="main-box">
-				<FriendBox
-					@startChat="startChat"
-					:friendList="friendList"
-					:chatList="chatList"
-				></FriendBox>
+				<FriendBox @startChat="startChat" :friendList="friendList"></FriendBox>
 			</el-main>
 		</el-container>
 	</div>
@@ -36,7 +32,7 @@
 			return {
 				chatInfoList: [],
 				friendList: [],
-				chatList: {},
+				// chatList: {},
 			};
 		},
 		methods: {
@@ -49,20 +45,20 @@
 			async startChat(uid, fid) {
 				console.log('start chat', uid, fid);
 				await this.initLists();
-				this.$router.push(`/user/${uid}/${fid}`);
+				this.$router.push(`/user/${uid}/friend/${fid}`);
 			},
 			async initLists() {
 				try {
 					this.friendList = await friendApi.GetFriendListAll();
 					this.setFriendListAll(this.friendList);
-					this.chatList = await MsgApi.GetFriendChatAll();
-					this.setFriendChatListAll(this.chatList);
+					const chatList = await MsgApi.GetFriendChatAll();
+					this.setFriendChatListAll(chatList);
 					this.chatInfoList = this.getChatInfoList();
 				} catch (err) {
 					console.log('user/index.vue init err', err);
 				}
 			},
-			async initListsFromStore() {
+			async initFriendList() {
 				this.friendList = this.getFriendList();
 			},
 		},
@@ -77,14 +73,16 @@
 			'$store.state.user.friendList': {
 				handler() {
 					console.log('store friendlist change');
-					this.initListsFromStore();
+					this.initFriendList();
 				},
 				deep: true,
 			},
 		},
 		mounted() {
 			this.initLists();
-			this.$socket.open();
+			if (!this.$socket.isOpen()) {
+				this.$socket.open();
+			}
 		},
 	};
 </script>

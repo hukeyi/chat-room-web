@@ -5,7 +5,7 @@
 		<SelectorItem :icon="icon_userhome" :link="getUserHomeUrl()"></SelectorItem>
 		<hr width="60%" class="level-divider" />
 		<!-- 聊天室主页 -->
-		<SelectorItem :icon="icon_explore"></SelectorItem>
+		<SelectorItem :icon="icon_room" :link="getRoomHomeUrl()"></SelectorItem>
 	</div>
 </template>
 
@@ -16,7 +16,7 @@
 		data() {
 			return {
 				icon_userhome: require('@/assets/styles/common/img/user.png'),
-				icon_explore: require('@/assets/styles/common/img/international.png'),
+				icon_room: require('@/assets/styles/common/img/international.png'),
 			};
 		},
 		components: {
@@ -26,6 +26,9 @@
 			...mapGetters(['getUserId']),
 			getUserHomeUrl() {
 				return `user/${this.getUserId()}`;
+			},
+			getRoomHomeUrl() {
+				return `channel/${this.getUserId()}`;
 			},
 		},
 	};
