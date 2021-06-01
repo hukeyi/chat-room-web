@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-30 20:16:51
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 12:49:17
+ * @Last Modified time: 2021-06-01 16:31:56
  */
 const {
 	Message,
@@ -98,6 +98,21 @@ async function removeRoomById(uid, rid) {
 		});
 	}
 	return Promise.reject('not authorized');
+}
+
+/**
+ * 退出聊天室
+ */
+async function quitRoomById(uid, rid) {
+	const right = await checkUserAuth(uid, rid);
+	console.log('room controller quit room:', right);
+
+	if (right !== 'admin') {
+		return UserRoom.destroy({
+			where: { room_id: rid, user_id: uid },
+		});
+	}
+	return Promise.reject('Please directly delete room');
 }
 
 /**
@@ -286,6 +301,11 @@ async function findChatHistoryByRoomId(rid) {
 	return toJSON(chatList);
 }
 
+async function findLatestMsgByRoomId(rid) {
+	const chatList = await findChatListByRoomId(rid);
+	return chatList[chatList.length - 1];
+}
+
 /**
  * 返回用户加入的所有聊天室对应的成员信息列表和聊天记录
  */
@@ -311,6 +331,16 @@ const room_delete_post = async (req, res) => {
 		res.sendStatus(200);
 	} catch (err) {
 		console.log('room del post', err);
+		res.status(500).json(err);
+	}
+};
+
+const room_quit_post = async (req, res) => {
+	try {
+		await quitRoomById(req.user.id, req.body.rId);
+		res.sendStatus(200);
+	} catch (err) {
+		console.log('room quit post', err);
 		res.status(500).json(err);
 	}
 };
@@ -370,7 +400,7 @@ const room_search_post = async (req, res) => {
 		res.status(200).json(toJSON(room));
 	} catch (err) {
 		console.log('room search post', err);
-		res.status(500).send(err);
+		res.status(500).json(err);
 	}
 };
 
@@ -381,7 +411,10 @@ module.exports = {
 	room_list_get, //ok
 	room_chatList_get, //ok
 	room_search_post, //ok
+	room_quit_post, //ok
 
 	findAdminIdByRoomId,
 	findRoomIsPrivate,
+	findAllRoomIdsByUserId,
+	findLatestMsgByRoomId,
 };

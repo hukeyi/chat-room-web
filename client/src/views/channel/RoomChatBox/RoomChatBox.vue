@@ -3,23 +3,32 @@
 		<el-container class="main-area">
 			<el-header class="main-header">
 				<div class="main-header-title">
-					<img :src="icon_room" /><span style="margin: auto 10px;"
-						># {{ roomInfo.name }}</span
+					<img :src="icon_room" /><span style="margin: auto 10px;">
+						<span style="color: white;">{{ roomInfo.name }}</span> #{{
+							roomInfo.id
+						}}</span
 					>
 				</div>
 			</el-header>
 			<el-container>
 				<el-main class="main-central">
 					<div class="chat-box-window" ref="chatBox">
-						<ChatMessage
-							v-for="(item, key) in messageList"
-							:key="key"
-							:direction="item.s_id == uId ? 'right' : 'left'"
-							:avatar="item.avatar ? item.avatar : undefined"
-							:name="item.name"
-							:time="toDate(item.time)"
-							:message="item.content"
-						></ChatMessage>
+						<div v-for="(item, key) in messageList" :key="key">
+							<ChatMessage
+								v-if="item.type != 'notice'"
+								:direction="item.s_id == uId ? 'right' : 'left'"
+								:avatar="item.avatar ? item.avatar : undefined"
+								:name="item.name"
+								:time="toDate(item.time)"
+								:message="item.content"
+							></ChatMessage>
+							<ChatNotice
+								v-else-if="item.type == 'notice'"
+								:time="toDate(item.time)"
+								:content="item.content"
+							>
+							</ChatNotice>
+						</div>
 					</div>
 					<div class="chat-box-input">
 						<!-- 输入框 -->
@@ -42,7 +51,20 @@
 						></i>
 					</div>
 				</el-main>
-				<el-aside class="main-right-sidebar"></el-aside>
+				<el-aside class="main-right-sidebar">
+					<div
+						class="room-member-list"
+						v-for="item in memberList"
+						:key="item.id"
+					>
+						<InfoListItem
+							:name="item.name"
+							:avatar="item.avatar ? item.avatar : undefined"
+							:id="item.id"
+							:status="item.status ? item.status : 'off'"
+						></InfoListItem>
+					</div>
+				</el-aside>
 			</el-container>
 		</el-container>
 	</div>
@@ -51,10 +73,13 @@
 <script>
 	import { mapGetters, mapActions } from 'vuex';
 	import ChatMessage from '@/components/ChatMessageItem.vue';
+	import ChatNotice from '@/components/ChatNoticeItem.vue';
+
 	import { formatDate } from '@/utils/time';
+	import InfoListItem from '@/components/InfoListItem.vue';
 
 	export default {
-		components: { ChatMessage },
+		components: { ChatMessage, ChatNotice, InfoListItem },
 		data() {
 			return {
 				uId: '',
@@ -64,11 +89,13 @@
 
 				inputText: '',
 				messageList: [],
+				memberList: [],
 			};
 		},
 		methods: {
 			...mapGetters({
 				getUserId: 'getUserId',
+				getUserName: 'getUserName',
 				getRoomInfo: 'getRoomInfoById',
 				getHistory: 'getRoomChatHistoryById',
 				getMemberList: 'getRoomMembersById',
@@ -123,11 +150,27 @@
 				this.roomInfo = this.getRoomInfo()(this.rId);
 				// 显示历史消息
 				this.messageList = this.getHistory()(this.rId);
+				this.memberList = this.getMemberList()(this.rId);
+
+				// todo: join rooms socket emitter
+				const msgLen = this.messageList.length;
+				const latestMsgTime = msgLen
+					? Date.parse(new Date(this.messageList[msgLen - 1].time))
+					: 0;
+				this.$socket.emitter('enter room', [
+					Number(this.rId),
+					this.uId,
+					latestMsgTime,
+				]);
+				console.log('enter room emit');
 				this.scrollToEnd();
 			},
 			refreshMsg() {
 				this.messageList = this.getHistory()(this.rId);
 				this.scrollToEnd();
+			},
+			refreshMembers() {
+				this.memberList = this.getMemberList()(this.rId);
 			},
 		},
 		mounted() {
@@ -144,6 +187,7 @@
 				//watch roomlist, sync chatlist
 				handler() {
 					this.refreshMsg();
+					this.refreshMembers();
 					console.log('test chat list');
 				},
 				deep: true,

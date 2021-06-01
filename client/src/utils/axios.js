@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 00:39:21
+ * @Last Modified time: 2021-06-01 14:22:50
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -60,7 +60,7 @@ service.interceptors.response.use(
 		// fixme: is there always a response prop in err?
 		let serverMsg;
 		if (err.response.data) {
-			serverMsg = err.response.data.messgae;
+			serverMsg = err.response.data.message || err.response.data;
 		}
 		const msg = statusHash[Number(err.response.status)];
 		return Promise.reject(

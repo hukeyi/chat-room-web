@@ -322,19 +322,24 @@
 			},
 
 			//删除聊天室
-			async deleteRoom(id) {
-				try {
-					console.log('start delete room', id);
+			deleteRoom(id) {
+				console.log('start delete room', id);
 
-					this.showRightDrawer = false;
-					this.deleteRoomById(id);
-					console.log('after del roomList:', this.getRoomList());
+				this.showRightDrawer = false;
+				this.deleteRoomById(id);
 
-					// const postData = { rid: id };
-					// await roomApi.PostDeleteRoom(postData);
-				} catch (err) {
-					console.log('delete err', id, err);
-				}
+				const postData = { rId: id };
+				return roomApi.PostDeleteRoom(postData);
+			},
+			//退出聊天室
+			quitRoom(id) {
+				console.log('start quit room', id);
+
+				this.showRightDrawer = false;
+				this.deleteRoomById(id);
+
+				const postData = { rId: id };
+				return roomApi.PostQuitRoom(postData);
 			},
 			async searchRooms(id) {
 				try {
@@ -405,18 +410,46 @@
 					type: 'warning',
 				})
 					.then(async () => {
-						await this.deleteRoom(id);
-						this.$message({
-							type: 'success',
-							message: '删除成功!',
-						});
+						try {
+							await this.deleteRoom(id);
+							this.$message({
+								type: 'success',
+								message: `成功删除聊天室${name}!`,
+							});
+						} catch (err) {
+							this.$message({
+								type: 'error',
+								message: `操作失败：${err}!`,
+							});
+						}
 					})
 					.catch((err) => {
 						console.log('cancel delete room', id, err);
 					});
 			},
 			handleClickQuitRoom(id, name) {
-				console.log('click quit room', id, name);
+				this.$confirm(`是否确认退出聊天室${name}?`, '确认退出', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning',
+				})
+					.then(async () => {
+						try {
+							await this.quitRoom(id);
+							this.$message({
+								type: 'success',
+								message: `成功退出聊天室${name}!`,
+							});
+						} catch (err) {
+							this.$message({
+								type: 'error',
+								message: `操作失败：${err}!`,
+							});
+						}
+					})
+					.catch((err) => {
+						console.log('cancel quit room', id, err);
+					});
 			},
 			// 搜索聊天室输入框的input回调函数
 			handleInputId(id) {

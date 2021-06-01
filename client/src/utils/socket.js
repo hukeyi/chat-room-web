@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-31 17:04:33
+ * @Last Modified time: 2021-06-01 16:35:22
  */
 
 import { io } from 'socket.io-client';
@@ -31,22 +31,28 @@ export class Socket {
 		/**
 		 * 挂载监听
 		 */
+
 		/**
 		 * 监听连接和断连
 		 */
+
 		this.onConnect();
 		this.onDisconnect();
+
 		/**
 		 * 监听好友私聊
 		 */
+
 		this.listener('private message', async (fid, msg) => {
 			console.log('store in socket.js', store.getters.allFriendChatList);
 			console.log('receive!', fid, msg);
 			await store.dispatch('addMsgToFriendChatList', { fid, msg });
 		});
+
 		/**
 		 * 监听好友申请请求
 		 */
+
 		this.listener('add friend request', async (friendInfo, msg) => {
 			console.log('get friend request!', friendInfo, msg);
 			const detail = {
@@ -65,9 +71,11 @@ export class Socket {
 			};
 			await store.dispatch('addNoticeList', notice);
 		});
+
 		/**
 		 * 监听好友申请响应
 		 */
+
 		this.listener('add friend response', async (friendInfo, res) => {
 			console.log('get friend response!', friendInfo, res);
 			const result = res
@@ -84,6 +92,7 @@ export class Socket {
 		/**
 		 * 监听聊天室申请
 		 */
+
 		this.listener('add room request', async (info, msg) => {
 			const detail = {
 				id: info.user.id,
@@ -104,16 +113,36 @@ export class Socket {
 		});
 
 		/**
+		 * 监听聊天室群聊
+		 */
+		this.listener('group message', async (rid, msg) => {
+			console.log('get group message!', rid, msg);
+			await store.dispatch('addMsgToRoomChatList', { rid, msg });
+		});
+
+		/**
 		 * 监听服务器要求更新好友列表
 		 */
+
 		this.listener('update friend list', async () => {
 			const friendList = await friendApi.GetFriendListAll();
 			await store.dispatch('setFriendListAll', friendList);
 		});
 
 		/**
+		 * 监听服务器要求更新聊天室聊天列表
+		 */
+
+		this.listener('update room chatList', async () => {
+			console.log('get update room chatList');
+			const roomChatList = await roomApi.GetRoomChatListAll();
+			await store.dispatch('setRoomChatList', roomChatList);
+		});
+
+		/**
 		 * 监听服务器直接加入聊天室要求
 		 */
+
 		this.listener('add room directly', async (targetId) => {
 			await roomApi.PostAddRoom({ rId: targetId });
 			const notice = {

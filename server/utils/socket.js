@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-31 16:55:26
+ * @Last Modified time: 2021-06-01 17:21:09
  */
 
 /**
@@ -13,12 +13,17 @@ const { updateMsgToFriend } = require('../controllers/message');
 const {
 	findAdminIdByRoomId,
 	findRoomIsPrivate,
+	findAllRoomIdsByUserId,
+	findLatestMsgByRoomId,
 } = require('../controllers/room');
 
-// hash_key = user_id; hash_value = socket
-// 同时，通过socketHash.keys()，可以发现用户的在线状态
-// keys.includes(id) === true, 在线；否则离线
+// key = user_id; value = socket
 const socketMap = new Map();
+let roomSet = null;
+
+const getTimeStamp = (time) => {
+	return Date.parse(new Date(time));
+};
 
 const onSendFriendMsg = (socket) => {
 	// 好友私聊
@@ -83,6 +88,7 @@ const onSendNotice = (socket) => {
 	/**
 	 * 聊天室申请
 	 */
+
 	// 加入聊天室申请
 	socket.on('add room request', async (targetId, msg) => {
 		const isPrivate = await findRoomIsPrivate(targetId);
@@ -101,40 +107,70 @@ const onSendNotice = (socket) => {
 	// 回应申请
 	socket.on('add room response', async (targetId, res) => {
 		console.log('add room response', targetId, msg);
-		// console.log(
-		// 	"\n👌let's chat",
-		// 	socket.request.user.id,
-		// 	targetId,
-		// 	socket.id,
-		// 	res
-		// );
-		// // notify proposer
-		// socket
-		// 	.to(socketMap.get(targetId))
-		// 	.emit('add room response', socket.request.user, res);
-		// // insert new record to userfriend
-		// if (res) {
-		// 	// accept
-		// 	await updateAddFriend(targetId, socket.request.user.id);
-		// 	socket.to(socketMap.get(targetId)).emit('update room list');
-		// 	socket.emit('update room list');
-		// }
+	});
+};
+
+const onRoomChat = async (io, socket) => {
+	/**
+	 * 加入聊天室
+	 */
+
+	socket.on('enter room', async (rid, uid, latestMsgTime) => {
+		console.log(
+			'\n💬 enter room#',
+			rid,
+			'userid',
+			uid,
+			'latest time',
+			latestMsgTime
+		);
+
+		const room_name = 'room_' + rid;
+		if (roomSet.has(room_name)) {
+			socket.join(room_name);
+
+			const latestMsg = await findLatestMsgByRoomId(rid);
+
+			const msg = {
+				s_id: 1,
+				r_id: 1,
+				content: `#${uid}进入聊天室`,
+				time: '2021/06/01 00:00:00',
+				avatar: '',
+				name: '',
+				type: 'notice',
+			};
+			if (latestMsg && getTimeStamp(msg.time) < getTimeStamp(latestMsg.time)) {
+				socket.emit('update room chatList');
+			}
+			io.to(room_name).emit('group message', rid, msg);
+		}
 	});
 };
 
 module.exports = function (io) {
-	io.on('connection', function (socket) {
-		// 维护socketHash表，用userid映射socketId
+	io.on('connection', async function (socket) {
+		/**
+		 * 初始化socket映射表和room集合
+		 */
+
 		const userId = socket.request.user.id,
 			socketId = socket.id;
 		console.log('\n🎉 Yeah! User connected', userId, socketId);
 		socketMap.set(userId, socketId);
-		console.log(socketMap);
+		console.log('socketMap', socketMap);
+
+		const roomIdList = await findAllRoomIdsByUserId(userId);
+		roomSet = new Set(roomIdList.map((item) => 'room_' + item));
+		console.log('roomSet', roomSet);
+
 		/**
 		 * 挂载监听
 		 */
+
 		onSendFriendMsg(socket);
 		onDisconnect(socket);
 		onSendNotice(socket);
+		onRoomChat(io, socket);
 	});
 };
