@@ -68,6 +68,8 @@
 							placeholder="请输入聊天室ID"
 							:clearable="true"
 							@onInput="handleInputId"
+							@keydown.enter="handleEnterClear"
+							@keyup.enter="handleClickSearchRoom"
 						>
 							<el-button
 								@click="handleClickSearchRoom"
@@ -116,16 +118,13 @@
 						></InfoCardItem>
 					</div>
 					<!-- 创建聊天室 -->
-					<div
-						v-else-if="showCreateRoom"
-						ref="ruleForm"
-						class="create-room-form"
-					>
+					<div v-else-if="showCreateRoom" class="create-room-form">
 						<el-form
 							label-position="top"
 							label-width="80px"
 							:model="ruleForm"
 							:rules="rules"
+							ref="ruleForm"
 						>
 							<el-form-item label="名称" prop="name">
 								<el-input v-model="ruleForm.name"></el-input>
@@ -228,7 +227,7 @@
 	import InputItem from '@/components/InputItem.vue';
 	import InfoCardItem from '@/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
-	// import roomApi from '@/api/room';
+	import roomApi from '@/api/room';
 	import { h } from 'vue';
 
 	export default {
@@ -241,7 +240,6 @@
 		},
 		data() {
 			return {
-				tempList: [{ id: 3, name: 'testRoom03', avatar: '', status: '' }],
 				// 聊天室搜索
 				searchResultList: [],
 				searchId: '',
@@ -293,7 +291,19 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						alert('submit!');
+						roomApi
+							.PostCreateRoom(this.ruleForm)
+							.then((res) => {
+								this.$message({
+									type: 'success',
+									message: `成功创建聊天室${this.ruleForm.name}！ID为${res.id}`,
+								});
+								this.handleSelectStatus('all');
+								console.log('create room ok', res);
+							})
+							.catch((err) => {
+								console.log('create room', err);
+							});
 					} else {
 						console.log('error submit');
 						return false;
@@ -321,13 +331,16 @@
 			},
 			async searchRooms(id) {
 				try {
-					console.log('start search by id', id);
-
-					// const postData = { rid: id };
-					// this.searchResultList = await roomApi.SearchRooms(postData);
-					const index = this.tempList.findIndex((item) => item.id == id);
-					if (index != -1) this.searchResultList.push(this.tempList[index]);
-					if (!this.searchResultList.length) this.showEmptyRes = true;
+					this.searchResultList.splice(0, this.searchResultList.length);
+					console.log('start room search by id', id);
+					const postData = { rId: id };
+					const temp = await roomApi.PostSearchRooms(postData);
+					if (temp) {
+						this.searchResultList.push(temp);
+						this.showEmptyRes = false;
+					} else {
+						this.showEmptyRes = true;
+					}
 				} catch (err) {
 					console.log('search room', err);
 				}
@@ -335,7 +348,7 @@
 			// 发送聊天室请求
 			sendAddRequest(id) {
 				console.log('send request to', id);
-				// this.$socket.emitter('add room request', [id, 'room request']);
+				this.$socket.emitter('add room request', [id, 'room request']);
 			},
 			//添加聊天室按钮的点击事件回调函数
 			handleClickAddRoom() {
@@ -357,6 +370,12 @@
 				this.selectRoomStatus = key;
 				this.showAddRoom = false;
 				this.showCreateRoom = false;
+				this.showNotice = false;
+			},
+			handleClickCreateRoom() {
+				this.showCreateRoom = true;
+				this.showAddRoom = false;
+				this.selectRoomStatus = '';
 				this.showNotice = false;
 			},
 
@@ -395,7 +414,6 @@
 			},
 			// 搜索聊天室按钮点击事件的回调函数
 			handleClickSearchRoom() {
-				console.log('click search', this.searchId);
 				this.showEmptyRes = false;
 				const id = this.searchId;
 				// todo: check if searchID in roomlist
@@ -419,22 +437,16 @@
 						console.log('cancel send request', item.id, err);
 					});
 			},
-			/**
-			 * 创建聊天室
-			 */
-			handleClickCreateRoom() {
-				console.log('click create room');
-				this.showCreateRoom = true;
-				this.showAddRoom = false;
-				this.selectRoomStatus = '';
-				this.showNotice = false;
-			},
 			openNotice(notice) {
 				console.log('open notice', notice);
 				this.$notify({
 					title: notice.title,
 					message: h('i', { style: 'color: teal' }, notice.content),
 				});
+				if (notice.type == 'apply_result_ok') {
+					this.$emit('refresh');
+					this.handleSelectStatus('all');
+				}
 			},
 			handleClickYes(item, key) {
 				console.log('yes to ', item.detail.name, key);
@@ -445,6 +457,11 @@
 				console.log('no to ', item.detail.name, key);
 				this.noticeList.splice(key, 1);
 				this.$socket.emitter('add room response', [item.detail.id, false]);
+			},
+			// 清除回车键默认事件
+			handleEnterClear(e) {
+				if (e.preventDefault) e.preventDefault();
+				else window.event.value = false;
 			},
 		},
 		watch: {

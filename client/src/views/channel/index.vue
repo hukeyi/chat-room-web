@@ -11,7 +11,11 @@
 			</el-aside>
 			<!-- 主界面 聊天界面 -->
 			<el-main class="main-box">
-				<RoomChatBox @enterRoom="enterRoom" :roomList="roomList"></RoomChatBox>
+				<RoomChatBox
+					@refresh="initLists"
+					@enterRoom="enterRoom"
+					:roomList="roomList"
+				></RoomChatBox>
 			</el-main>
 		</el-container>
 	</div>
@@ -21,8 +25,8 @@
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
 	import RoomList from './RoomList/index';
 	import RoomChatBox from './RoomChatBox/index';
-	import testdata from '@/utils/roomTest.js';
-	// import roomApi from '@/api/room.js';
+	// import testdata from '@/utils/roomTest.js';
+	import roomApi from '@/api/room.js';
 
 	import { mapGetters, mapActions } from 'vuex';
 
@@ -46,10 +50,11 @@
 				this.$router.push(`/channel/${uid}/room/${rid}`);
 			},
 			async initLists() {
-				// todo: api post
-				this.roomList = testdata.roomList;
+				this.roomList = await roomApi.GetRoomListAll();
+				console.log('roomList', this.roomList);
 				this.setRoomList(this.roomList);
-				const roomChatList = testdata.roomChatList;
+				const roomChatList = await roomApi.GetRoomChatListAll();
+				console.log('roomChatList', roomChatList);
 				this.setRoomChatList(roomChatList);
 			},
 			async initRoomList() {

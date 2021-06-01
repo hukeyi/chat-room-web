@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 18:30:09
+ * @Last Modified time: 2021-05-30 20:18:05
  */
 
 /**
@@ -47,6 +47,7 @@ const store = new MysqlStore(storeOptions);
 const usersRouter = require('./routes/user');
 const friendsRouter = require('./routes/userFriend');
 const messagesRouter = require('./routes/message');
+const roomRouter = require('./routes/room');
 /**
  * Middleware
  */
@@ -90,6 +91,7 @@ app.use(passport.session());
 app.use('/api/user', usersRouter);
 app.use('/api/friend', friendsRouter);
 app.use('/api/msg', messagesRouter);
+app.use('/api/room', roomRouter);
 
 /**
  * Error handler

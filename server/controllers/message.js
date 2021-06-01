@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-30 00:38:34
+ * @Last Modified time: 2021-05-31 15:59:37
  */
 const {
 	Message,
@@ -25,6 +25,7 @@ async function findFChatHistoryById(userId) {
 				{ sender_id: userId },
 				{ '$MessageRecipient.recipient_id$': userId },
 			],
+			[$.and]: { '$MessageRecipient.recipient_group_id$': 1 },
 			is_active: true,
 		},
 		include: [

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-30 00:39:12
+ * @Last Modified time: 2021-05-31 10:06:40
  */
 
 // Model的统一出口
@@ -175,6 +175,8 @@ module.exports = {
 	Message,
 	MessageRecipient,
 	// Socket,
+	Room,
+	UserRoom,
 	$,
 	sequelize,
 };

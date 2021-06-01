@@ -2,12 +2,13 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-29 15:33:12
+ * @Last Modified time: 2021-05-31 17:04:33
  */
 
 import { io } from 'socket.io-client';
 import store from '../store/index';
 import friendApi from '../api/friend';
+import roomApi from '../api/room';
 
 export class Socket {
 	constructor() {
@@ -73,24 +74,54 @@ export class Socket {
 				? `${friendInfo.name}同意了你的好友请求！`
 				: `${friendInfo.name}拒绝了你的好友请求。`;
 			const notice = {
-				type: 'apply_result',
+				type: 'apply_result_' + (res ? 'ok' : 'fail'),
 				title: '好友申请结果',
 				content: result,
 			};
-			// if (res) {
-			// 	// 如果同意，更新好友列表
-			// 	const friendList = await friendApi.GetFriendListAll();
-			// 	await store.dispatch('setFriendListAll', friendList);
-			// }
 			await store.dispatch('addNoticeList', notice);
 		});
+
+		/**
+		 * 监听聊天室申请
+		 */
+		this.listener('add room request', async (info, msg) => {
+			const detail = {
+				id: info.user.id,
+				name: info.user.name,
+				avatar: info.user.avatar,
+				gender: info.user.gender,
+				age: info.user.age,
+				birth_date: info.user.birth_date,
+			};
+			console.log('get room request!', detail, msg);
+			const notice = {
+				title: '聊天室加入申请',
+				type: 'apply',
+				content: `${info.user.name} 想要加入聊天室${info.rId}！`,
+				detail: detail,
+			};
+			await store.dispatch('addNoticeList', notice);
+		});
+
 		/**
 		 * 监听服务器要求更新好友列表
 		 */
 		this.listener('update friend list', async () => {
-			// store.dispatch('setFriendListAll', await friendApi.GetFriendListAll());
 			const friendList = await friendApi.GetFriendListAll();
 			await store.dispatch('setFriendListAll', friendList);
+		});
+
+		/**
+		 * 监听服务器直接加入聊天室要求
+		 */
+		this.listener('add room directly', async (targetId) => {
+			await roomApi.PostAddRoom({ rId: targetId });
+			const notice = {
+				type: 'apply_result_ok',
+				title: '聊天室申请结果',
+				content: `你已成功加入聊天室 #${targetId}`,
+			};
+			await store.dispatch('addNoticeList', notice);
 		});
 	}
 	/**

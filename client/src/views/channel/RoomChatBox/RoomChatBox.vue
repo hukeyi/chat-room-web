@@ -14,7 +14,7 @@
 						<ChatMessage
 							v-for="(item, key) in messageList"
 							:key="key"
-							:direction="item.s_id == rId ? 'left' : 'right'"
+							:direction="item.s_id == uId ? 'right' : 'left'"
 							:avatar="item.avatar ? item.avatar : undefined"
 							:name="item.name"
 							:time="toDate(item.time)"
@@ -57,6 +57,7 @@
 		components: { ChatMessage },
 		data() {
 			return {
+				uId: '',
 				rId: '',
 				roomInfo: '',
 				icon_room: require('@/assets/styles/common/img/user.png'),
@@ -117,9 +118,9 @@
 				}
 			},
 			refreshView() {
+				this.uId = this.getUserId();
 				this.rId = this.$route.params.rId;
 				this.roomInfo = this.getRoomInfo()(this.rId);
-				console.log(this.roomInfo, 'get room info');
 				// 显示历史消息
 				this.messageList = this.getHistory()(this.rId);
 				this.scrollToEnd();

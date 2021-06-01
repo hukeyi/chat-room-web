@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-28 23:29:07
+ * @Last Modified time: 2021-05-31 16:55:26
  */
 
 /**
@@ -10,6 +10,10 @@
  */
 const { updateAddFriend } = require('../controllers/userFriend');
 const { updateMsgToFriend } = require('../controllers/message');
+const {
+	findAdminIdByRoomId,
+	findRoomIsPrivate,
+} = require('../controllers/room');
 
 // hash_key = user_id; hash_value = socket
 // 同时，通过socketHash.keys()，可以发现用户的在线状态
@@ -42,6 +46,10 @@ const onDisconnect = (socket) => {
 	});
 };
 const onSendNotice = (socket) => {
+	/**
+	 * 好友申请
+	 */
+
 	// 朋友申请
 	socket.on('add friend request', (targetId, msg) => {
 		console.log('\n👬friend please', targetId, msg, socketMap.get(targetId));
@@ -70,6 +78,47 @@ const onSendNotice = (socket) => {
 			socket.to(socketMap.get(targetId)).emit('update friend list');
 			socket.emit('update friend list');
 		}
+	});
+
+	/**
+	 * 聊天室申请
+	 */
+	// 加入聊天室申请
+	socket.on('add room request', async (targetId, msg) => {
+		const isPrivate = await findRoomIsPrivate(targetId);
+		console.log('add room is private', isPrivate);
+		if (isPrivate) {
+			const adminId = await findAdminIdByRoomId(targetId);
+			console.log('\n👬add room please', targetId, msg, socketMap.get(adminId));
+			const info = { user: socket.request.user, rId: targetId };
+			socket.to(socketMap.get(adminId)).emit('add room request', info, msg);
+		} else {
+			// todo: alert admin for new member
+			socket.emit('add room directly', targetId);
+		}
+	});
+
+	// 回应申请
+	socket.on('add room response', async (targetId, res) => {
+		console.log('add room response', targetId, msg);
+		// console.log(
+		// 	"\n👌let's chat",
+		// 	socket.request.user.id,
+		// 	targetId,
+		// 	socket.id,
+		// 	res
+		// );
+		// // notify proposer
+		// socket
+		// 	.to(socketMap.get(targetId))
+		// 	.emit('add room response', socket.request.user, res);
+		// // insert new record to userfriend
+		// if (res) {
+		// 	// accept
+		// 	await updateAddFriend(targetId, socket.request.user.id);
+		// 	socket.to(socketMap.get(targetId)).emit('update room list');
+		// 	socket.emit('update room list');
+		// }
 	});
 };
 

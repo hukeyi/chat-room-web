@@ -5,7 +5,6 @@ const roomList = [
 		avatar: '',
 		creator_id: 1,
 		creator_name: 'test00',
-		admin_id: 1,
 	},
 	{
 		id: 2,
@@ -13,7 +12,6 @@ const roomList = [
 		avatar: '',
 		creator_id: 1,
 		creator_name: 'test00',
-		admin_id: 1,
 	},
 ];
 
@@ -36,6 +34,7 @@ const roomChatList = {
 				avatar: '',
 				status: '',
 				title: 'admin',
+				isAdmin: true,
 			},
 		],
 	},
