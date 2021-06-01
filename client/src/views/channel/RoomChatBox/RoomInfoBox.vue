@@ -17,7 +17,7 @@
 					:default-active="selectRoomStatus"
 				>
 					<el-menu-item index="all">全部</el-menu-item>
-					<el-menu-item index="on">我管理的</el-menu-item>
+					<el-menu-item index="mine">我管理的</el-menu-item>
 				</el-menu>
 				<el-divider
 					class="main-header-divider"
@@ -106,9 +106,9 @@
 						></InfoCardItem>
 					</div>
 					<!-- 我管理的聊天室信息列表 -->
-					<div v-else-if="selectRoomStatus === 'on'" class="room-list-on">
+					<div v-else-if="selectRoomStatus === 'mine'" class="room-list-on">
 						<InfoCardItem
-							v-for="item in getOnList()"
+							v-for="item in getMyRoomList()"
 							:key="item.id"
 							:name="item.name"
 							:avatar="item.avatar ? item.avatar : undefined"
@@ -209,8 +209,16 @@
 								size="medium"
 								>进入聊天室</el-button
 							>
+
 							<el-button
 								id="delete-room"
+								size="medium"
+								@click="handleClickQuitRoom(drawerInfo.id, drawerInfo.name)"
+								>退出聊天室</el-button
+							>
+							<el-button
+								id="btn-del-room"
+								v-if="drawerInfo.isAdmin"
 								size="medium"
 								@click="handleClickDeleteRoom(drawerInfo.id, drawerInfo.name)"
 								>删除聊天室</el-button
@@ -275,9 +283,8 @@
 			...mapGetters({
 				getUserId: 'getUserId',
 				getNotice: 'getNewNotice',
-				getList: 'allFriends',
-				getOnList: 'onFriends',
 				getRoomList: 'getRoomList',
+				getMyRoomList: 'getMyRoomList',
 			}),
 			...mapActions([
 				'deleteRoomById',
@@ -407,6 +414,9 @@
 					.catch((err) => {
 						console.log('cancel delete room', id, err);
 					});
+			},
+			handleClickQuitRoom(id, name) {
+				console.log('click quit room', id, name);
 			},
 			// 搜索聊天室输入框的input回调函数
 			handleInputId(id) {

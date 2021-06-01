@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-29 15:42:29
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-29 19:39:46
+ * @Last Modified time: 2021-06-01 13:01:12
  */
 
 export const roomModule = {
@@ -17,6 +17,7 @@ export const roomModule = {
 		 */
 		getRoomList: (state) => state.roomList,
 		getRoomChatList: (state) => state.roomChatList,
+		getMyRoomList: (state) => state.roomList.filter((item) => item.isAdmin),
 		/**
 		 * 查找对应ID的聊天室数组下标
 		 */

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-30 20:16:51
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-31 16:50:53
+ * @Last Modified time: 2021-06-01 12:49:17
  */
 const {
 	Message,
@@ -139,6 +139,7 @@ async function findAllRoomsByUserId(uid) {
 			sequelize.col('room_user_1_n.intro'),
 			sequelize.col('room_user_1_n.creator_id'),
 			[sequelize.col('user_room_1_n.name'), 'creator_name'],
+			['is_admin', 'isAdmin'],
 		],
 	});
 }

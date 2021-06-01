@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-20 15:21:01
+ * @Last Modified time: 2021-06-01 12:54:30
  */
 
 // passport setting
@@ -62,7 +62,6 @@ passport.use(
 			try {
 				const user = await User.findOne({ where: { phone: username } });
 				console.log('\n-----> user ' + username + ' attempted to log in.');
-				console.log('\n-----> user info from database:', user.id, user.name);
 
 				// 用户不存在
 				if (!user) {
@@ -74,6 +73,8 @@ passport.use(
 					console.log('\n-----> wrong password');
 					return done(null, false);
 				}
+				console.log('\n-----> user info from database:', user.id, user.name);
+
 				return done(null, user);
 			} catch (err) {
 				console.log('\n-----> something went wrong', err);
