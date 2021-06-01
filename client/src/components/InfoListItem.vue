@@ -6,12 +6,28 @@
 				<span id="name">{{ name }}</span>
 				<span id="id"> #{{ id }}</span>
 			</div>
+			<div
+				class="status"
+				v-if="showStatus"
+				:class="{ off: status === 'off', on: status === 'on' }"
+			></div>
 		</div>
-		<span
-			v-if="showStatus"
-			class="status"
-			:class="{ off: status === 'off', on: status === 'on' }"
-		></span>
+
+		<el-dropdown v-if="showDropDown">
+			<span class="el-dropdown-link">
+				<i class="el-icon-arrow-down el-icon--right"></i>
+			</span>
+			<template #dropdown>
+				<el-dropdown-menu>
+					<el-dropdown-item
+						v-for="(item, key) in authMenuList"
+						:key="key"
+						@click="item.handler(id, rId)"
+						>{{ item.title }}</el-dropdown-item
+					>
+				</el-dropdown-menu>
+			</template>
+		</el-dropdown>
 	</div>
 </template>
 
@@ -28,15 +44,44 @@
 			},
 			id: {
 				type: Number,
-				default: 0,
+				default: 1,
+			},
+			rId: {
+				type: Number,
+				default: 1,
+			},
+			showDropDown: {
+				type: Boolean,
+				default: true,
+			},
+			auth: {
+				type: String,
+				default: 'member',
 			},
 			status: {
 				type: String,
-				default: 'on',
+				default: 'off',
 			},
 			showStatus: {
 				type: Boolean,
 				default: true,
+			},
+			menuList: {
+				type: Array,
+				default: () => [
+					{
+						title: 'default item',
+						handler: function() {
+							console.log('default handler');
+						},
+					},
+				],
+			},
+		},
+		computed: {
+			authMenuList: function() {
+				console.log('rid', this.rId, 'uid', this.id, 'auth', this.auth);
+				return this.menuList.filter((item) => item.auth == this.auth);
 			},
 		},
 	};
@@ -81,19 +126,24 @@
 					color: $fontColorDeep;
 				}
 			}
-		}
-		.status {
-			width: 10px;
-			height: 10px;
 
-			background-color: $emphasisColorA;
-			border-radius: 50%;
+			.status {
+				width: 10px;
+				height: 10px;
+				align-self: center;
+
+				border-radius: 50%;
+			}
+
+			.status.off {
+				display: none;
+			}
+			.status.on {
+				background-color: $emphasisColorB;
+			}
 		}
-		.status.off {
-			background-color: $fontColorMedium;
-		}
-		.status.on {
-			background-color: $emphasisColorB;
+		.el-dropdown-link .el-icon-arrow-down {
+			color: $fontColorLight;
 		}
 	}
 </style>

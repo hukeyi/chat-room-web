@@ -81,6 +81,14 @@
 
 <style lang="scss" scoped>
 	.user {
+		@media (max-width: 900px) {
+			.main-right-sidebar {
+				display: none;
+			}
+			.left-sidebar-1 {
+				display: none;
+			}
+		}
 		overflow: hidden;
 		height: 100%;
 		color: $fontColorLight;

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-30 20:16:51
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 16:31:56
+ * @Last Modified time: 2021-06-01 22:27:54
  */
 const {
 	Message,
@@ -109,7 +109,7 @@ async function quitRoomById(uid, rid) {
 
 	if (right !== 'admin') {
 		return UserRoom.destroy({
-			where: { room_id: rid, user_id: uid },
+			where: { room_id: Number(rid), user_id: Number(uid) },
 		});
 	}
 	return Promise.reject('Please directly delete room');
@@ -289,6 +289,7 @@ async function findChatHistoryByRoomId(rid) {
 			sequelize.col('User.avatar'),
 			['create_date', 'time'],
 			'content',
+			'type',
 		],
 		order: [['create_date', 'ASC']],
 	});
@@ -308,9 +309,10 @@ async function findLatestMsgByRoomId(rid) {
 
 /**
  * 返回用户加入的所有聊天室对应的成员信息列表和聊天记录
+ * 以及管理聊天室成员权限列表
  */
 
-async function findChatListByRoomId(rid) {
+async function findChatListByRoomId(uid, rid) {
 	try {
 		const memberList = await findMemberListByRoomId(rid);
 		const chatHistory = toJSON(await findChatHistoryByRoomId(rid));
@@ -378,14 +380,15 @@ const room_list_get = async (req, res) => {
 // 返回的是，一个用户加入的所有聊天室的成员列表和聊天记录
 const room_chatList_get = async (req, res) => {
 	try {
-		const roomIdList = await findAllRoomIdsByUserId(req.user.id);
+		const uid = req.user.id;
+		const roomIdList = await findAllRoomIdsByUserId(uid);
 		console.log('roomIdList:', roomIdList);
 
 		const len = roomIdList.length;
 		const chatList = {};
 		for (let i = 0; i < len; i++) {
 			const rid = roomIdList[i];
-			chatList[rid] = await findChatListByRoomId(rid);
+			chatList[rid] = await findChatListByRoomId(uid, rid);
 		}
 		res.status(200).json(chatList);
 	} catch (err) {
@@ -404,6 +407,21 @@ const room_search_post = async (req, res) => {
 	}
 };
 
+const room_admin_del_member_post = async (req, res) => {
+	try {
+		const userAuth = await checkUserAuth(req.user.id, req.body.rId);
+		if (userAuth === 'admin') {
+			await quitRoomById(req.body.uId, req.body.rId);
+			res.sendStatus(200);
+		} else {
+			res.status(401).json('没有移除成员权限');
+		}
+	} catch (err) {
+		console.log('room search post', err);
+		res.status(500).json(err);
+	}
+};
+
 module.exports = {
 	room_delete_post, //ok
 	room_add_post, //ok
@@ -412,6 +430,8 @@ module.exports = {
 	room_chatList_get, //ok
 	room_search_post, //ok
 	room_quit_post, //ok
+
+	room_admin_del_member_post,
 
 	findAdminIdByRoomId,
 	findRoomIsPrivate,

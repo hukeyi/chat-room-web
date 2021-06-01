@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 16:35:22
+ * @Last Modified time: 2021-06-01 20:54:53
  */
 
 import { io } from 'socket.io-client';
@@ -116,8 +116,8 @@ export class Socket {
 		 * 监听聊天室群聊
 		 */
 		this.listener('group message', async (rid, msg) => {
-			console.log('get group message!', rid, msg);
-			await store.dispatch('addMsgToRoomChatList', { rid, msg });
+			console.log('get group message!', String(rid), msg);
+			await store.dispatch('addMsgToRoomChatList', { rid: String(rid), msg });
 		});
 
 		/**

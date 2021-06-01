@@ -2,9 +2,13 @@
 	<div class="chat-notice-item">
 		<div class="chat-notice-content">
 			<!-- 消息发送时间 -->
-			<span class="chat-notice-time">--- {{ time + '&emsp;' }} </span>
-			<!-- 消息内容 -->
-			<span class="chat-notice-body"> {{ content }} ---</span>
+			<span
+				>---
+				<span class="chat-notice-time"> {{ time + '&emsp;' }} </span>
+				<!-- 消息内容 -->
+				<span class="chat-notice-body"> {{ content }} </span>
+				---</span
+			>
 		</div>
 	</div>
 </template>
@@ -35,8 +39,9 @@
 			padding: auto;
 			display: flex;
 			justify-content: center;
+			color: $fontColorMedium;
+
 			.chat-notice-time {
-				color: $fontColorMedium;
 				font-size: 14px;
 			}
 

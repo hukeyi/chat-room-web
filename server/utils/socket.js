@@ -2,14 +2,18 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 17:21:09
+ * @Last Modified time: 2021-06-01 21:22:16
  */
 
 /**
  * database controller
  */
 const { updateAddFriend } = require('../controllers/userFriend');
-const { updateMsgToFriend } = require('../controllers/message');
+const {
+	updateMsgToFriend,
+	updateMsgToRoom,
+	updateNoticeToRoom,
+} = require('../controllers/message');
 const {
 	findAdminIdByRoomId,
 	findRoomIsPrivate,
@@ -23,6 +27,10 @@ let roomSet = null;
 
 const getTimeStamp = (time) => {
 	return Date.parse(new Date(time));
+};
+
+const getRoomName = (rid) => {
+	return 'room_' + rid;
 };
 
 const onSendFriendMsg = (socket) => {
@@ -121,30 +129,45 @@ const onRoomChat = async (io, socket) => {
 			rid,
 			'userid',
 			uid,
-			'latest time',
-			latestMsgTime
+			'room before',
+			socket.room
 		);
 
 		const room_name = 'room_' + rid;
+		const room_before = socket.room;
 		if (roomSet.has(room_name)) {
 			socket.join(room_name);
-
-			const latestMsg = await findLatestMsgByRoomId(rid);
+			socket.room = room_name;
 
 			const msg = {
 				s_id: 1,
 				r_id: 1,
-				content: `#${uid}进入聊天室`,
-				time: '2021/06/01 00:00:00',
+				time: Date.now(),
 				avatar: '',
 				name: '',
 				type: 'notice',
 			};
-			if (latestMsg && getTimeStamp(msg.time) < getTimeStamp(latestMsg.time)) {
-				socket.emit('update room chatList');
+
+			if (room_before && room_before !== room_name) {
+				msg.content = `${socket.request.user.name} 离开聊天室`;
+				await updateNoticeToRoom(msg.s_id, msg.r_id, msg.content, msg.time);
+				const leave_id = room_before.split('_')[1];
+				io.to(room_before).emit('group message', leave_id, msg);
 			}
+			msg.content = `${socket.request.user.name} 进入聊天室`;
+			await updateNoticeToRoom(msg.s_id, msg.r_id, msg.content, msg.time);
 			io.to(room_name).emit('group message', rid, msg);
 		}
+	});
+
+	/**
+	 * 聊天室群聊
+	 */
+	socket.on('group message', async (rid, msg) => {
+		console.log('\n🌹receive group msg!', rid, msg, getRoomName(rid));
+		const s_id = socket.request.user.id;
+		await updateMsgToRoom(Number(s_id), Number(rid), msg.content, msg.time);
+		socket.to(getRoomName(rid)).emit('group message', rid, msg);
 	});
 };
 

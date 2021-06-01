@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 22:03:48
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 14:01:45
+ * @Last Modified time: 2021-06-01 22:50:28
  */
 import axios from '@/utils/axios.js';
 
@@ -33,6 +33,13 @@ const PostDeleteRoom = (data) =>
 		data: data,
 	});
 
+const PostDeleteMember = (data) =>
+	axios({
+		url: '/api/room/del/member',
+		method: 'post',
+		data: data,
+	});
+
 const PostQuitRoom = (data) =>
 	axios({
 		url: '/api/room/quit',
@@ -57,6 +64,7 @@ const PostCreateRoom = (data) =>
 export default {
 	GetRoomListAll,
 	PostDeleteRoom,
+	PostDeleteMember,
 	PostSearchRooms,
 	PostCreateRoom,
 	GetRoomChatListAll,

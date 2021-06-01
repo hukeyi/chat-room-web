@@ -151,10 +151,10 @@
 </script>
 
 <style lang="scss" scoped>
-	@media (max-width: 1200px) {
-		.main-right-sidebar {
-			display: none;
-		}
-	}
+	// @media (max-width: 1200px) {
+	// 	.main-right-sidebar {
+	// 		display: none;
+	// 	}
+	// }
 	@import '@/assets/styles/user/chat.scss';
 </style>

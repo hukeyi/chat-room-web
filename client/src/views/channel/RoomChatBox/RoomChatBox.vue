@@ -58,10 +58,14 @@
 						:key="item.id"
 					>
 						<InfoListItem
+							:showDropDown="item.id != uId"
 							:name="item.name"
 							:avatar="item.avatar ? item.avatar : undefined"
-							:id="item.id"
-							:status="item.status ? item.status : 'off'"
+							:id="Number(item.id)"
+							:rId="Number(rId)"
+							:status="item.isAdmin ? 'on' : 'off'"
+							:menuList="menuList"
+							:auth="uId == adminId ? 'admin' : 'member'"
 						></InfoListItem>
 					</div>
 				</el-aside>
@@ -77,6 +81,7 @@
 
 	import { formatDate } from '@/utils/time';
 	import InfoListItem from '@/components/InfoListItem.vue';
+	import roomApi from '@/api/room';
 
 	export default {
 		components: { ChatMessage, ChatNotice, InfoListItem },
@@ -84,12 +89,38 @@
 			return {
 				uId: '',
 				rId: '',
+				adminId: '',
 				roomInfo: '',
 				icon_room: require('@/assets/styles/common/img/user.png'),
 
 				inputText: '',
 				messageList: [],
 				memberList: [],
+
+				menuList: [
+					{
+						auth: 'admin',
+						title: '移除该成员',
+						handler: async function(uId, rId) {
+							console.log('remove member', uId);
+							await roomApi.PostDeleteMember({ uId, rId });
+						},
+					},
+					{
+						auth: 'admin',
+						title: '设为管理员',
+						handler: function(uId, rId) {
+							console.log('set user', uId, rId, 'admin');
+						},
+					},
+					{
+						auth: 'member',
+						title: '查看个人信息',
+						handler: function(uId, rId) {
+							console.log('show user', uId, rId, 'info');
+						},
+					},
+				],
 			};
 		},
 		methods: {
@@ -100,7 +131,7 @@
 				getHistory: 'getRoomChatHistoryById',
 				getMemberList: 'getRoomMembersById',
 			}),
-			...mapActions(['deleteRoomById']),
+			...mapActions(['deleteRoomById', 'getRoomAdminById']),
 			// 格式化时间日期
 			// 同一天：只显示时间
 			// 同一年：只显示月日+时间
@@ -147,12 +178,12 @@
 			refreshView() {
 				this.uId = this.getUserId();
 				this.rId = this.$route.params.rId;
+				this.adminId = this.getRoomAdminById(this.rId).id;
 				this.roomInfo = this.getRoomInfo()(this.rId);
 				// 显示历史消息
 				this.messageList = this.getHistory()(this.rId);
 				this.memberList = this.getMemberList()(this.rId);
 
-				// todo: join rooms socket emitter
 				const msgLen = this.messageList.length;
 				const latestMsgTime = msgLen
 					? Date.parse(new Date(this.messageList[msgLen - 1].time))
@@ -197,10 +228,10 @@
 </script>
 
 <style lang="scss" scoped>
-	@media (max-width: 1200px) {
-		.main-right-sidebar {
-			display: none;
-		}
-	}
+	// @media (max-width: 1200px) {
+	// 	.main-right-sidebar {
+	// 		display: none;
+	// 	}
+	// }
 	@import '@/assets/styles/user/chat.scss';
 </style>

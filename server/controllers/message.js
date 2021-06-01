@@ -2,12 +2,13 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 16:27:34
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-31 15:59:37
+ * @Last Modified time: 2021-06-01 20:19:38
  */
 const {
 	Message,
 	MessageRecipient,
 	User,
+	UserRoom,
 	$,
 	sequelize,
 } = require('../models/index.js');
@@ -79,6 +80,46 @@ async function updateMsgToFriend(s_id, r_id, content, time) {
 }
 
 /**
+ * 更新聊天室消息记录
+ */
+async function updateMsgToRoom(s_id, r_id, content, time) {
+	const msgRes = await Message.create({
+		sender_id: s_id,
+		content: content,
+		create_date: time,
+	});
+
+	const userRoom = await UserRoom.findOne({
+		where: {
+			user_id: s_id,
+			room_id: r_id,
+		},
+		attributes: ['id'],
+	});
+
+	return MessageRecipient.create({
+		message_id: msgRes.id,
+		recipient_id: 1,
+		recipient_group_id: userRoom.id,
+	});
+}
+
+async function updateNoticeToRoom(s_id, r_id, content, time) {
+	const msgRes = await Message.create({
+		sender_id: s_id,
+		content: content,
+		create_date: time,
+		type: 'notice',
+	});
+
+	return MessageRecipient.create({
+		message_id: msgRes.id,
+		recipient_id: 1,
+		recipient_group_id: r_id,
+	});
+}
+
+/**
  * controllers for route
  */
 
@@ -107,4 +148,6 @@ module.exports = {
 	friend_chatHistory_get,
 	friend_sendMsg_post,
 	updateMsgToFriend,
+	updateMsgToRoom,
+	updateNoticeToRoom,
 };

@@ -43,3 +43,12 @@ body {
 	opacity: 0.4;
 	border: 0;
 }
+
+.el-dropdown-menu__item {
+	color: $themeColorMedium;
+}
+.el-dropdown-menu__item:focus,
+.el-dropdown-menu__item:not(.is_disabled):hover {
+	color: $themeColorLight;
+	background-color: rgba($emphasisColorB, 0.3);
+}

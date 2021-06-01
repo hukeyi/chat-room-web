@@ -1,5 +1,11 @@
 .friend-chat-box,
 .room-chat-box {
+	@media (max-width: 1200px) {
+		.main-right-sidebar {
+			display: none;
+		}
+	}
+
 	.main-area {
 		.el-container .main-central {
 			position: relative;
@@ -65,6 +71,12 @@
 .room-chat-box,
 .friend-info-box,
 .friend-chat-box {
+	@media (max-width: 1200px) {
+		.main-right-sidebar {
+			display: none;
+		}
+	}
+
 	width: 100%;
 	height: 100%;
 	background-color: transparent;
