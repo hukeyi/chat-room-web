@@ -59,13 +59,9 @@
 					>
 						<InfoListItem
 							:showDropDown="item.id != uId"
-							:name="item.name"
-							:avatar="item.avatar ? item.avatar : undefined"
-							:id="Number(item.id)"
+							:info="item"
 							:rId="Number(rId)"
-							:status="item.isAdmin ? 'on' : 'off'"
-							:menuList="menuList"
-							:auth="uId == adminId ? 'admin' : 'member'"
+							:auth="adminIdList.includes(uId) ? 'admin' : 'member'"
 						></InfoListItem>
 					</div>
 				</el-aside>
@@ -89,13 +85,15 @@
 			return {
 				uId: '',
 				rId: '',
-				adminId: '',
+				adminIdList: [],
 				roomInfo: '',
 				icon_room: require('@/assets/styles/common/img/user.png'),
 
 				inputText: '',
 				messageList: [],
 				memberList: [],
+
+				showMemberInfo: false,
 
 				menuList: [
 					{
@@ -118,6 +116,7 @@
 						title: '查看个人信息',
 						handler: function(uId, rId) {
 							console.log('show user', uId, rId, 'info');
+							this.showMemberInfo = true;
 						},
 					},
 				],
@@ -135,6 +134,7 @@
 			// 格式化时间日期
 			// 同一天：只显示时间
 			// 同一年：只显示月日+时间
+
 			toDate(time) {
 				const now = new Date();
 				const then = new Date(time);
@@ -158,6 +158,7 @@
 				if (e.preventDefault) e.preventDefault();
 				else window.event.value = false;
 			},
+
 			// 点击发送按钮的事件回调函数
 			handleClickSendText() {
 				if (this.inputText != '') {
@@ -175,11 +176,14 @@
 					this.scrollToEnd();
 				}
 			},
-			refreshView() {
+			async refreshView() {
 				this.uId = this.getUserId();
 				this.rId = this.$route.params.rId;
-				this.adminId = this.getRoomAdminById(this.rId).id;
+				const admins = await this.getRoomAdminById(this.rId);
+				this.adminIdList = admins.map((item) => item.id);
+
 				this.roomInfo = this.getRoomInfo()(this.rId);
+
 				// 显示历史消息
 				this.messageList = this.getHistory()(this.rId);
 				this.memberList = this.getMemberList()(this.rId);

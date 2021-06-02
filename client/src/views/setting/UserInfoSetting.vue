@@ -86,12 +86,20 @@
 						</el-col>
 						<el-col style="padding-top: 40px;" :span="14">
 							<div class="avatar-form" style="margin-left: 80px; border:0px;">
-								<img
-									:src="ruleInfoForm.avatar ? ruleInfoForm.avatar : icon_user"
-									class="avatar-image"
-								/>
 								<div class="avatar-operation">
-									<el-button class="avatar-form-button">修改图像</el-button>
+									<el-upload
+										name="avatar"
+										:action="upload_url + `?uid=${getUserId()}`"
+										:show-file-list="false"
+										:on-success="handleAvatarSuccess"
+										:before-upload="beforeAvatarUpload"
+									>
+										<img
+											:src="ruleInfoForm.avatar ? avatar_url : icon_user"
+											class="avatar-image"
+										/>
+										<el-button class="avatar-form-button">修改图像</el-button>
+									</el-upload>
 								</div>
 							</div>
 						</el-col>
@@ -141,9 +149,10 @@
 </template>
 
 <script>
-	// import userApi from '@/api/user';
+	import userApi from '@/api/user';
 	// import { h } from 'vue';
-	import { mapGetters } from 'vuex';
+	import { mapActions, mapGetters } from 'vuex';
+	import { isObjectsEqual } from '@/utils/tool';
 
 	export default {
 		components: {},
@@ -182,7 +191,14 @@
 			return {
 				icon_setting: require('@/assets/styles/common/img/setting.png'),
 				icon_user: require('@/assets/styles/common/img/user.png'),
+				avatar_url: '',
 				selectStatus: 'info',
+
+				upload_url: userApi.UpdateAvatar,
+				download_url: '',
+				test_url: '',
+
+				exInfo: {},
 
 				// info
 				ruleInfoForm: {
@@ -194,7 +210,9 @@
 					birthDate: '',
 					avatar: '',
 				},
-				rulesInfo: {},
+				rulesInfo: {
+					name: [{ required: true }],
+				},
 
 				// pass
 				rulePassForm: {
@@ -211,27 +229,116 @@
 			};
 		},
 		methods: {
-			...mapGetters(['getUserInfo']),
+			...mapGetters(['getUserInfo', 'getUserId']),
+			...mapActions(['setUserInfo']),
+			/**
+			 * 头像上传回调函数
+			 */
+			handleAvatarSuccess(res, file) {
+				console.log('success', file);
+				// console.log('res', res);
+				// this.avatar_url = URL.createObjectURL(file.raw);
+				this.avatar_url = this.download_url;
+			},
+			beforeAvatarUpload(file) {
+				const isJPG = file.type === 'image/jpeg';
+				const isLt2M = file.size / 1024 / 1024 < 2;
+
+				if (!isJPG) {
+					this.$message.error('上传头像图片只能是 JPG 格式');
+				}
+				if (!isLt2M) {
+					this.$message.error('上传头像图片大小不能超过 2MB');
+				}
+				return isJPG && isLt2M;
+			},
 			handleSelectStatus(key) {
 				this.selectStatus = key;
+			},
+			async submitPassForm() {
+				try {
+					const postData = {
+						exPass: this.rulePassForm.exPass,
+						newPass: this.rulePassForm.newPass,
+					};
+					await userApi.UpdatePass(postData);
+					this.$message({
+						type: 'success',
+						message: `修改密码成功`,
+					});
+				} catch (err) {
+					console.log('submit pass', err);
+					this.$message({
+						type: 'error',
+						message: `修改密码失败：${err}`,
+					});
+				}
+			},
+			async submitInfoForm() {
+				try {
+					const { name, email, gender, birthDate } = this.ruleInfoForm;
+					const postData = {
+						name: name ? name : this.exInfo.name,
+						email: email ? email : this.exInfo.email,
+						gender: gender ? gender : this.exInfo.gender,
+						birth_date: birthDate ? birthDate : this.exInfo.birthDate,
+					};
+
+					console.log('this.exInfo:', this.exInfo, '\npostData', postData);
+
+					if (
+						this.exInfo &&
+						postData &&
+						!isObjectsEqual(postData, this.exInfo)
+					) {
+						await userApi.UpdateInfo(postData);
+						this.setUserInfo(this.ruleInfoForm);
+						this.$message({
+							type: 'success',
+							message: `修改个人信息成功`,
+						});
+					} else {
+						this.$message({
+							message: `无修改信息`,
+						});
+						console.log('same user info');
+					}
+				} catch (err) {
+					console.log('submit pass', err);
+					this.$message({
+						type: 'error',
+						message: `修改个人信息失败：${err}`,
+					});
+				}
 			},
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						console.log(valid);
-					} else {
-						console.log('error submit');
-						return false;
+						if (formName === 'rulePassForm') {
+							this.submitPassForm();
+						} else {
+							this.submitInfoForm();
+						}
 					}
 				});
 			},
 			resetForm(formName) {
-				this.$refs[formName].resetFields();
+				if (formName === 'rulePassForm') this.$refs[formName].resetFields();
+				else this.ruleInfoForm = this.getUserInfo();
 			},
 		},
 		mounted() {
-			this.ruleInfoForm = this.getUserInfo();
-			console.log('info form', this.ruleInfoForm);
+			const userInfo = this.getUserInfo();
+			this.exInfo = {
+				name: userInfo.name,
+				email: userInfo.email,
+				gender: userInfo.gender,
+				birth_date: userInfo.birthDate,
+			};
+			this.avatar_url = userApi.DownloadAvatar(userInfo.id);
+			this.download_url = userApi.DownloadAvatar(userInfo.id);
+			this.ruleInfoForm = userInfo;
+			console.log('userinfo', userInfo);
 		},
 	};
 </script>

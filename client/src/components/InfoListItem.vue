@@ -1,10 +1,10 @@
 <template>
 	<div class="info-list-item">
 		<div class="info">
-			<img :src="avatar" />
+			<img :src="info.avatar" />
 			<div class="name-id">
-				<span id="name">{{ name }}</span>
-				<span id="id"> #{{ id }}</span>
+				<span id="name">{{ info.name }}</span>
+				<span id="id"> #{{ info.id }}</span>
 			</div>
 			<div
 				class="status"
@@ -22,30 +22,75 @@
 					<el-dropdown-item
 						v-for="(item, key) in authMenuList"
 						:key="key"
-						@click="item.handler(id, rId)"
+						@click="item.handler(info.id, rId)"
 						>{{ item.title }}</el-dropdown-item
 					>
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
+
+		<el-dialog
+			title="成员个人信息"
+			v-model="menuList[2].show"
+			width="30%"
+			:before-close="handleClosePop"
+			:modal="true"
+			:append-to-body="true"
+			:show-close="false"
+		>
+			<InfoDesciption
+				:name="info.name"
+				:phone="info.phone"
+				:gender="info.gender"
+				:birthDate="info.birthDate"
+			></InfoDesciption>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="menuList[2].show = false">关 闭</el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script>
+	import roomApi from '@/api/room';
+	import InfoDesciption from './InfoDescItem';
+
 	export default {
+		components: { InfoDesciption },
+		data() {
+			return {
+				status: 'on',
+				menuList: [
+					{
+						auth: 'admin',
+						title: '移除该成员',
+						handler: async function(uId, rId) {
+							console.log('remove member', uId);
+							await roomApi.PostDeleteMember({ uId, rId });
+						},
+					},
+					{
+						auth: 'admin',
+						title: '设为管理员',
+						handler: function(uId, rId) {
+							console.log('set user', uId, rId, 'admin');
+						},
+					},
+					{
+						auth: 'member',
+						title: '查看个人信息',
+						show: false,
+						handler: function(uId, rId) {
+							console.log('show user', uId, rId, 'info');
+							this.show = true;
+						},
+					},
+				],
+			};
+		},
 		props: {
-			avatar: {
-				type: String,
-				default: require('@/assets/styles/common/img/user.png'),
-			},
-			name: {
-				type: String,
-				default: 'memberA',
-			},
-			id: {
-				type: Number,
-				default: 1,
-			},
 			rId: {
 				type: Number,
 				default: 1,
@@ -58,31 +103,37 @@
 				type: String,
 				default: 'member',
 			},
-			status: {
-				type: String,
-				default: 'off',
-			},
 			showStatus: {
 				type: Boolean,
 				default: true,
 			},
-			menuList: {
-				type: Array,
-				default: () => [
-					{
-						title: 'default item',
-						handler: function() {
-							console.log('default handler');
-						},
-					},
-				],
+			info: {
+				type: Object,
+				default: null,
 			},
 		},
 		computed: {
 			authMenuList: function() {
-				console.log('rid', this.rId, 'uid', this.id, 'auth', this.auth);
-				return this.menuList.filter((item) => item.auth == this.auth);
+				return this.auth === 'admin'
+					? this.menuList
+					: this.menuList.filter((item) => item.auth == this.auth);
 			},
+		},
+		methods: {
+			handleShowMemberInfo() {
+				console.log('handle show member info');
+				this.showMemberInfo = true;
+			},
+			handleClosePop(done) {
+				this.$confirm('确认关闭？')
+					.then(() => {
+						done();
+					})
+					.catch(() => {});
+			},
+		},
+		mounted() {
+			this.status = this.info.isAdmin ? 'on' : 'off';
 		},
 	};
 </script>

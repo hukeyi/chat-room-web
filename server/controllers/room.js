@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-30 20:16:51
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 22:27:54
+ * @Last Modified time: 2021-06-02 20:33:17
  */
 const {
 	Message,
@@ -112,7 +112,42 @@ async function quitRoomById(uid, rid) {
 			where: { room_id: Number(rid), user_id: Number(uid) },
 		});
 	}
-	return Promise.reject('Please directly delete room');
+	return Promise.reject('不能移除管理员');
+}
+
+/**
+ * 设置聊天室管理员
+ */
+async function setRoomAdminById(uid, rid) {
+	const right = await checkUserAuth(uid, rid);
+	console.log('room controller set room admin:', right);
+
+	if (right !== 'admin') {
+		return UserRoom.update(
+			{ is_admin: true },
+			{
+				where: { room_id: Number(rid), user_id: Number(uid) },
+			}
+		);
+	}
+	return Promise.reject(`${uid} 已经是聊天室${rid}的管理员`);
+}
+
+/**
+ * 将管理员取消权限
+ */
+async function unsetRoomAdminById(uid, rid) {
+	const right = await checkUserAuth(uid, rid);
+	console.log('room controller unset room admin:', right);
+
+	if (right === 'admin') {
+		return UserRoom.update(
+			{ is_admin: false },
+			{
+				where: { room_id: Number(rid), user_id: Number(uid) },
+			}
+		);
+	}
 }
 
 /**
@@ -422,6 +457,21 @@ const room_admin_del_member_post = async (req, res) => {
 	}
 };
 
+const room_admin_set_admin_post = async (req, res) => {
+	try {
+		const userAuth = await checkUserAuth(req.user.id, req.body.rId);
+		if (userAuth === 'admin') {
+			await setRoomAdminById(req.body.uId, req.body.rId);
+			res.sendStatus(200);
+		} else {
+			res.status(401).json('没有设置管理员权限');
+		}
+	} catch (err) {
+		console.log('room search post', err);
+		res.status(500).json(err);
+	}
+};
+
 module.exports = {
 	room_delete_post, //ok
 	room_add_post, //ok
@@ -431,7 +481,8 @@ module.exports = {
 	room_search_post, //ok
 	room_quit_post, //ok
 
-	room_admin_del_member_post,
+	room_admin_del_member_post, //ok
+	room_admin_set_admin_post, //ok
 
 	findAdminIdByRoomId,
 	findRoomIsPrivate,

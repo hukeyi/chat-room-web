@@ -25,7 +25,6 @@
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
 	import RoomList from './RoomList/index';
 	import RoomChatBox from './RoomChatBox/index';
-	// import testdata from '@/utils/roomTest.js';
 	import roomApi from '@/api/room.js';
 
 	import { mapGetters, mapActions } from 'vuex';

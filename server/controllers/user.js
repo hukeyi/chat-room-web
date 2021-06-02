@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-23 20:52:58
+ * @Last Modified time: 2021-06-03 00:20:01
  */
 
 const { User, $ } = require('../models/index.js');
@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const SALT_LENGTH = 8;
 const jsonwebtoken = require('jsonwebtoken');
 const { toJSON } = require('./utils.js');
+const fs = require('fs');
 
 /**
  * api for database
@@ -23,6 +24,57 @@ function findUsers(id) {
 	});
 }
 
+function findUserPassById(id) {
+	return User.findOne({
+		where: {
+			id: id,
+		},
+		attributes: ['password'],
+	});
+}
+
+async function updateUserPass(id, newPass) {
+	const hash = await bcrypt.hash(newPass, SALT_LENGTH);
+	return User.update(
+		{ password: hash },
+		{
+			where: { id },
+		}
+	);
+}
+
+function updateUserInfo(id, colName, newValue) {
+	return User.update(
+		{ [`${colName}`]: newValue },
+		{
+			where: { id },
+		}
+	);
+}
+
+function updateUserAvatar(id, newValue) {
+	return User.update(
+		{ avatar: newValue },
+		{
+			where: { id },
+		}
+	);
+}
+
+function updateUserInfoAll(id, name, email, gender, birth_date) {
+	return User.update(
+		{
+			name,
+			email,
+			gender,
+			birth_date,
+		},
+		{
+			where: { id },
+		}
+	);
+}
+
 const user_search_post = async (req, res, next) => {
 	const { id } = req.body;
 	console.log('\nsearch post', req.body);
@@ -32,6 +84,60 @@ const user_search_post = async (req, res, next) => {
 		res.status(200).json(toJSON(users));
 	} catch (err) {
 		res.status(500).send(err);
+	}
+};
+
+const user_update_info_post = async (req, res, next) => {
+	try {
+		const { id } = req.user;
+		const { name, email, gender, birth_date } = req.body;
+		await updateUserInfoAll(
+			id,
+			name,
+			email,
+			gender,
+			Date.parse(new Date(birth_date))
+		);
+		res.sendStatus(200);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+};
+
+const user_update_avatar_post = async (req, res, next) => {
+	try {
+		console.log('👮‍♀️receive avatar', req.file);
+		const avatar = req.file;
+		fs.renameSync(
+			'upload/' + avatar.filename,
+			'upload/avatar_user_' + req.query.uid + '.jpg'
+		);
+		// res.sendStatus(200);
+		res.sendFile(
+			process.cwd() + '/upload/avatar_user_' + req.query.uid + '.jpg'
+		);
+	} catch (err) {
+		res.status(500).json(err);
+	}
+};
+
+const user_update_password_post = async (req, res, next) => {
+	const { id } = req.user;
+	console.log('\nchange password post', req.body);
+	const { exPass, newPass } = req.body;
+	try {
+		const user = toJSON(await findUserPassById(id));
+		console.log('\nuser change password post', user);
+		// 密码不正确
+		if (!bcrypt.compareSync(exPass, user.password)) {
+			console.log('\nwrong password');
+			res.status(401).json('密码错误，认证失败');
+		} else {
+			await updateUserPass(id, newPass);
+			res.sendStatus(200);
+		}
+	} catch (err) {
+		res.status(500).json(err);
 	}
 };
 
@@ -99,4 +205,7 @@ module.exports = {
 	user_register_post,
 	user_login_post,
 	user_search_post,
+	user_update_password_post,
+	user_update_info_post,
+	user_update_avatar_post,
 };

@@ -96,9 +96,9 @@
 			},
 		},
 		mounted() {
-			const state = JSON.parse(sessionStorage.getItem('vuex'));
-			this.userId = state.user.userInfo.id;
-			this.userName = state.user.userInfo.name;
+			this.userId = this.getUserId();
+			this.userName = this.getUserName();
+			this.user_avator = userApi.DownloadAvatar(this.userId);
 		},
 	};
 </script>

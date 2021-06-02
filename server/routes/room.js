@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:20:16
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 22:09:56
+ * @Last Modified time: 2021-06-02 20:29:16
  */
 const express = require('express');
 const router = express.Router();
@@ -37,6 +37,12 @@ router.post(
 	'/del/member',
 	passport.authenticate('jwt', { session: false }),
 	roomController.room_admin_del_member_post
+);
+
+router.post(
+	'/set/admin',
+	passport.authenticate('jwt', { session: false }),
+	roomController.room_admin_set_admin_post
 );
 
 router.post(

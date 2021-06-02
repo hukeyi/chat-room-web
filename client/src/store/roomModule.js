@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-29 15:42:29
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-02 00:05:55
+ * @Last Modified time: 2021-06-02 20:21:44
  */
 
 export const roomModule = {
@@ -116,8 +116,8 @@ export const roomModule = {
 		},
 		getRoomAdminById({ getters }, rid) {
 			const memberList = getters.getRoomMembersById(rid);
-			const admin = memberList.filter((item) => item.isAdmin);
-			return admin[0];
+			const admins = memberList.filter((item) => item.isAdmin);
+			return admins;
 		},
 	},
 };
