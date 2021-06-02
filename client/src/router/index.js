@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-29 15:30:51
+ * @Last Modified time: 2021-06-02 10:57:09
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -21,6 +21,9 @@ import FriendChatBox from '../views/user/FriendChatBox/FriendChatBox.vue';
 // room-box
 import RoomChatBox from '../views/channel/RoomChatBox/RoomChatBox.vue';
 import RoomInfoBox from '../views/channel/RoomChatBox/RoomInfoBox.vue';
+
+// setting
+import Setting from '../views/setting/index.vue';
 
 // error
 import ErrorPage from '@/views/error/index.vue';
@@ -57,6 +60,18 @@ const routes = [
 			{
 				path: 'friend/:fId',
 				component: FriendChatBox,
+				meta: { requiresAuth: true },
+			},
+		],
+	},
+	{
+		// 用户设置界面
+		path: '/setting/:id',
+		component: Setting,
+		children: [
+			{
+				path: '',
+				component: FriendInfoBox,
 				meta: { requiresAuth: true },
 			},
 		],

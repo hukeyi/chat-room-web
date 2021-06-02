@@ -1,6 +1,14 @@
 export const userModule = {
 	state: {
-		userInfo: { id: 'default', phone: 'xxxxxx', name: 'default', avatar: '' },
+		userInfo: {
+			id: 'default',
+			phone: 'xxxxxx',
+			name: 'default',
+			avatar: '',
+			email: '',
+			gender: '',
+			birthDate: '',
+		},
 		friendList: [],
 		friendChatList: {},
 		noticeList: [],
@@ -13,6 +21,7 @@ export const userModule = {
 		getUserName: (state) => state.userInfo.name,
 		getUserPhone: (state) => state.userInfo.phone,
 		getUserAvator: (state) => state.userInfo.avatar,
+		getUserInfo: (state) => state.userInfo,
 		getNoticeList: (state) => state.noticeList,
 		getNewNotice: (state) => state.noticeList[state.noticeList.length - 1],
 
@@ -88,6 +97,9 @@ export const userModule = {
 		SET_USERAVATOR(state, avatar) {
 			state.userInfo.avatar = avatar;
 		},
+		SET_USERINFO(state, info) {
+			state.userInfo = info;
+		},
 		/**
 		 * notice 相关 mutations
 		 */
@@ -145,6 +157,9 @@ export const userModule = {
 		},
 		setUserAvator({ commit }, avatar) {
 			commit('SET_USERAVATOR', avatar);
+		},
+		setUserInfo({ commit }, info) {
+			commit('SET_USERINFO', info);
 		},
 		/**
 		 * friendList 相关 actions

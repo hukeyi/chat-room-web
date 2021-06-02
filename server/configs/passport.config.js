@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 12:54:30
+ * @Last Modified time: 2021-06-02 13:37:36
  */
 
 // passport setting
@@ -60,7 +60,22 @@ passport.use(
 		async function (username, password, done) {
 			// fixme: 后面做邮箱验证的话，可能需要加一个字段判断是手机号还是邮箱
 			try {
-				const user = await User.findOne({ where: { phone: username } });
+				const user = toJSON(
+					await User.findOne({
+						where: { phone: username, is_active: true },
+						attributes: [
+							'id',
+							'name',
+							'phone',
+							'email',
+							'avatar',
+							'gender',
+							'password',
+							['birth_date', 'birthDate'],
+							'status',
+						],
+					})
+				);
 				console.log('\n-----> user ' + username + ' attempted to log in.');
 
 				// 用户不存在
@@ -74,7 +89,7 @@ passport.use(
 					return done(null, false);
 				}
 				console.log('\n-----> user info from database:', user.id, user.name);
-
+				delete user.password;
 				return done(null, user);
 			} catch (err) {
 				console.log('\n-----> something went wrong', err);

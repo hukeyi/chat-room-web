@@ -67,6 +67,7 @@
 		}
 	}
 }
+.user-info-box,
 .room-info-box,
 .room-chat-box,
 .friend-info-box,
@@ -266,10 +267,41 @@
 					}
 				}
 			}
-
+			.user-password-form {
+				width: 400px;
+			}
+			.user-info-form,
+			.user-password-form,
 			.create-room-form {
 				padding-top: 19px;
 				padding-left: 100px;
+
+				.avatar-form {
+					width: 180px;
+					margin-top: 19px;
+					margin: auto;
+
+					background-color: $themeColorLight;
+					border: 0;
+
+					.avatar-image {
+						width: 100%;
+						border: 2px solid $fontColorLight;
+						border-radius: 5px;
+						background-color: white;
+					}
+					.avatar-form-button {
+						display: block;
+						margin: auto;
+						margin-top: 10px;
+
+						background-color: $fontColorDeep;
+						border: 0;
+						width: 80px;
+						color: $themeColorLight;
+					}
+				}
+
 				.el-form-item {
 					.el-form-item__label {
 						color: $fontColorDeep;
@@ -277,28 +309,43 @@
 						font-size: 15px;
 					}
 					.el-form-item__content {
+						.is-disabled {
+							.el-input__inner {
+								opacity: 0.6;
+							}
+						}
 						.el-input__inner {
 							background-color: white;
 							padding: 10px;
 							border-color: $themeColorMedium;
 							border-width: 2px;
 							border-radius: 5px;
-							width: 500px;
+							width: 100%;
 						}
-						.el-textarea__inner {
-							background-color: white;
-							padding: 10px;
-							border-color: $themeColorLight;
-							border-width: 1px;
-							border-radius: 5px;
-							width: 500px;
-							height: 100px;
+						.el-date-picker.el-input__inner {
+							padding-left: 30px;
 						}
+
 						.el-button {
 							background-color: $emphasisColorA;
 							border: 0;
 							width: 80px;
 							color: $fontColorLight;
+						}
+						.el-radio {
+							color: $fontColorLight;
+
+							.el-radio__label {
+								padding-left: 10px;
+							}
+
+							.el-radio__input.is-checked .el-radio__inner {
+								background-color: $emphasisColorB;
+								border-color: $emphasisColorB;
+							}
+							.el-radio__input.is-checked + .el-radio__label {
+								color: $emphasisColorB;
+							}
 						}
 					}
 				}

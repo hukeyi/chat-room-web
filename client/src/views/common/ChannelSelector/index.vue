@@ -6,6 +6,8 @@
 		<hr width="60%" class="level-divider" />
 		<!-- 聊天室主页 -->
 		<SelectorItem :icon="icon_room" :link="getRoomHomeUrl()"></SelectorItem>
+		<!-- 用户个人信息页面 -->
+		<SelectorItem :icon="icon_userInfo" :link="getSettingUrl()"></SelectorItem>
 	</div>
 </template>
 
@@ -17,6 +19,7 @@
 			return {
 				icon_userhome: require('@/assets/styles/common/img/user.png'),
 				icon_room: require('@/assets/styles/common/img/international.png'),
+				icon_userInfo: require('@/assets/styles/common/img/setting.png'),
 			};
 		},
 		components: {
@@ -29,6 +32,9 @@
 			},
 			getRoomHomeUrl() {
 				return `channel/${this.getUserId()}`;
+			},
+			getSettingUrl() {
+				return `setting/${this.getUserId()}`;
 			},
 		},
 	};

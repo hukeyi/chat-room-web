@@ -176,7 +176,7 @@
 								:name="item.name"
 								:avatar="item.avatar ? item.avatar : undefined"
 								:id="item.id"
-								:status="item.status ? item.status : 'off'"
+								:showStatus="false"
 							></InfoCardItem>
 							<el-button @click="handleClickSend(item)">发送加入申请</el-button>
 						</div>
@@ -253,7 +253,7 @@
 				searchId: '',
 				showEmptyRes: false,
 
-				icon_room: require('@/assets/styles/common/img/user.png'),
+				icon_room: require('@/assets/styles/common/img/international.png'),
 
 				// 添加聊天室 聊天室状态表
 				showAddRoom: false,
