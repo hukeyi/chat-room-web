@@ -17,11 +17,12 @@
 </template>
 
 <script>
+	import userApi from '@/api/user';
 	export default {
 		props: {
-			avatar: {
-				type: String,
-				default: require('@/assets/styles/common/img/user.png'),
+			showAvatar: {
+				type: Boolean,
+				default: false,
 			},
 			name: {
 				type: String,
@@ -39,6 +40,16 @@
 				type: Boolean,
 				default: true,
 			},
+		},
+		data() {
+			return {
+				avatar: require('@/assets/styles/common/img/user.png'),
+			};
+		},
+		mounted() {
+			if (this.showAvatar) {
+				this.avatar = userApi.DownloadAvatar(this.id);
+			}
 		},
 	};
 </script>

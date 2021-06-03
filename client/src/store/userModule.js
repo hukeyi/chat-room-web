@@ -1,3 +1,5 @@
+import userApi from '@/api/user';
+
 export const userModule = {
 	state: {
 		userInfo: {
@@ -20,7 +22,8 @@ export const userModule = {
 		getUserId: (state) => state.userInfo.id,
 		getUserName: (state) => state.userInfo.name,
 		getUserPhone: (state) => state.userInfo.phone,
-		getUserAvator: (state) => state.userInfo.avatar,
+		hasAvatar: (state) => state.userInfo.avatar && state.userInfo.avatar != '',
+		getUserAvatar: (state) => userApi.DownloadAvatar(state.userInfo.id),
 		getUserInfo: (state) => state.userInfo,
 		getNoticeList: (state) => state.noticeList,
 		getNewNotice: (state) => state.noticeList[state.noticeList.length - 1],
@@ -141,6 +144,11 @@ export const userModule = {
 			console.log('store insert list', state.friendChatList, fid, msg);
 			state.friendChatList[fid].chatHistory.push(msg);
 		},
+		async getAvatarById(state, id) {
+			const url = userApi.DownloadAvatar(id);
+			console.log('mutations get', url, id);
+			return url;
+		},
 	},
 	actions: {
 		/**
@@ -202,6 +210,7 @@ export const userModule = {
 		deleteFriendChatById({ commit }, id) {
 			commit('REMOVE_FRIENDCHATBYID', id);
 		},
+
 		/**
 		 * 用好友id查找，当前私聊列表中是否有该好友
 		 */

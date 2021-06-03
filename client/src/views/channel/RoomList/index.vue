@@ -35,9 +35,9 @@
 					</div>
 				</div>
 				<img
-					@click="handleClickSetBtn"
-					:src="setting_icon"
-					class="user-setting"
+					@click="handleClickLogout"
+					:src="logout_icon"
+					class="user-logout"
 				/>
 			</el-footer>
 		</el-container>
@@ -61,6 +61,8 @@
 			return {
 				user_avator: require('@/assets/styles/common/img/user.png'),
 				setting_icon: require('@/assets/styles/common/img/international.png'),
+				logout_icon: require('@/assets/styles/common/img/log-out.png'),
+
 				userId: '',
 				userName: '',
 			};
@@ -77,7 +79,7 @@
 			handleClickItem(item) {
 				this.$router.push(`/channel/${this.getUserId()}/room/${item.id}`);
 			},
-			handleClickSetBtn() {
+			handleClickLogout() {
 				// logout
 				console.log('setting btn clicked');
 				userApi
@@ -104,71 +106,5 @@
 </script>
 
 <style lang="scss" scoped>
-	.room-chat-list {
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		background-color: transparent;
-
-		* {
-			padding: 0;
-			margin: 0;
-		}
-
-		color: $fontColorDeep;
-
-		.room-chat-header {
-			padding: 20px;
-			border-bottom: 2px solid $themeColorDeep;
-		}
-
-		.chat-session-list {
-			padding: 20px;
-
-			:deep(.el-skeleton__item) {
-				// fixme: delete me when the list is down
-				background-color: $themeColorLight;
-			}
-		}
-
-		.user-info-setting {
-			padding: 20px;
-			border-top: 2px solid $themeColorDeep;
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-
-			.user-info {
-				display: flex;
-				justify-content: center;
-				width: 50%;
-
-				img {
-					width: 40px;
-					height: 40px;
-
-					background-color: $emphasisColorA;
-					border-radius: 50%;
-				}
-				.user-name-id {
-					margin: auto;
-					font-size: 12px;
-					#user-name {
-						color: $fontColorLight;
-						font-weight: bolder;
-					}
-					#user-id {
-						color: $fontColorDeep;
-					}
-				}
-			}
-			.user-setting {
-				width: 20px;
-				height: 20px;
-
-				background-color: $emphasisColorA;
-				border-radius: 50%;
-			}
-		}
-	}
+	@import '@/assets/styles/user/list.scss';
 </style>

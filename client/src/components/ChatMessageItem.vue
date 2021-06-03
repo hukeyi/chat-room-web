@@ -19,6 +19,7 @@
 </template>
 
 <script>
+	import userApi from '@/api/user';
 	export default {
 		props: {
 			// 消息item的方向
@@ -26,9 +27,9 @@
 				type: String,
 				default: 'left',
 			},
-			avatar: {
-				type: String,
-				default: require('@/assets/styles/common/img/user.png'),
+			showAvatar: {
+				type: Boolean,
+				default: false,
 			},
 			name: {
 				type: String,
@@ -42,9 +43,20 @@
 				type: String,
 				default: `default message content.`,
 			},
+			s_id: {
+				type: Number,
+				default: 0,
+			},
 		},
 		data() {
-			return {};
+			return {
+				avatar: require('@/assets/styles/common/img/user.png'),
+			};
+		},
+		mounted() {
+			if (this.s_id != 0 && this.s_id != 1 && this.showAvatar) {
+				this.avatar = userApi.DownloadAvatar(this.s_id);
+			}
 		},
 	};
 </script>

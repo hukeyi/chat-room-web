@@ -230,15 +230,16 @@
 		},
 		methods: {
 			...mapGetters(['getUserInfo', 'getUserId']),
-			...mapActions(['setUserInfo']),
+			...mapActions(['setUserInfo', 'setUserAvator']),
 			/**
 			 * 头像上传回调函数
 			 */
-			handleAvatarSuccess(res, file) {
+			async handleAvatarSuccess(res, file) {
 				console.log('success', file);
-				// console.log('res', res);
-				// this.avatar_url = URL.createObjectURL(file.raw);
-				this.avatar_url = this.download_url;
+				const filename = 'avatar_user_' + this.ruleInfoForm.id;
+				this.ruleInfoForm.avatar = filename;
+				await this.setUserAvator(filename);
+				this.avatar_url = URL.createObjectURL(file.raw);
 			},
 			beforeAvatarUpload(file) {
 				const isJPG = file.type === 'image/jpeg';
@@ -346,6 +347,11 @@
 <style lang="scss" scoped>
 	.user-info-box .main-area .el-container {
 		overflow: auto;
+
+		.avatar-image {
+			width: 180px;
+			height: 180px;
+		}
 	}
 	@import '@/assets/styles/user/chat.scss';
 </style>

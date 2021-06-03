@@ -17,8 +17,8 @@
 					:default-active="selectFriendStatus"
 				>
 					<el-menu-item index="all">全部</el-menu-item>
-					<el-menu-item index="on">在线</el-menu-item>
-					<el-menu-item index="off">离线</el-menu-item>
+					<!-- <el-menu-item index="on">在线</el-menu-item>
+					<el-menu-item index="off">离线</el-menu-item> -->
 				</el-menu>
 				<el-divider
 					class="main-header-divider"
@@ -91,14 +91,14 @@
 							v-for="item in friendList"
 							:key="item.id"
 							:name="item.name"
-							:avatar="item.avatar ? item.avatar : undefined"
+							:showAvatar="item.avatar && item.avatar != ''"
 							:id="item.id"
 							:status="item.status"
 							@click="handleClickFriendCard(item)"
 						></InfoCardItem>
 					</div>
 					<!-- 在线好友信息列表 -->
-					<div v-else-if="selectFriendStatus === 'on'" class="friend-list-on">
+					<!-- <div v-else-if="selectFriendStatus === 'on'" class="friend-list-on">
 						<InfoCardItem
 							v-for="item in getOnList()"
 							:key="item.id"
@@ -108,9 +108,9 @@
 							:status="item.status"
 							@click="handleClickFriendCard(item)"
 						></InfoCardItem>
-					</div>
+					</div> -->
 					<!-- 离线好友信息列表 -->
-					<div v-else-if="selectFriendStatus === 'off'" class="friend-list-off">
+					<!-- <div v-else-if="selectFriendStatus === 'off'" class="friend-list-off">
 						<InfoCardItem
 							v-for="item in getOffList()"
 							:key="item.id"
@@ -120,7 +120,7 @@
 							:status="item.status"
 							@click="handleClickFriendCard(item)"
 						></InfoCardItem>
-					</div>
+					</div> -->
 					<!-- 好友信息边栏，点击某个好友的card，从右往左弹出指定好友的信息 -->
 					<el-drawer
 						custom-class="friend-info-drawer"
@@ -130,12 +130,15 @@
 						destroy-on-close
 					>
 						<el-row type="flex" justify="center"
-							><img :src="drawerInfo.avatar ? drawerInfo.avatar : icon_friend"
-						/></el-row>
+							><img
+								style="width: 180px; height: 180px; margin-top: 100px;"
+								:src="drawerAvatar"
+							/>
+						</el-row>
 						<el-row type="flex" justify="center">{{ drawerInfo.id }}</el-row>
 						<el-row type="flex" justify="center">{{ drawerInfo.name }}</el-row>
 						<el-row type="flex" justify="center">{{
-							drawerInfo.status
+							drawerInfo.gender
 						}}</el-row>
 						<el-row class="btn-group" type="flex" justify="center">
 							<el-button
@@ -206,7 +209,7 @@
 <script>
 	import InputItem from '@/components/InputItem.vue';
 	import InfoCardItem from '@/components/InfoCardItem.vue';
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	import friendApi from '@/api/friend';
 	import userApi from '@/api/user';
 	import { h } from 'vue';
@@ -254,6 +257,9 @@
 				'deleteNoticeByIndex',
 				'deleteNewNotice',
 			]),
+			...mapMutations({
+				getAvatarById: 'getAvatarById',
+			}),
 
 			//删除好友
 			async deleteFriend(id) {
@@ -317,6 +323,7 @@
 
 			//点击好友card，显示好友信息事件回调函数
 			handleClickFriendCard(info) {
+				console.log('drawerinfo', info);
 				this.drawerInfo = info;
 				this.showRightDrawer = !this.showRightDrawer;
 			},
@@ -399,6 +406,18 @@
 				console.log('no to ', item.detail.name, key);
 				this.noticeList.splice(key, 1);
 				this.$socket.emitter('add friend response', [item.detail.id, false]);
+			},
+		},
+		computed: {
+			drawerAvatar: function() {
+				if (this.drawerInfo) {
+					const url = this.drawerInfo.avatar
+						? userApi.DownloadAvatar(this.drawerInfo.id)
+						: this.icon_friend;
+					return url;
+				} else {
+					return null;
+				}
 			},
 		},
 		watch: {

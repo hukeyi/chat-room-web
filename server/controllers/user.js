@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-03 00:20:01
+ * @Last Modified time: 2021-06-03 12:06:33
  */
 
 const { User, $ } = require('../models/index.js');
@@ -108,14 +108,12 @@ const user_update_avatar_post = async (req, res, next) => {
 	try {
 		console.log('👮‍♀️receive avatar', req.file);
 		const avatar = req.file;
-		fs.renameSync(
-			'upload/' + avatar.filename,
-			'upload/avatar_user_' + req.query.uid + '.jpg'
-		);
-		// res.sendStatus(200);
-		res.sendFile(
-			process.cwd() + '/upload/avatar_user_' + req.query.uid + '.jpg'
-		);
+		const uid = req.query.uid;
+		const filename = 'avatar_user_' + uid + '.jpg';
+
+		fs.renameSync('upload/' + avatar.filename, 'upload/' + filename);
+		await updateUserAvatar(uid, filename);
+		res.sendFile(process.cwd() + '/upload/' + filename);
 	} catch (err) {
 		res.status(500).json(err);
 	}

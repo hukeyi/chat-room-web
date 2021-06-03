@@ -17,8 +17,9 @@
 							<ChatMessage
 								v-if="item.type != 'notice'"
 								:direction="item.s_id == uId ? 'right' : 'left'"
-								:avatar="item.avatar ? item.avatar : undefined"
+								:showAvatar="item.avatar != '' && item.avatar"
 								:name="item.name"
+								:s_id="item.s_id"
 								:time="toDate(item.time)"
 								:message="item.content"
 							></ChatMessage>
@@ -71,7 +72,7 @@
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	import ChatMessage from '@/components/ChatMessageItem.vue';
 	import ChatNotice from '@/components/ChatNoticeItem.vue';
 
@@ -129,8 +130,10 @@
 				getRoomInfo: 'getRoomInfoById',
 				getHistory: 'getRoomChatHistoryById',
 				getMemberList: 'getRoomMembersById',
+				hasAvatar: 'hasAvatar',
 			}),
 			...mapActions(['deleteRoomById', 'getRoomAdminById']),
+			...mapMutations({ getAvatarById: 'getAvatarById' }),
 			// 格式化时间日期
 			// 同一天：只显示时间
 			// 同一年：只显示月日+时间
@@ -166,7 +169,7 @@
 						s_id: this.getUserId(),
 						r_id: this.rId,
 						time: Date.now(),
-						avatar: '',
+						avatar: this.hasAvatar(),
 						name: this.getUserName(),
 						content: this.inputText,
 					};

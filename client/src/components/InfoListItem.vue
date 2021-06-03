@@ -1,7 +1,7 @@
 <template>
 	<div class="info-list-item">
 		<div class="info">
-			<img :src="info.avatar" />
+			<img :src="avatar" />
 			<div class="name-id">
 				<span id="name">{{ info.name }}</span>
 				<span id="id"> #{{ info.id }}</span>
@@ -55,6 +55,7 @@
 
 <script>
 	import roomApi from '@/api/room';
+	import userApi from '@/api/user';
 	import InfoDesciption from './InfoDescItem';
 
 	export default {
@@ -88,6 +89,7 @@
 						},
 					},
 				],
+				avatar: require('@/assets/styles/common/img/user.png'),
 			};
 		},
 		props: {
@@ -134,6 +136,8 @@
 		},
 		mounted() {
 			this.status = this.info.isAdmin ? 'on' : 'off';
+			console.log(this.info.id, this.info.avatar);
+			if (this.info.avatar) this.avatar = userApi.DownloadAvatar(this.info.id);
 		},
 	};
 </script>
