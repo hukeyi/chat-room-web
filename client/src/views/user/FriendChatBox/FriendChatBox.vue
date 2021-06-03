@@ -3,7 +3,7 @@
 		<el-container class="main-area">
 			<el-header class="main-header">
 				<div class="main-header-title">
-					<img :src="icon_friend" /><span style="margin: auto 10px;"
+					<img :src="fAvatar" /><span style="margin: auto 10px;"
 						># {{ fName }}</span
 					>
 				</div>
@@ -15,8 +15,9 @@
 							v-for="(item, key) in messageList"
 							:key="key"
 							:direction="item.s_id == fId ? 'left' : 'right'"
-							:avatar="item.avatar ? item.avatar : undefined"
+							:showAvatar="item.avatar && item.avatar != ''"
 							:name="item.name"
+							:s_id="item.s_id"
 							:time="toDate(item.time)"
 							:message="item.content"
 						></ChatMessage>
@@ -49,9 +50,10 @@
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	import ChatMessage from '@/components/ChatMessageItem.vue';
 	import { formatDate } from '@/utils/time';
+	import userApi from '@/api/user';
 
 	export default {
 		components: { ChatMessage },
@@ -63,6 +65,8 @@
 
 				inputText: '',
 				messageList: [],
+
+				fAvatar: '',
 			};
 		},
 		methods: {
@@ -71,8 +75,11 @@
 				getUserName: 'getUserName',
 				getHistory: 'getFriendChatHistoryById',
 				getFriendName: 'getFriendNameById',
+				getFriendAvatar: 'getFriendAvatarById',
+				hasAvatar: 'hasAvatar',
 			}),
 			...mapActions(['deleteFriendById', 'deleteFriendChatById']),
+			...mapMutations(['getAvatarById']),
 			// 格式化时间日期
 			// 同一天：只显示时间
 			// 同一年：只显示月日+时间
@@ -106,7 +113,7 @@
 						s_id: this.getUserId(),
 						r_id: this.fId,
 						time: Date.now(),
-						avatar: '',
+						avatar: this.hasAvatar(),
 						name: this.getUserName(),
 						content: this.inputText,
 					};
@@ -122,6 +129,11 @@
 				// 显示历史消息
 				this.messageList = this.getHistory()(this.fId);
 				this.scrollToEnd();
+
+				const avatar = this.getFriendAvatar(this.fId);
+				this.fAvatar = avatar
+					? userApi.DownloadAvatar(this.fId)
+					: this.icon_friend;
 			},
 			refreshMsg() {
 				this.messageList = this.getHistory()(this.fId);

@@ -12,7 +12,7 @@
 		props: {
 			avatar: {
 				type: String,
-				default: require('@/assets/styles/common/img/user.png'),
+				default: require('@/assets/styles/common/img/group.png'),
 			},
 			name: {
 				type: String,

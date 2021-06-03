@@ -71,6 +71,7 @@
 			...mapGetters({
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
+				hasAvatar: 'hasAvatar',
 			}),
 			...mapMutations({
 				// todo: delete room list item controller
@@ -100,7 +101,8 @@
 		mounted() {
 			this.userId = this.getUserId();
 			this.userName = this.getUserName();
-			this.user_avator = userApi.DownloadAvatar(this.userId);
+			if (this.hasAvatar())
+				this.user_avator = userApi.DownloadAvatar(this.userId);
 		},
 	};
 </script>

@@ -118,7 +118,10 @@
 							.then((res) => {
 								console.log(res);
 								if (res.data.id) {
-									alert('register success!');
+									this.$message({
+										type: 'success',
+										message: '注册成功！',
+									});
 									res.data.id && this.$router.push('/login');
 								} else {
 									alert(res.data.errorMsg);

@@ -33,8 +33,8 @@
 			</el-form-item>
 			<el-form-item>
 				<p class="sign-in-link" @click="handleCreateAcc">创建账号</p>
-				<span style="color: #fff"> | </span>
-				<p @click="handleChangePass" class="sign-in-link">忘记密码</p>
+				<!-- <span style="color: #fff"> | </span>
+				<p @click="handleChangePass" class="sign-in-link">忘记密码</p> -->
 			</el-form-item>
 		</el-form>
 	</div>
@@ -112,9 +112,8 @@
 								this.$router.push(`/user/${id}`);
 							})
 							.catch((err) => {
-								// todo: change alert to a element ui message box
 								// and control the content, only display string type
-								alert(err);
+								this.$message.error(err);
 							});
 					} else {
 						console.log('error submit');

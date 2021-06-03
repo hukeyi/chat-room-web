@@ -12,6 +12,7 @@
 					<ChatListItem
 						v-for="item in chatInfoList"
 						:key="item.id"
+						:showAvatar="item.avatar && item.avatar != ''"
 						:id="item.id"
 						:name="item.name"
 						@click="handleClickItem(item)"
@@ -72,6 +73,7 @@
 				getUserId: 'getUserId',
 				getUserName: 'getUserName',
 				getChatList: 'getFriendChatInfoList',
+				hasAvatar: 'hasAvatar',
 			}),
 			...mapMutations({
 				deleteListItemById: 'deleteFriendChatById',
@@ -102,7 +104,8 @@
 		mounted() {
 			this.userId = this.getUserId();
 			this.userName = this.getUserName();
-			this.user_avator = userApi.DownloadAvatar(this.userId);
+			if (this.hasAvatar())
+				this.user_avator = userApi.DownloadAvatar(this.userId);
 		},
 	};
 </script>

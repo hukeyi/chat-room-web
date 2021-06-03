@@ -75,8 +75,9 @@
 					{
 						auth: 'admin',
 						title: '设为管理员',
-						handler: function(uId, rId) {
+						handler: async function(uId, rId) {
 							console.log('set user', uId, rId, 'admin');
+							await roomApi.PostSetRoomAdmin({ uId, rId });
 						},
 					},
 					{

@@ -72,6 +72,9 @@ export const userModule = {
 		getFriendNameById: (state) => (id) => {
 			return state.friendChatList[id].name;
 		},
+		getFriendAvatarById: (state) => (id) => {
+			return state.friendChatList[id].avatar;
+		},
 		/**
 		 * 返回全部好友私聊信息数组，不包括记录
 		 */

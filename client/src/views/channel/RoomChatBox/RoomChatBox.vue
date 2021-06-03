@@ -78,7 +78,7 @@
 
 	import { formatDate } from '@/utils/time';
 	import InfoListItem from '@/components/InfoListItem.vue';
-	import roomApi from '@/api/room';
+	// import roomApi from '@/api/room';
 
 	export default {
 		components: { ChatMessage, ChatNotice, InfoListItem },
@@ -88,7 +88,7 @@
 				rId: '',
 				adminIdList: [],
 				roomInfo: '',
-				icon_room: require('@/assets/styles/common/img/user.png'),
+				icon_room: require('@/assets/styles/common/img/group.png'),
 
 				inputText: '',
 				messageList: [],
@@ -97,29 +97,30 @@
 				showMemberInfo: false,
 
 				menuList: [
-					{
-						auth: 'admin',
-						title: '移除该成员',
-						handler: async function(uId, rId) {
-							console.log('remove member', uId);
-							await roomApi.PostDeleteMember({ uId, rId });
-						},
-					},
-					{
-						auth: 'admin',
-						title: '设为管理员',
-						handler: function(uId, rId) {
-							console.log('set user', uId, rId, 'admin');
-						},
-					},
-					{
-						auth: 'member',
-						title: '查看个人信息',
-						handler: function(uId, rId) {
-							console.log('show user', uId, rId, 'info');
-							this.showMemberInfo = true;
-						},
-					},
+					// {
+					// 	auth: 'admin',
+					// 	title: '移除该成员',
+					// 	handler: async function(uId, rId) {
+					// 		console.log('remove member', uId);
+					// 		await roomApi.PostDeleteMember({ uId, rId });
+					// 	},
+					// },
+					// {
+					// 	auth: 'admin',
+					// 	title: '设为管理员',
+					// 	handler: async function(uId, rId) {
+					// 		console.log('set user', uId, rId, 'admin');
+					// 		await roomApi.PostSetRoomAdmin({ uId, rId });
+					// 	},
+					// },
+					// {
+					// 	auth: 'member',
+					// 	title: '查看个人信息',
+					// 	handler: function(uId, rId) {
+					// 		console.log('show user', uId, rId, 'info');
+					// 		this.showMemberInfo = true;
+					// 	},
+					// },
 				],
 			};
 		},

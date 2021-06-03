@@ -24,6 +24,10 @@
 				type: Boolean,
 				default: false,
 			},
+			showRoom: {
+				type: Boolean,
+				default: false,
+			},
 			name: {
 				type: String,
 				default: 'friendA',
@@ -44,11 +48,14 @@
 		data() {
 			return {
 				avatar: require('@/assets/styles/common/img/user.png'),
+				roomAvatar: require('@/assets/styles/common/img/group.png'),
 			};
 		},
 		mounted() {
 			if (this.showAvatar) {
 				this.avatar = userApi.DownloadAvatar(this.id);
+			} else if (this.showRoom) {
+				this.avatar = this.roomAvatar;
 			}
 		},
 	};

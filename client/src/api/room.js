@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 22:03:48
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 22:50:28
+ * @Last Modified time: 2021-06-03 19:24:38
  */
 import axios from '@/utils/axios.js';
 
@@ -61,6 +61,13 @@ const PostCreateRoom = (data) =>
 		data: data,
 	});
 
+const PostSetRoomAdmin = (data) =>
+	axios({
+		url: '/api/room/set/admin',
+		method: 'post',
+		data: data,
+	});
+
 export default {
 	GetRoomListAll,
 	PostDeleteRoom,
@@ -70,4 +77,5 @@ export default {
 	GetRoomChatListAll,
 	PostAddRoom,
 	PostQuitRoom,
+	PostSetRoomAdmin,
 };

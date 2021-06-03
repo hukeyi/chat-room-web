@@ -99,9 +99,8 @@
 							v-for="item in roomList"
 							:key="item.id"
 							:name="item.name"
-							:avatar="item.avatar ? item.avatar : undefined"
+							:showRoom="true"
 							:id="item.id"
-							:status="item.status"
 							@click="handleClickRoomCard(item)"
 						></InfoCardItem>
 					</div>
@@ -111,9 +110,8 @@
 							v-for="item in getMyRoomList()"
 							:key="item.id"
 							:name="item.name"
-							:avatar="item.avatar ? item.avatar : undefined"
+							:showRoom="true"
 							:id="item.id"
-							:status="item.status"
 							@click="handleClickRoomCard(item)"
 						></InfoCardItem>
 					</div>
@@ -253,7 +251,7 @@
 				searchId: '',
 				showEmptyRes: false,
 
-				icon_room: require('@/assets/styles/common/img/international.png'),
+				icon_room: require('@/assets/styles/common/img/group.png'),
 
 				// 添加聊天室 聊天室状态表
 				showAddRoom: false,

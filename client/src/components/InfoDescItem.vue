@@ -5,10 +5,6 @@
 			<el-col class="content" :span="8">{{ name }}</el-col>
 		</el-row>
 		<el-row>
-			<el-col class="label" :span="8">手机号</el-col>
-			<el-col class="content" :span="8">{{ phone }}</el-col>
-		</el-row>
-		<el-row>
 			<el-col class="label" :span="8">性别</el-col>
 			<el-col class="content" :span="8">{{ gender }}</el-col>
 		</el-row>
@@ -44,7 +40,7 @@
 			},
 			birthDate: {
 				type: String,
-				default: '2000-01-01',
+				default: '2000-06-01',
 			},
 		},
 	};
