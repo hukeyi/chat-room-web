@@ -230,7 +230,7 @@
 		},
 		methods: {
 			...mapGetters(['getUserInfo', 'getUserId']),
-			...mapActions(['setUserInfo', 'setUserAvator']),
+			...mapActions(['setUserInfo', 'setUserAvatar']),
 			/**
 			 * 头像上传回调函数
 			 */
@@ -238,7 +238,7 @@
 				console.log('success', file);
 				const filename = 'avatar_user_' + this.ruleInfoForm.id;
 				this.ruleInfoForm.avatar = filename;
-				await this.setUserAvator(filename);
+				await this.setUserAvatar(filename);
 				this.avatar_url = URL.createObjectURL(file.raw);
 			},
 			beforeAvatarUpload(file) {

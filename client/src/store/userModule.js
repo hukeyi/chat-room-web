@@ -163,7 +163,7 @@ export const userModule = {
 		setUserPhone({ commit }, phone) {
 			commit('SET_USERPHONE', phone);
 		},
-		setUserAvator({ commit }, avatar) {
+		setUserAvatar({ commit }, avatar) {
 			commit('SET_USERAVATOR', avatar);
 		},
 		setUserInfo({ commit }, info) {
