@@ -1,0 +1,45 @@
+.entrance {
+	overflow: hidden;
+	text-align: center;
+	// padding-top: 100px;
+
+	:deep(#chat-logo) {
+		width: 300px;
+		height: 252px;
+		margin-bottom: 20px;
+		margin-left: 35px;
+	}
+
+	.image-slot {
+		width: 300px;
+		height: 252px;
+		margin-bottom: 20px;
+		margin-left: 35px;
+	}
+
+	.signin,
+	.register {
+		overflow: hidden;
+		text-align: center;
+		padding: 0px 30% 0px;
+
+		.sign-in-link {
+			display: inline-block;
+			text-decoration: underline;
+			color: $fontColorDeep;
+			font-size: 12px;
+		}
+
+		.el-button {
+			width: 250px;
+			border-radius: 25px;
+			border: 0px;
+			color: $fontColorDeep;
+			background-color: $themeColorLight;
+		}
+
+		:deep(.el-form .el-form-item label) {
+			color: $fontColorDeep;
+		}
+	}
+}
