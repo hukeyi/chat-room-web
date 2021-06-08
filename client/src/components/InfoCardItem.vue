@@ -81,7 +81,7 @@
 		.info {
 			display: flex;
 			justify-content: flex-start;
-			width: 40%;
+			width: 75%;
 
 			img {
 				width: 40px;
@@ -91,7 +91,9 @@
 				border-radius: 50%;
 			}
 			.name-id {
-				margin: auto;
+				// margin: auto;
+				width: 100%;
+				margin-left: 20px;
 				font-size: 12px;
 				#name {
 					color: $fontColorLight;
