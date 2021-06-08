@@ -6,6 +6,8 @@ Vue3, Node.js, Express, Socket.io, Element plus
 
 ### Login
 
+considering make the Logo animated
+
 - [x] Login.vue
 - [x] Register.vue
 - [ ] ChangePassword.vue
@@ -15,8 +17,8 @@ Vue3, Node.js, Express, Socket.io, Element plus
 #### user
 
 - [x] 好友聊天列表 friend chat list #0417
-- [ ] 好友聊天窗口/好友信息列表 friend main area
-- [ ] 好友状态 friend main right-sidebar (consider delete this part in user module)
+- [x] 好友聊天窗口 #0424
+- [x] 好友信息列表 friend main area #0423
 
 #### channel
 
@@ -28,7 +30,7 @@ Vue3, Node.js, Express, Socket.io, Element plus
 
 - [x] ChannelSelector 最左频道选择边栏 #0417
 
-### Other
+### Error
 
 - [ ] 403.vue
 - [ ] 404.vue

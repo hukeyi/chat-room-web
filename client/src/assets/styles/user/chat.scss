@@ -1,0 +1,412 @@
+.friend-chat-box,
+.room-chat-box {
+	@media (max-width: 1200px) {
+		.main-right-sidebar {
+			display: none;
+		}
+	}
+
+	.main-area {
+		.el-container .main-central {
+			position: relative;
+
+			padding: 0;
+			margin: 0;
+
+			width: 100%;
+			height: 100%;
+			.chat-box-window {
+				box-sizing: border-box;
+				width: 100%;
+				padding: 10px 20px 0;
+
+				overflow: auto;
+				background-color: $themeColorLight;
+
+				position: absolute;
+				top: 0;
+				bottom: 80px; //与chat-box-input 高度一致
+			}
+			.chat-box-input {
+				height: 50px;
+				padding: 10px;
+				border-radius: 10px;
+				background-color: rgba($themeColorMedium, 0.6);
+
+				position: absolute;
+				bottom: 10px;
+				left: 10px;
+				right: 10px;
+
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.el-textarea {
+					width: 88%;
+				}
+
+				:deep(.el-textarea__inner#input-frame) {
+					border: 0px;
+					resize: none;
+					background-color: transparent;
+					color: $fontColorLight;
+				}
+				#emoji-btn,
+				#send-btn {
+					width: 30px;
+					height: 30px;
+					border: 0px;
+					border-radius: 50%;
+					background-color: $emphasisColorA;
+
+					line-height: 30px;
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+.user-info-box,
+.room-info-box,
+.room-chat-box,
+.friend-info-box,
+.friend-chat-box {
+	@media (max-width: 1200px) {
+		.main-right-sidebar {
+			display: none;
+		}
+	}
+
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	overflow: hidden;
+
+	:deep(.main-area) {
+		width: 100% !important;
+		height: 100%;
+
+		* {
+			padding: 0;
+		}
+
+		.main-header {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+
+			padding: 0;
+			border-bottom: 2px solid $themeColorDeep;
+
+			* {
+				font-weight: bolder;
+			}
+
+			*.main-header-divider {
+				background-color: $themeColorMedium;
+			}
+
+			.main-header-title {
+				display: flex;
+				align-items: center;
+				width: auto;
+				font-size: 14px;
+				padding-left: 20px;
+				span {
+					color: $fontColorDeep;
+				}
+
+				img {
+					width: 25px;
+					height: 25px;
+					border-radius: 50%;
+					background-color: $fontColorDeep;
+					margin-right: 5px;
+				}
+			}
+
+			.main-header-menu {
+				width: auto;
+				background-color: transparent;
+				border: transparent;
+
+				.el-menu-item {
+					margin: auto 20px;
+					color: $fontColorDeep;
+				}
+				.el-menu-item:hover {
+					background-color: transparent;
+					color: $fontColorDeep;
+				}
+				.el-menu-item.is-active {
+					color: $fontColorLight;
+					background-color: transparent;
+					border-bottom: 2px solid $fontColorDeep;
+				}
+			}
+			.main-header-badge {
+				margin-left: 10px;
+				margin-right: 20px;
+				.main-header-btn {
+					margin-right: 10px;
+				}
+				.el-badge__content {
+					width: 19px;
+					right: 20px;
+					top: 3px;
+					background-color: #9d2933;
+				}
+			}
+
+			.main-header-btn {
+				background-color: $emphasisColorA;
+				border: 0px;
+
+				font-size: 14px;
+				width: 90px;
+				height: 15px !important;
+
+				color: $fontColorLight;
+				opacity: 0.45;
+			}
+
+			.main-header-btn.is-active {
+				opacity: 1;
+				border-color: $fontColorLight;
+				border-width: 2px;
+			}
+		}
+		.main-central {
+			background-color: transparent;
+			min-width: 600px;
+			padding: 20px;
+
+			.no-friends,
+			.no-rooms {
+				margin: 50px;
+			}
+			.add-room,
+			.add-friend {
+				border-bottom: 1px solid $themeColorDeep;
+
+				.input-item .el-input .el-input__inner {
+					border: 0px;
+					padding: 10px;
+				}
+			}
+			.add-room-btn,
+			.add-friend-btn {
+				float: left;
+				margin-left: 10px;
+
+				border: 0;
+				width: 80px;
+				height: 40px;
+
+				background-color: $emphasisColorA;
+				color: $fontColorDeep;
+			}
+			.add-room-btn:hover,
+			.add-friend-btn:hover {
+				color: $fontColorLight;
+			}
+			.room-info-drawer,
+			.friend-info-drawer {
+				background-color: $themeColorMedium;
+				.el-drawer__body:first-child :last-child {
+					margin-top: 30px;
+				}
+
+				.el-row {
+					margin-bottom: 20px;
+				}
+
+				.el-button {
+					border: 0;
+					width: 80px;
+					height: 40px;
+
+					background-color: $fontColorLight;
+					color: $themeColorLight;
+				}
+
+				.btn-group {
+					align-items: flex-end;
+					#start-chat {
+						background-color: $emphasisColorA;
+					}
+					#btn-del-room {
+						background-color: $emphasisColorB;
+					}
+				}
+			}
+			.add-room-result,
+			.add-friend-result {
+				width: 100%;
+				height: auto;
+
+				.add-room-result-item,
+				.add-friend-result-item {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+
+					.info-card-item .info .name-id {
+						margin: auto 15px;
+					}
+
+					.el-button {
+						height: 40px;
+						width: auto;
+
+						padding: 10px;
+						margin-left: 10px;
+						background-color: $fontColorDeep;
+						color: $themeColorLight;
+					}
+				}
+			}
+			.user-password-form {
+				width: 400px;
+			}
+			.user-info-form,
+			.user-password-form,
+			.create-room-form {
+				padding-top: 19px;
+				padding-left: 100px;
+
+				.avatar-form {
+					width: 180px;
+					margin-top: 19px;
+					margin: auto;
+
+					background-color: $themeColorLight;
+					border: 0;
+
+					.avatar-image {
+						width: 100%;
+						border: 2px solid $fontColorLight;
+						border-radius: 5px;
+						background-color: white;
+					}
+					.avatar-form-button {
+						display: block;
+						margin: auto;
+						margin-top: 10px;
+
+						background-color: $fontColorDeep;
+						border: 0;
+						width: 80px;
+						color: $themeColorLight;
+					}
+				}
+
+				.el-form {
+					#create-room-name .el-form-item__content {
+						width: 250px;
+					}
+					width: 400px;
+
+					.el-textarea__inner {
+						height: 100px;
+						padding: 8px;
+					}
+				}
+
+				.el-form-item {
+					.el-form-item__label {
+						color: $fontColorDeep;
+						font-weight: bold;
+						font-size: 15px;
+					}
+					.el-form-item__content {
+						.is-disabled {
+							.el-input__inner {
+								opacity: 0.6;
+							}
+						}
+						.el-input__inner {
+							background-color: white;
+							padding: 10px;
+							border-color: $themeColorMedium;
+							border-width: 2px;
+							border-radius: 5px;
+							width: 100%;
+						}
+						.el-date-editor {
+							.el-input__inner {
+								padding-left: 30px;
+							}
+						}
+
+						.el-button {
+							background-color: $emphasisColorA;
+							border: 0;
+							width: 80px;
+							color: $fontColorLight;
+						}
+						.el-radio {
+							color: $fontColorLight;
+
+							.el-radio__label {
+								padding-left: 10px;
+							}
+
+							.el-radio__input.is-checked .el-radio__inner {
+								background-color: $emphasisColorB;
+								border-color: $emphasisColorB;
+							}
+							.el-radio__input.is-checked + .el-radio__label {
+								color: $emphasisColorB;
+							}
+						}
+					}
+				}
+			}
+
+			.room-notice,
+			.friend-notice {
+				width: 100%;
+				height: auto;
+				.room-notice-title,
+				.friend-notice-title {
+					color: $fontColorDeep;
+					margin-left: 12px;
+					font-weight: bolder;
+				}
+				.room-notice-item,
+				.friend-notice-item {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+
+					.info-card-item .info .name-id {
+						margin: auto 15px;
+					}
+
+					.el-button {
+						height: 40px;
+						width: auto;
+						font-weight: bolder;
+
+						padding: 10px;
+						margin-left: 10px;
+						background-color: $fontColorDeep;
+						color: $themeColorLight;
+						border-width: 2px;
+						border-color: $themeColorMedium;
+						border-radius: 5px;
+					}
+					.yes-btn {
+						background-color: $emphasisColorA;
+					}
+				}
+			}
+		}
+		.main-right-sidebar {
+			background-color: $themeColorMedium;
+			width: 300px;
+		}
+	}
+}

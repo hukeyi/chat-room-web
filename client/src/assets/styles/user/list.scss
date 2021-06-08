@@ -1,0 +1,70 @@
+.room-chat-list,
+.friend-chat-list {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: transparent;
+
+	* {
+		padding: 0;
+		margin: 0;
+	}
+
+	color: $fontColorDeep;
+
+	.room-chat-header,
+	.friend-chat-header {
+		padding: 20px;
+		border-bottom: 2px solid $themeColorDeep;
+	}
+
+	.chat-session-list {
+		padding: 20px;
+
+		:deep(.el-skeleton__item) {
+			// fixme: delete me when the list is down
+			background-color: $themeColorLight;
+		}
+	}
+
+	.user-info-setting {
+		padding: 20px;
+		border-top: 2px solid $themeColorDeep;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.user-info {
+			display: flex;
+			justify-content: center;
+			width: 50%;
+
+			img {
+				width: 40px;
+				height: 40px;
+
+				background-color: $emphasisColorA;
+				border-radius: 50%;
+			}
+			.user-name-id {
+				margin: auto;
+				font-size: 12px;
+				#user-name {
+					color: $fontColorLight;
+					font-weight: bolder;
+				}
+				#user-id {
+					color: $fontColorDeep;
+				}
+			}
+		}
+		.user-logout {
+			width: 15px;
+			height: 15px;
+
+			background-color: $emphasisColorA;
+			border-radius: 50%;
+			border: 3px solid $emphasisColorA;
+		}
+	}
+}
