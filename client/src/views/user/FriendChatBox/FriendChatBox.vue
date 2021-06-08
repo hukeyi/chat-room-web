@@ -130,7 +130,7 @@
 				this.messageList = this.getHistory()(this.fId);
 				this.scrollToEnd();
 
-				const avatar = this.getFriendAvatar(this.fId);
+				const avatar = this.getFriendAvatar()(this.fId);
 				this.fAvatar = avatar
 					? userApi.DownloadAvatar(this.fId)
 					: this.icon_friend;

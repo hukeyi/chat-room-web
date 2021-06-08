@@ -124,7 +124,7 @@
 							:rules="rules"
 							ref="ruleForm"
 						>
-							<el-form-item label="名称" prop="name">
+							<el-form-item id="create-room-name" label="名称" prop="name">
 								<el-input v-model="ruleForm.name"></el-input>
 							</el-form-item>
 							<el-form-item label="简介" prop="intro">

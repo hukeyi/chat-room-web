@@ -302,6 +302,18 @@
 					}
 				}
 
+				.el-form {
+					#create-room-name .el-form-item__content {
+						width: 250px;
+					}
+					width: 400px;
+
+					.el-textarea__inner {
+						height: 100px;
+						padding: 8px;
+					}
+				}
+
 				.el-form-item {
 					.el-form-item__label {
 						color: $fontColorDeep;
