@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-03 12:06:33
+ * @Last Modified time: 2021-06-08 12:56:13
  */
 
 const { User, $ } = require('../models/index.js');
@@ -76,10 +76,12 @@ function updateUserInfoAll(id, name, email, gender, birth_date) {
 }
 
 const user_search_post = async (req, res, next) => {
-	const { id } = req.body;
-	console.log('\nsearch post', req.body);
 	try {
-		const users = await findUsers(id);
+		const { id } = req.body;
+		console.log('\nsearch post', req.body);
+
+		let users = null;
+		if (id != 1) users = await findUsers(id);
 		console.log('\nuser search post', toJSON(users));
 		res.status(200).json(toJSON(users));
 	} catch (err) {

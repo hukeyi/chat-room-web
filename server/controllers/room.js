@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-30 20:16:51
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-02 20:33:17
+ * @Last Modified time: 2021-06-08 12:56:20
  */
 const {
 	Message,
@@ -434,7 +434,9 @@ const room_chatList_get = async (req, res) => {
 
 const room_search_post = async (req, res) => {
 	try {
-		const room = await findRoomById(req.body.rId);
+		let room = null;
+		const rid = req.body.rId;
+		if (rid != 1) room = await findRoomById(rid);
 		res.status(200).json(toJSON(room));
 	} catch (err) {
 		console.log('room search post', err);
