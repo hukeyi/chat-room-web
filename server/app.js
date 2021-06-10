@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-30 20:18:05
+ * @Last Modified time: 2021-06-10 17:12:43
  */
 
 /**
@@ -56,7 +56,7 @@ const roomRouter = require('./routes/room');
  */
 app.use(
 	cors({
-		origin: [process.env.CLIENT_URL],
+		origin: true,
 		methods: ['GET', 'POST', 'OPTIONS'],
 		allowHeaders: ['Conten-Type', 'Authorization'],
 	})
