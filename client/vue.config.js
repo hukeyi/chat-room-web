@@ -12,7 +12,7 @@ module.exports = {
 	devServer: {
 		// 调试端口
 		port: 8080,
-		host: 'localhost',
+		// host: 'localhost',
 		https: false,
 		open: false,
 		proxy: {
