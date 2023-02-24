@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-24 11:29:57
+ * @Last Modified time: 2023-02-24 13:38:50
  */
 
 import { io } from 'socket.io-client';
@@ -24,13 +24,15 @@ export class Socket {
 	 * 开启socket
 	 */
 	open() {
-		this.socket = io(
-			process.env.APP_SERVER_HOST + ':' + process.env.APP_SERVER_PORT,
-			{
-				withCredentials: true,
-				transports: ['websocket'],
-			}
-		);
+		const server_url =
+			process.env.APP_SERVER_URL != ''
+				? process.env.APP_SERVER_URL
+				: process.env.APP_SERVER_HOST;
+		':' + process.env.APP_SERVER_PORT;
+		this.socket = io(server_url, {
+			withCredentials: true,
+			transports: ['websocket'],
+		});
 		/**
 		 * 挂载监听
 		 */

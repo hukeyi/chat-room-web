@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-24 11:29:29
+ * @Last Modified time: 2023-02-24 13:39:00
  */
 import axios from '@/utils/axios.js';
 
@@ -48,12 +48,12 @@ const UpdateInfo = (data) => {
 		data: data,
 	});
 };
-
-const UpdateAvatar =
-	process.env.APP_SERVER_HOST +
-	':' +
-	process.env.APP_SERVER_PORT +
-	'/api/user/update/avatar';
+const server_url =
+	process.env.APP_SERVER_URL != ''
+		? process.env.APP_SERVER_URL
+		: process.env.APP_SERVER_HOST;
+':' + process.env.APP_SERVER_PORT;
+const UpdateAvatar = server_url + '/api/user/update/avatar';
 const DownloadAvatar = (uid) =>
 	process.env.process.env.APP_SERVER_HOST +
 	':' +
