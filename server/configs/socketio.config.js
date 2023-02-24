@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-27 18:30:08
+ * @Last Modified time: 2023-02-24 11:33:13
  */
 
 const cookieParser = require('cookie-parser');
@@ -24,7 +24,9 @@ function onAuthorizeFail(data, message, error, accept) {
 module.exports = function (server, store) {
 	const io = require('socket.io')(server, {
 		cors: {
-			origin: [process.env.CLIENT_URL],
+			origin: [
+				process.env.APP_CLIENT_HOST + ':' + process.env.APP_CLIENT_PORT,
+			],
 			methods: ['GET', 'POST', 'OPTIONS'],
 			allowHeaders: ['Conten-Type', 'Authorization'],
 			credentials: true,
