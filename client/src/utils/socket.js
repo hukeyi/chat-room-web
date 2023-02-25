@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-24 13:38:50
+ * @Last Modified time: 2023-02-25 11:36:53
  */
 
 import { io } from 'socket.io-client';
@@ -24,12 +24,7 @@ export class Socket {
 	 * 开启socket
 	 */
 	open() {
-		const server_url =
-			process.env.APP_SERVER_URL != ''
-				? process.env.APP_SERVER_URL
-				: process.env.APP_SERVER_HOST;
-		':' + process.env.APP_SERVER_PORT;
-		this.socket = io(server_url, {
+		this.socket = io(process.env.VUE_APP_SERVER_URL, {
 			withCredentials: true,
 			transports: ['websocket'],
 		});
