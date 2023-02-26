@@ -24,7 +24,7 @@ export class Socket {
 	 * 开启socket
 	 */
 	open() {
-		this.socket = io(process.env.VUE_APP_SERVER_URL, {
+		this.socket = io(process.env.SERVER_URL, {
 			withCredentials: true,
 			transports: ['websocket'],
 		});

@@ -7,12 +7,12 @@ services:
     working_dir: /app
     volumes:
       - ./:/app
-    # environment:
-      # already set in .env
-      # - MYSQL_HOST = mysql
-      # - MYSQL_USER = root
-      # - MYSQL_PASSWORD = secret
-      # - MYSQL_DB = todos
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DB: testdocker
+      MYSQL_PORT: 3306
   mysql:
     image: mysql:8.0
     volumes:

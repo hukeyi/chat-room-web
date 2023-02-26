@@ -49,9 +49,9 @@ const UpdateInfo = (data) => {
 	});
 };
 
-const UpdateAvatar = process.env.VUE_APP_SERVER_URL + '/api/user/update/avatar';
+const UpdateAvatar = process.env.SERVER_URL + '/api/user/update/avatar';
 const DownloadAvatar = (uid) =>
-	process.env.VUE_APP_SERVER_URL + '/api/user/download/avatar/' + uid;
+	process.env.SERVER_URL + '/api/user/download/avatar/' + uid;
 
 export default {
 	Register,
