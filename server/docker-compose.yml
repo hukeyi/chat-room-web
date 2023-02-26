@@ -1,0 +1,29 @@
+services:
+  app:
+    image: node:16
+    command: sh -c "npm install && npm start"
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    # environment:
+      # already set in .env
+      # - MYSQL_HOST = mysql
+      # - MYSQL_USER = root
+      # - MYSQL_PASSWORD = secret
+      # - MYSQL_DB = todos
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - chat-mysql-data:/var/lib/mysql
+    # ports:
+      # - 3306:3306
+    environment:
+      # MYSQL_ROOT_PASSWORD: hky1024@
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testdocker
+
+# 显式声明的 named volumes for mysql
+volumes:
+  chat-mysql-data:
