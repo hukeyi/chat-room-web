@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-10 17:12:43
+ * @Last Modified time: 2023-02-25 16:23:01
  */
 
 /**
@@ -103,9 +103,10 @@ app.use(function (err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
-
+	// print error message
+	console.log('😈 Oops! Something went wrong.  \n', err);
 	// render the error page
-	res.sendStatus(err.status || 500);
+	return res.sendStatus(err.status || 500);
 });
 
 module.exports = { app, store };

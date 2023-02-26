@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-08 12:56:13
+ * @Last Modified time: 2023-02-25 16:23:51
  */
 
 const { User, $ } = require('../models/index.js');
@@ -160,18 +160,18 @@ const user_register_post = async (req, res, next) => {
 				password: hash,
 			});
 			console.log('\nNew user created: ', newUser.id);
-			res.status(200).json({
+			return res.status(200).json({
 				data: { id: newUser.id },
 				message: 'User register success',
 			});
 		} else {
-			res.status(401).json({
+			return res.status(401).json({
 				message: 'User existed',
 			});
 		}
 	} catch (err) {
-		console.log('\ncontroller user register', err);
-		res.sendStatus(500);
+		console.log('\n😈 controller user register\n', err);
+		return res.sendStatus(500);
 	}
 };
 
@@ -196,7 +196,7 @@ const user_login_post = async (req, res, next) => {
 						token: 'Bearer ' + token,
 						message: 'Login success',
 				  };
-			res.status(err ? 500 : 200).json(jsonMsg);
+			return res.status(err ? 500 : 200).json(jsonMsg);
 		}
 	);
 };
