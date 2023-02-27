@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-27 11:36:58
+ * @Last Modified time: 2023-02-27 13:56:41
  */
 import axios from '@/utils/axios.js';
 
@@ -50,14 +50,14 @@ const UpdateInfo = (data) => {
 };
 
 const server_url =
-	process.env.SERVER_URL_RENDER != ''
-		? process.env.SERVER_URL_RENDER
-		: process.env.SERVER_URL;
+	process.env.VUE_APP_SERVER_URL_RENDER != ''
+		? process.env.VUE_APP_SERVER_URL_RENDER
+		: process.env.VUE_APP_SERVER_URL;
 console.log(
 	'❗️server_url: ',
 	server_url,
 	'\nenv "SERVER_URL_RENDER": ',
-	process.env.SERVER_URL_RENDER,
+	process.env.VUE_APP_SERVER_URL_RENDER,
 	'\nprocess.env',
 	process.env
 );

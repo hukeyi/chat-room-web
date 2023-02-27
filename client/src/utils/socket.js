@@ -25,9 +25,9 @@ export class Socket {
 	 */
 	open() {
 		const server_url =
-			process.env.SERVER_URL_RENDER != ''
-				? process.env.SERVER_URL_RENDER
-				: process.env.SERVER_URL;
+			process.env.VUE_APP_SERVER_URL_RENDER != ''
+				? process.env.VUE_APP_SERVER_URL_RENDER
+				: process.env.VUE_APP_SERVER_URL;
 		this.socket = io(server_url, {
 			withCredentials: true,
 			transports: ['websocket'],
