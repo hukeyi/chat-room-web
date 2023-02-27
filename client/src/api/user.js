@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-27 11:21:32
+ * @Last Modified time: 2023-02-27 11:36:58
  */
 import axios from '@/utils/axios.js';
 
@@ -57,7 +57,9 @@ console.log(
 	'❗️server_url: ',
 	server_url,
 	'\nenv "SERVER_URL_RENDER": ',
-	process.env.SERVER_URL_RENDER
+	process.env.SERVER_URL_RENDER,
+	'\nprocess.env',
+	process.env
 );
 const UpdateAvatar = server_url + '/api/user/update/avatar';
 const DownloadAvatar = (uid) => server_url + '/api/user/download/avatar/' + uid;
