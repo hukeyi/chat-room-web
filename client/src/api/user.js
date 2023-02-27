@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-26 19:42:52
+ * @Last Modified time: 2023-02-27 11:21:32
  */
 import axios from '@/utils/axios.js';
 
@@ -53,9 +53,14 @@ const server_url =
 	process.env.SERVER_URL_RENDER != ''
 		? process.env.SERVER_URL_RENDER
 		: process.env.SERVER_URL;
+console.log(
+	'❗️server_url: ',
+	server_url,
+	'\nenv "SERVER_URL_RENDER": ',
+	process.env.SERVER_URL_RENDER
+);
 const UpdateAvatar = server_url + '/api/user/update/avatar';
-const DownloadAvatar = (uid) =>
-	process.env.SERVER_URL + '/api/user/download/avatar/' + uid;
+const DownloadAvatar = (uid) => server_url + '/api/user/download/avatar/' + uid;
 
 export default {
 	Register,
