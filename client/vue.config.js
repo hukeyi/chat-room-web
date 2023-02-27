@@ -17,8 +17,8 @@ module.exports = {
 		open: false,
 		proxy: {
 			'/api': {
-				// target: 'http://127.0.0.1:3000/api/',
-				target: 'http://localhost:3000/api/',
+				// target: 'http://localhost:3000/api/',
+				target: server_url + '/api/',
 				changeOrigin: true, //是否跨域
 				ws: true,
 				pathRewrite: {
