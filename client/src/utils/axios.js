@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-27 15:47:41
+ * @Last Modified time: 2023-02-27 16:05:40
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -55,6 +55,7 @@ service.interceptors.response.use(
 	(response) => {
 		// only status 200 could reach here
 		// todo: loading true
+		console.log('🤔 axios response intercept\n', response);
 		return response.data;
 	},
 	(err) => {
