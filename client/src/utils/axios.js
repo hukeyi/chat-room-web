@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-01 14:22:50
+ * @Last Modified time: 2023-02-27 15:47:41
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -38,7 +38,9 @@ service.interceptors.request.use(
 		const userId = store.getters.getUserId;
 		// todo: loading or not, add after
 		if (localStorage.getItem(`token_${userId}`)) {
-			config.headers.Authorization = localStorage.getItem(`token_${userId}`);
+			config.headers.Authorization = localStorage.getItem(
+				`token_${userId}`
+			);
 		}
 		return config;
 	},
@@ -62,6 +64,7 @@ service.interceptors.response.use(
 		if (err.response.data) {
 			serverMsg = err.response.data.message || err.response.data;
 		}
+		console.log('❌ axios response intercept\n', err);
 		const msg = statusHash[Number(err.response.status)];
 		return Promise.reject(
 			serverMsg ? serverMsg : msg ? msg : '服务器异常，请稍后'
