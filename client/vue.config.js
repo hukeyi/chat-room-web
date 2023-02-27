@@ -2,6 +2,10 @@ const path = require('path');
 function resolve(dir) {
 	return path.join(__dirname, dir);
 }
+const server_url =
+	process.env.VUE_APP_SERVER_URL_RENDER != ''
+		? process.env.VUE_APP_SERVER_URL_RENDER
+		: VUE_APP_SERVER_URL;
 module.exports = {
 	chainWebpack: (config) => {
 		//路径配置
