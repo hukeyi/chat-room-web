@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-25 11:38:19
+ * @Last Modified time: 2023-02-28 14:40:00
  */
 
 const cookieParser = require('cookie-parser');
@@ -22,9 +22,11 @@ function onAuthorizeFail(data, message, error, accept) {
 }
 
 module.exports = function (server, store) {
+	// todo: cors 跨域设置，如何允许所有 origin
+	// todo: 如果要新的 client url 访问，则这里 origin 要加上这个 client url
 	const io = require('socket.io')(server, {
 		cors: {
-			origin: [process.env.CLIENT_URL],
+			origin: [process.env.CLIENT_URL, 'https://drrr-test.onrender.com'],
 			methods: ['GET', 'POST', 'OPTIONS'],
 			allowHeaders: ['Conten-Type', 'Authorization'],
 			credentials: true,
