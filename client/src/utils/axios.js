@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-28 14:34:20
+ * @Last Modified time: 2023-02-28 16:29:26
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -66,6 +66,7 @@ service.interceptors.response.use(
 			serverMsg = err.response.data.message || err.response.data;
 		}
 		console.log('❌ axios response intercept\n', err);
+		console.log('response: \n', err.response);
 		const msg = statusHash[Number(err.response.status)];
 		return Promise.reject(
 			serverMsg ? serverMsg : msg ? msg : '服务器异常，请稍后'
