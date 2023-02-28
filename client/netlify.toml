@@ -5,7 +5,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "http://175.178.70.234:3000/:splat"
+  to = "http://175.178.70.234:3000/api/:splat"
   status = 200
   force = true
   headers = {X-From = "Netlify", Access-Control-Allow-Origin = "https://drrr-test.netlify.app"}
