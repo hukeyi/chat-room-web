@@ -124,14 +124,14 @@
 							.Register(postData)
 							.then((res) => {
 								console.log(res);
-								if (res.data.id) {
+								if (res.data && res.data.id) {
 									this.$message({
 										type: 'success',
 										message: '注册成功！',
 									});
 									res.data.id && this.$router.push('/login');
 								} else if (res.data) {
-									alert(res.data.errorMsg);
+									this.$message.error(res.data.errorMsg);
 								} else {
 									// if res.data == null
 									this.$message.error(
