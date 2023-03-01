@@ -1,11 +1,10 @@
 const path = require('path');
+const serverUrl = process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
+
 function resolve(dir) {
 	return path.join(__dirname, dir);
 }
-const server_url =
-	process.env.VUE_APP_SERVER_URL_RENDER != ''
-		? process.env.VUE_APP_SERVER_URL_RENDER
-		: VUE_APP_SERVER_URL;
+
 module.exports = {
 	chainWebpack: (config) => {
 		//路径配置
@@ -21,8 +20,7 @@ module.exports = {
 		open: false,
 		proxy: {
 			'/api': {
-				// target: 'http://localhost:3000/api/',
-				target: server_url + '/api/',
+				target: serverUrl + '/api/',
 				changeOrigin: true, //是否跨域
 				ws: true,
 				pathRewrite: {
