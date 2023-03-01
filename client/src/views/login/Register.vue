@@ -90,10 +90,17 @@
 				}
 			};
 			return {
-				ruleForm: { phone: '', username: '', password: '', checkPass: '' },
+				ruleForm: {
+					phone: '',
+					username: '',
+					password: '',
+					checkPass: '',
+				},
 				rules: {
 					phone: [{ validator: validatePhone, trigger: 'blur' }],
-					username: [{ validator: validateUsername, trigger: 'blur' }],
+					username: [
+						{ validator: validateUsername, trigger: 'blur' },
+					],
 					password: [{ validator: validatePass, trigger: 'blur' }],
 					checkPass: [{ validator: validatePass2, trigger: 'blur' }],
 				},
@@ -117,17 +124,23 @@
 							.Register(postData)
 							.then((res) => {
 								console.log(res);
-								if (res.data.id) {
+								if (res.data && res.data.id) {
 									this.$message({
 										type: 'success',
 										message: '注册成功！',
 									});
 									res.data.id && this.$router.push('/login');
+								} else if (res.data) {
+									this.$message.error(res.data.errorMsg);
 								} else {
-									alert(res.data.errorMsg);
+									// if res.data == null
+									this.$message.error(
+										`服务器返回数据格式错误：${res.data}`
+									);
 								}
 							})
 							.catch((err) => {
+								this.$message.error('服务器错误');
 								console.log(err);
 							});
 					} else {
