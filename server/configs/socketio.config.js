@@ -2,14 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-28 14:40:00
+ * @Last Modified time: 2023-03-02 22:19:10
  */
 
 const cookieParser = require('cookie-parser');
 const passportSocketIo = require('passport.socketio');
 const initSocket = require('../utils/socket');
 const passport = require('../configs/passport.config');
-
+const { Server } = require('socket.io');
 function onAuthorizeSuccess(data, accept) {
 	console.log('\nsuccessful connection to socket.io');
 	accept(null, true);
@@ -22,11 +22,14 @@ function onAuthorizeFail(data, message, error, accept) {
 }
 
 module.exports = function (server, store) {
-	// todo: cors 跨域设置，如何允许所有 origin
-	// todo: 如果要新的 client url 访问，则这里 origin 要加上这个 client url
-	const io = require('socket.io')(server, {
+	const hosts = [process.env.CLIENT_URL];
+	if (process.env.NODE_ENV != 'production') {
+		hosts.push('http://localhost:8080');
+	}
+
+	const io = new Server(server, {
 		cors: {
-			origin: [process.env.CLIENT_URL, 'https://drrr-test.onrender.com'],
+			origin: hosts,
 			methods: ['GET', 'POST', 'OPTIONS'],
 			allowHeaders: ['Conten-Type', 'Authorization'],
 			credentials: true,

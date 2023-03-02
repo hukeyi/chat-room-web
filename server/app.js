@@ -2,13 +2,15 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-25 16:23:01
+ * @Last Modified time: 2023-03-02 22:13:28
  */
 
 /**
  * utils config
  */
-const dotenv = require('dotenv').config();
+
+// [dotenv override](https://github.com/motdotla/dotenv#what-happens-to-environment-variables-that-were-already-set)
+const dotenv = require('dotenv').config({ override: true });
 const path = require('path');
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
