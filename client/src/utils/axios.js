@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-01 14:26:36
+ * @Last Modified time: 2023-03-02 22:33:54
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -22,7 +22,6 @@ const statusHash = {
 	501: '请求频繁，请稍后',
 };
 
-// todo: 可以直接把后端 host 写在 baseURL 里吗？belike: baseURL: 'http://17x.xx.xx.xx:3000/'
 const service = axios.create({
 	baseURL: '/',
 	timeout: 10000,

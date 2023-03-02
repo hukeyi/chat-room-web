@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-01 12:48:02
+ * @Last Modified time: 2023-03-02 22:38:08
  */
 
 import { io } from 'socket.io-client';
@@ -24,7 +24,10 @@ export class Socket {
 	 * 开启socket
 	 */
 	open() {
-		const serverUrl = process.env.VUE_APP_SERVER_URL;
+		const serverUrl =
+			process.env.NODE_ENV != 'production'
+				? 'http://localhost:3000'
+				: process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
 		this.socket = io(serverUrl, {
 			withCredentials: true,
 			transports: ['websocket'],

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-01 12:47:52
+ * @Last Modified time: 2023-03-02 22:22:56
  */
 import axios from '@/utils/axios.js';
 
@@ -49,7 +49,10 @@ const UpdateInfo = (data) => {
 	});
 };
 
-const serverUrl = process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
+const serverUrl =
+	process.env.NODE_ENV != 'production'
+		? 'http://localhost:3000'
+		: process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
 const UpdateAvatar = serverUrl + '/api/user/update/avatar';
 const DownloadAvatar = (uid) => serverUrl + '/api/user/download/avatar/' + uid;
 
