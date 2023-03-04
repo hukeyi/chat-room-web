@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-02 10:57:09
+ * @Last Modified time: 2023-03-04 21:50:13
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -28,6 +28,9 @@ import Setting from '../views/setting/index.vue';
 // error
 import ErrorPage from '@/views/error/index.vue';
 
+// test component
+import LoginTest from '@/views/login/Login-test.vue';
+
 const routes = [
 	{
 		//网站首页-登录注册界面
@@ -46,6 +49,10 @@ const routes = [
 				meta: { requiresAuth: false },
 			},
 		],
+	},
+	{
+		path: '/test',
+		component: LoginTest,
 	},
 	{
 		// 用户首页-好友界面
