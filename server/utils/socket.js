@@ -1,3 +1,6 @@
+/**
+ * 导出【初始化并开启 socket-io server】的入口函数
+ */
 /*
  * @Author: Hu Keyi
  * @Date: 2021-05-07 20:33:37

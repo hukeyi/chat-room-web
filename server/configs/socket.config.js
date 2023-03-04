@@ -5,7 +5,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-04 11:22:02
+ * @Last Modified time: 2023-03-04 15:22:31
  */
 
 /**
@@ -32,12 +32,20 @@ const {
 const socketMap = new Map(); // key = user_id; value = socket
 let roomSet = null;
 
+/**
+ * 工具函数
+ */
+
 const getTimeStamp = (time) => {
 	return Date.parse(new Date(time));
 };
 const getRoomName = (rid) => {
 	return 'room_' + rid;
 };
+
+/**
+ * socket 监听函数
+ */
 
 const onSendFriendMsg = (socket) => {
 	// 好友私聊
