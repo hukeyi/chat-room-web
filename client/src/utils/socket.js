@@ -1,8 +1,16 @@
+/**
+ * Socket 类
+ * 所有 client 端的 socket 相关函数
+ * - 开启 socket
+ * - 关闭 socket
+ * - 其他全部监听 client 端 socket 事件的函数
+ */
+
 /*
  * @Author: Hu Keyi
  * @Date: 2021-05-22 23:39:12
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-02 22:38:08
+ * @Last Modified time: 2023-03-04 11:50:30
  */
 
 import { io } from 'socket.io-client';
@@ -24,6 +32,9 @@ export class Socket {
 	 * 开启socket
 	 */
 	open() {
+		/**
+		 * 初始化 socket client 端
+		 */
 		const serverUrl =
 			process.env.NODE_ENV != 'production'
 				? 'http://localhost:3000'
