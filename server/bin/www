@@ -7,7 +7,7 @@
 var { app, store } = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
-var socketInit = require('../configs/socketio.config');
+var onListenSocket = require('../utils/socket');
 const { SSL_OP_COOKIE_EXCHANGE } = require('constants');
 
 /**
@@ -18,11 +18,11 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTP server & Listen on socket connection
  */
 
 var server = http.createServer(app);
-socketInit(server, store);
+onListenSocket(server, store);
 
 /**
  * Listen on provided port, on all network interfaces.
