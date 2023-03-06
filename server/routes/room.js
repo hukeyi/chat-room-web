@@ -2,12 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-06 20:20:16
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-02 20:29:16
+ * @Last Modified time: 2023-03-06 10:57:34
  */
 const express = require('express');
 const router = express.Router();
 const roomController = require('../controllers/room.js');
-const passport = require('../configs/passport.config.js');
+const passport = require('../utils/passport.js');
 
 router.get(
 	'/list',

@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-02 22:13:28
+ * @Last Modified time: 2023-03-06 10:57:30
  */
 
 /**
@@ -26,7 +26,7 @@ const app = express();
 /**
  * passport config
  */
-const passport = require('./configs/passport.config.js');
+const passport = require('./utils/passport.js');
 const session = require('express-session');
 
 /**
