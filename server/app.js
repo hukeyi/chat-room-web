@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-06 10:57:30
+ * @Last Modified time: 2023-03-06 15:07:31
  */
 
 /**
@@ -52,6 +52,7 @@ const messagesRouter = require('./routes/message');
 const roomRouter = require('./routes/room');
 /**
  * Middleware
+ * [Using middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.application)
  */
 /**
  * CORS
