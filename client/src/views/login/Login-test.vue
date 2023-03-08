@@ -1,11 +1,9 @@
 <template>
-	<div class="signin">
-		<div class="container">
-			<div class="top"></div>
-			<div class="bottom"></div>
-			<div class="center">
-				<SignInForm></SignInForm>
-			</div>
+	<div class="container">
+		<div class="top"></div>
+		<div class="bottom"></div>
+		<div class="center">
+			<SignInForm></SignInForm>
 		</div>
 	</div>
 </template>
@@ -28,11 +26,11 @@
 	*:before,
 	*:after {
 		box-sizing: border-box;
+		font-family: 'Raleway', 'Noto Sans SC', sans-serif;
 	}
 
 	body {
 		min-height: 100vh;
-		font-family: 'Raleway', 'Noto Sans SC', sans-serif;
 	}
 	// 关键帧动画：1）镜头打开效果 open；2）表单逐渐显示 show
 	@keyframes open {

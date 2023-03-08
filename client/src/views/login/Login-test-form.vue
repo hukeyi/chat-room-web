@@ -162,6 +162,7 @@
 	::after,
 	::before {
 		box-sizing: border-box;
+		font-weight: 300;
 	}
 
 	// $bg_body: #212121;
