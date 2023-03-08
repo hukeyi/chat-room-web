@@ -1,7 +1,23 @@
 <template>
 	<div class="signin">
+		<!-- 手机号输入框 -->
 		<div class="control block-cube block-input">
-			<input name="username" type="text" placeholder="Phone" />
+			<!-- add `autocomplete="new-password"` to remove Chrome's 
+				weird !important css style(background) -->
+			<!-- src: https://stackoverflow.com/questions/43783924/
+				disable-google-chrome-autocomplete-autofill-suggestion -->
+			<input
+				v-model.number="v$.phone.$model"
+				@keydown.enter="handleEnterClear"
+				@keyup.enter="submitForm()"
+				name="username"
+				type="text"
+				placeholder="手机号"
+				autocomplete="new-password"
+				:class="{ 'error-prompt': v$.phone.$dirty && v$.phone.$error }"
+			/>
+
+			<!-- 效果 -->
 			<div class="bg-top">
 				<div class="bg-inner"></div>
 			</div>
@@ -12,8 +28,28 @@
 				<div class="bg-inner"></div>
 			</div>
 		</div>
+		<!-- 表单验证错误信息 -->
+		<!-- <div class="invalid-feedback" v-if="!v$.phone.required">
+			Phone is required
+		</div>
+		<div class="invalid-feedback">
+			{{ v$.phone.$error ? 'Invalid phone number' : '' }}
+		</div> -->
+		<!-- 密码输入框 -->
 		<div class="control block-cube block-input">
-			<input name="password" type="password" placeholder="Password" />
+			<input
+				type="password"
+				v-model="v$.password.$model"
+				autocomplete="off"
+				@keydown.enter="handleEnterClear"
+				@keyup.enter="submitForm()"
+				name="password"
+				placeholder="密码"
+				:class="{
+					'error-prompt': v$.password.$dirty && v$.password.$error,
+				}"
+			/>
+			<!-- 效果 -->
 			<div class="bg-top">
 				<div class="bg-inner"></div>
 			</div>
@@ -24,7 +60,11 @@
 				<div class="bg-inner"></div>
 			</div>
 		</div>
-		<button class="btn block-cube block-cube-hover">
+		<!-- 表单验证错误信息 -->
+		<!-- <div class="invalid-feedback" v-if="!v$.password.required">
+			Password is required
+		</div> -->
+		<button @click="submitForm()" class="btn block-cube block-cube-hover">
 			<div class="bg-top">
 				<div class="bg-inner"></div>
 			</div>
@@ -35,99 +75,77 @@
 				<div class="bg-inner"></div>
 			</div>
 			<div class="text">
-				Log In
+				登 录
 			</div>
 		</button>
+		<p class="or-sign-in" @click="handleCreateAccount()">
+			或者注册？
+		</p>
 	</div>
 </template>
 
 <script>
 	import userApi from '@/api/user.js';
 	import { mapGetters, mapActions } from 'vuex';
+	// vuelidate: https://vuelidate-next.netlify.app/
+	import { useVuelidate } from '@vuelidate/core';
+	import { required } from '@vuelidate/validators';
+	// validator for phone
+	const validatePhone = (value) => /^1[3-9]\d{9}$/.test(value);
+
 	export default {
-		data() {
-			const validatePhone = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请输入手机号'));
-				} else {
-					const res = /^1[3-9]\d{9}$/.test(value);
-					if (!res) {
-						callback(new Error('请输入有效手机号'));
-					} else {
-						callback();
-					}
-				}
-			};
-			const validatePass = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请输入密码'));
-				} else {
-					if (this.ruleForm.checkPass !== '') {
-						this.$refs.ruleForm.validateField('checkPass');
-					}
-					callback();
-				}
-			};
+		setup() {
 			return {
-				ruleForm: {
-					phone: '',
-					password: '',
-				},
-				rules: {
-					phone: [{ validator: validatePhone, trigger: 'blur' }],
-					password: [{ validator: validatePass, trigger: 'blur' }],
-				},
+				v$: useVuelidate(),
+			};
+		},
+		data() {
+			return {
+				phone: '',
+				password: '',
 				imgUrl: require('../../assets/chat-logo-trans.png'),
+			};
+		},
+		validations() {
+			return {
+				phone: {
+					required,
+					validatePhone,
+				},
+				password: {
+					required,
+					// todo: add more validator for pwd
+				},
 			};
 		},
 		methods: {
 			...mapGetters(['getUserId', 'getUserName']),
-			...mapActions([
-				'setUserId',
-				'setUserName',
-				'setUserPhone',
-				'setUserInfo',
-			]),
-			submitForm(formName) {
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
-						const postData = {
-							userId: this.ruleForm.phone,
-							password: this.ruleForm.password,
-						};
-						userApi
-							.Login(postData)
-							.then((res) => {
-								const { id } = res.data;
-								const { token } = res;
-								this.setUserInfo(res.data);
-								// this.setUserId(id);
-								// this.setUserName(name);
-								// this.setUserPhone(phone);
-
-								// todo: provide a choice that whether or not remember this account
-								// if it checked, store the info in localstorage
-								// otherwise in sesssionstorage
-								// remember to change the store location in vuex
-								localStorage.setItem(`token_${id}`, token);
-								this.$router.push(`/user/${id}`);
-							})
-							.catch((err) => {
-								// and control the content, only display string type
-								this.$message.error(err);
-							});
-					} else {
-						console.log('error submit');
-						return false;
+			...mapActions(['setUserInfo']),
+			async submitForm() {
+				const isFormCorrect = await this.v$.$validate();
+				if (isFormCorrect) {
+					const postData = {
+						userId: this.phone,
+						password: this.password,
+					};
+					try {
+						let res = await userApi.Login(postData);
+						const { id } = res.data;
+						const { token } = res;
+						this.setUserInfo(res.data);
+						localStorage.setItem(`token_${id}`, token);
+						this.$router.push(`/user/${id}`);
+					} catch (err) {
+						this.$message.error(err);
 					}
-				});
+				} else {
+					this.$message.error('手机号或密码格式错误！');
+					return false;
+				}
 			},
-			handleCreateAcc() {
-				// change views
+			// to register page
+			handleCreateAccount() {
 				this.$router.push('/register');
-			},
-			handleChangePass() {
-				alert('Not completed');
 			},
 			// 清除回车键默认事件
 			handleEnterClear(e) {
@@ -135,14 +153,7 @@
 				else window.event.value = false;
 			},
 		},
-		mounted() {
-			// 响应enter键
-			// window.addEventListener('keyup', (event) => {
-			// 	if (event.key === 'Enter') {
-			// 		this.submitForm('ruleForm');
-			// 	}
-			// });
-		},
+		mounted() {},
 	};
 </script>
 
@@ -165,7 +176,7 @@
 	* {
 		// background-color: $bg_body;
 		color: #fff;
-		font-family: monospace, serif;
+		// font-family: monospace, serif;
 		letter-spacing: 0.05em;
 	}
 
@@ -185,7 +196,7 @@
 				border: 0;
 				background: transparent;
 				color: #fff;
-				font-family: monospace, serif;
+				// font-family: monospace, serif;
 				letter-spacing: 0.05em;
 				font-size: 16px;
 				&:hover,
@@ -195,7 +206,12 @@
 				}
 			}
 		}
+		// 输入框格式错误显示红色点线
+		.error-prompt {
+			text-decoration: underline dashed rgb(255, 0, 89) 2.5px;
+		}
 		.btn {
+			// margin: 0 0 24px;
 			width: 100%;
 			display: block;
 			padding: 14px 16px;
@@ -205,8 +221,14 @@
 			color: #fff;
 			letter-spacing: 0.1em;
 			font-weight: bold;
-			font-family: monospace;
 			font-size: 16px;
+		}
+		.or-sign-in {
+			text-decoration: underline $fontColorLight 1.5px;
+			text-align: center;
+			&:hover {
+				cursor: pointer;
+			}
 		}
 	}
 
