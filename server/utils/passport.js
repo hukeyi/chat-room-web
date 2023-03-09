@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-06 22:39:08
+ * @Last Modified time: 2023-03-09 15:33:55
  */
 
 // passport setting
@@ -22,11 +22,11 @@ options.secretOrKey = process.env.PASSPORT_JWT_SECRET;
 
 // 序列化与反序列化函数
 passport.serializeUser((user, done) => {
-	console.log('\n【Passport.js】serialize user', toJSON(user));
+	console.log('【Passport.js】serialize user', toJSON(user));
 	done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
-	console.log('\n【Passport.js】deserialize user', id);
+	console.log('【Passport.js】deserialize user', id);
 	const user = await User.findOne({
 		where: {
 			id: id,
@@ -40,10 +40,11 @@ passport.ensureAthenticated = function ensureAthenticated() {
 	return function (req, res, next) {
 		console.log('\n【Passport.js】in ensureSthenticated process:');
 		if (req.isAuthenticated()) {
-			console.log('\n【Passport.js】Permission allowed');
+			console.log('-【Passport.js】Permission allowed');
 			//这里是passport在登录验证时已经设置好的加密cookie
 			return next();
 		}
+		console.log('-【Passport.js】Permission denied');
 		res.json({ message: 'Permission denied' });
 	};
 };
@@ -87,6 +88,7 @@ passport.use(
 						],
 					})
 				);
+				console.log(`【Passport.js】in Local strategy verify function`);
 				console.log(
 					'\n【Passport.js】user ' +
 						username +
@@ -126,6 +128,7 @@ passport.use(
 		try {
 			const user = await User.findOne({ where: { id: jwt_payload.id } });
 
+			console.log(`【Passport.js】in jwt strategy verify function`);
 			// 用户不存在
 			if (!user) {
 				console.log(`\n【Passport.js】${jwt_payload.id} not existed`);
