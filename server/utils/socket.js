@@ -11,7 +11,7 @@
 const cookieParser = require('cookie-parser');
 const passportSocketIo = require('passport.socketio');
 const onSocketConnection = require('../configs/socket.config');
-const passport = require('../configs/passport.config');
+const passport = require('./passport');
 const { Server } = require('socket.io');
 
 function onAuthorizeSuccess(data, accept) {
@@ -43,6 +43,8 @@ module.exports = function (server, store) {
 		},
 	});
 	// socket.io 使用 passport 加密/身份验证
+	// 每次连接 socket 前，先经由 passport 进行
+	// 身份验证（用户是否登录）然后才连接 socket
 	io.use(
 		passportSocketIo.authorize({
 			passport: passport,
