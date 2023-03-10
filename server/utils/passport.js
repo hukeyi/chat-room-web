@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-09 15:33:55
+ * @Last Modified time: 2023-03-10 21:02:21
  */
 
 // passport setting
@@ -22,10 +22,12 @@ options.secretOrKey = process.env.PASSPORT_JWT_SECRET;
 
 // 序列化与反序列化函数
 passport.serializeUser((user, done) => {
-	console.log('【Passport.js】serialize user', toJSON(user));
+	console.log('【Passport.js】serialize user', user.id);
+	// serializeUser() sets req.session.passport.user = {id: 'xyz'}
 	done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
+	// deserializeUser() gets user id from req.session.passport.user and returns user object for req.user
 	console.log('【Passport.js】deserialize user', id);
 	const user = await User.findOne({
 		where: {
