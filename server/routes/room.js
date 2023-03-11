@@ -11,55 +11,55 @@ const passport = require('../utils/passport.js');
 
 router.get(
 	'/list',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_list_get
 );
 
 router.get(
 	'/chatList',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_chatList_get
 );
 
 router.post(
 	'/add',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_add_post
 );
 
 router.post(
 	'/del',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_delete_post
 );
 
 router.post(
 	'/del/member',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_admin_del_member_post
 );
 
 router.post(
 	'/set/admin',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_admin_set_admin_post
 );
 
 router.post(
 	'/quit',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_quit_post
 );
 
 router.post(
 	'/create',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_create_post
 );
 
 router.post(
 	'/search',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	roomController.room_search_post
 );
 

@@ -11,25 +11,25 @@ const passport = require('../utils/passport.js');
 
 router.get(
 	'/list',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	friendController.friend_list_get
 );
 
 router.post(
 	'/add',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	friendController.friend_add_post
 );
 
 router.post(
 	'/del',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	friendController.friend_delete_post
 );
 
 router.post(
 	'/chat/start',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	friendController.friend_startChat_post
 );
 

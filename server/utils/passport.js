@@ -2,23 +2,23 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-10 21:02:21
+ * @Last Modified time: 2023-03-11 16:10:10
  */
 
 // passport setting
 const passport = require('passport');
 
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
+// const JwtStrategy = require('passport-jwt').Strategy;
+// const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
 
 const { User } = require('../models/index.js');
 const { toJSON } = require('../controllers/utils');
 
-const options = {};
-options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-options.secretOrKey = process.env.PASSPORT_JWT_SECRET;
+// const options = {};
+// options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// options.secretOrKey = process.env.PASSPORT_JWT_SECRET;
 
 // 序列化与反序列化函数
 passport.serializeUser((user, done) => {
@@ -122,30 +122,29 @@ passport.use(
 
 // 身份验证策略之二，声明 jwt 策略
 // 使用此策略用：`passport.authenticate('jwt', ...)
-// 用于 session 的身份验证
-passport.use(
-	new JwtStrategy(options, async function (jwt_payload, done) {
-		// verify function
-		// fixme: 后面做邮箱验证的话，可能需要加一个字段判断是手机号还是邮箱
-		try {
-			const user = await User.findOne({ where: { id: jwt_payload.id } });
+// passport.use(
+// 	new JwtStrategy(options, async function (jwt_payload, done) {
+// 		// verify function
+// 		// fixme: 后面做邮箱验证的话，可能需要加一个字段判断是手机号还是邮箱
+// 		try {
+// 			const user = await User.findOne({ where: { id: jwt_payload.id } });
 
-			console.log(`【Passport.js】in jwt strategy verify function`);
-			// 用户不存在
-			if (!user) {
-				console.log(`\n【Passport.js】${jwt_payload.id} not existed`);
-				return done(null, false);
-			}
+// 			console.log(`【Passport.js】in jwt strategy verify function`);
+// 			// 用户不存在
+// 			if (!user) {
+// 				console.log(`\n【Passport.js】${jwt_payload.id} not existed`);
+// 				return done(null, false);
+// 			}
 
-			console.log(
-				`\n【Passport.js】jwt got id: ${user.id} and name: ${user.name} from db`
-			);
-			return done(null, user);
-		} catch (err) {
-			console.log('\n【Passport.js】jwt went wrong', err);
-			return done(err);
-		}
-	})
-);
+// 			console.log(
+// 				`\n【Passport.js】jwt got id: ${user.id} and name: ${user.name} from db`
+// 			);
+// 			return done(null, user);
+// 		} catch (err) {
+// 			console.log('\n【Passport.js】jwt went wrong', err);
+// 			return done(err);
+// 		}
+// 	})
+// );
 
 module.exports = passport;

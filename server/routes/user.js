@@ -32,19 +32,19 @@ router.get('/logout', (req, res) => {
 
 router.post(
 	'/search',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	userController.user_search_post
 );
 
 router.post(
 	'/update/password',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	userController.user_update_password_post
 );
 
 router.post(
 	'/update/info',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	userController.user_update_info_post
 );
 
