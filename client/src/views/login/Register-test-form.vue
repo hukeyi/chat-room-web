@@ -1,5 +1,5 @@
 <template>
-	<div class="login">
+	<div class="signup">
 		<!-- 手机号输入框 -->
 		<div class="control block-cube block-input">
 			<!-- add `autocomplete="new-password"` to remove Chrome's 
@@ -10,7 +10,7 @@
 				v-model.number="v$.phone.$model"
 				@keydown.enter="handleEnterClear"
 				@keyup.enter="submitForm()"
-				name="username"
+				name="phone"
 				type="text"
 				placeholder="手机号"
 				autocomplete="new-password"
@@ -35,6 +35,36 @@
 		<div class="invalid-feedback">
 			{{ v$.phone.$error ? 'Invalid phone number' : '' }}
 		</div> -->
+		<!-- 昵称输入 -->
+		<div class="control block-cube block-input">
+			<!-- add `autocomplete="new-password"` to remove Chrome's 
+				weird !important css style(background) -->
+			<!-- src: https://stackoverflow.com/questions/43783924/
+				disable-google-chrome-autocomplete-autofill-suggestion -->
+			<input
+				v-model.number="v$.username.$model"
+				@keydown.enter="handleEnterClear"
+				@keyup.enter="submitForm()"
+				name="username"
+				type="text"
+				placeholder="昵称"
+				autocomplete="new-password"
+				:class="{
+					'error-prompt': v$.username.$dirty && v$.username.$error,
+				}"
+			/>
+
+			<!-- 效果 -->
+			<div class="bg-top">
+				<div class="bg-inner"></div>
+			</div>
+			<div class="bg-right">
+				<div class="bg-inner"></div>
+			</div>
+			<div class="bg">
+				<div class="bg-inner"></div>
+			</div>
+		</div>
 		<!-- 密码输入框 -->
 		<div class="control block-cube block-input">
 			<input
@@ -47,6 +77,31 @@
 				placeholder="密码"
 				:class="{
 					'error-prompt': v$.password.$dirty && v$.password.$error,
+				}"
+			/>
+			<!-- 效果 -->
+			<div class="bg-top">
+				<div class="bg-inner"></div>
+			</div>
+			<div class="bg-right">
+				<div class="bg-inner"></div>
+			</div>
+			<div class="bg">
+				<div class="bg-inner"></div>
+			</div>
+		</div>
+		<!-- 重复输入密码 -->
+		<div class="control block-cube block-input">
+			<input
+				type="password"
+				v-model="v$.password2.$model"
+				autocomplete="off"
+				@keydown.enter="handleEnterClear"
+				@keyup.enter="submitForm()"
+				name="password2"
+				placeholder="确认密码"
+				:class="{
+					'error-prompt': v$.password2.$dirty && v$.password2.$error,
 				}"
 			/>
 			<!-- 效果 -->
@@ -75,11 +130,11 @@
 				<div class="bg-inner"></div>
 			</div>
 			<div class="text">
-				登 录
+				注 册
 			</div>
 		</button>
-		<p class="or-sign-in" @click="handleCreateAccount()">
-			或者注册？
+		<p class="or-sign-in" @click="handleBackToLogin()">
+			已有账号？
 		</p>
 	</div>
 </template>
@@ -89,7 +144,7 @@
 	import { mapGetters, mapActions } from 'vuex';
 	// vuelidate: https://vuelidate-next.netlify.app/
 	import { useVuelidate } from '@vuelidate/core';
-	import { required } from '@vuelidate/validators';
+	import { required, sameAs } from '@vuelidate/validators';
 	// validator for phone
 	const validatePhone = (value) => /^1[3-9]\d{9}$/.test(value);
 
@@ -102,7 +157,9 @@
 		data() {
 			return {
 				phone: '',
+				username: '',
 				password: '',
+				password2: '',
 				imgUrl: require('../../assets/chat-logo-trans.png'),
 			};
 		},
@@ -112,9 +169,16 @@
 					required,
 					validatePhone,
 				},
+				username: {
+					required,
+				},
 				password: {
 					required,
 					// todo: add more validator for pwd
+				},
+				password2: {
+					required,
+					sameAsPassword: sameAs(this.password),
 				},
 			};
 		},
@@ -126,26 +190,37 @@
 				if (isFormCorrect) {
 					const postData = {
 						userId: this.phone,
+						name: this.username,
 						password: this.password,
 					};
 					try {
-						let res = await userApi.Login(postData);
-						const { id } = res.data;
-						const { token } = res;
-						this.setUserInfo(res.data);
-						localStorage.setItem(`token_${id}`, token);
-						this.$router.push(`/user/${id}`);
+						let res = await userApi.Register(postData);
+						console.log(res);
+						if (res && res.data && res.data.id) {
+							this.$message({
+								type: 'success',
+								message: '注册成功！',
+							});
+							res.data.id && this.$router.push('/login');
+						} else if (res && res.data) {
+							this.$message.error(res.data.errorMsg);
+						} else {
+							this.$message.error(
+								`服务器返回数据格式错误：${res.data || res}`
+							);
+						}
 					} catch (err) {
-						this.$message.error(err);
+						this.$message.error('服务器错误');
+						console.log(err);
 					}
 				} else {
 					this.$message.error('手机号或密码格式错误！');
 					return false;
 				}
 			},
-			// to register page
-			handleCreateAccount() {
-				this.$router.push('/register');
+			// to login page
+			handleBackToLogin() {
+				this.$router.push('/login');
 			},
 			// 清除回车键默认事件
 			handleEnterClear(e) {
@@ -185,7 +260,7 @@
 		font-size: 23px;
 	}
 
-	.login {
+	.signup {
 		width: 300px;
 		padding: 64px 15px 24px;
 		margin: 0 auto;

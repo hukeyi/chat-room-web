@@ -3,15 +3,15 @@
 		<div class="top"></div>
 		<div class="bottom"></div>
 		<div class="center">
-			<LogInForm></LogInForm>
+			<SignUpForm></SignUpForm>
 		</div>
 	</div>
 </template>
 
 <script>
-	import LogInForm from './Login-test-form.vue';
+	import SignUpForm from './Register-test-form.vue';
 	export default {
-		components: { LogInForm },
+		components: { SignUpForm },
 		data() {
 			return {};
 		},
