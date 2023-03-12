@@ -1,159 +1,125 @@
 <template>
-	<div class="register">
-		<el-form
-			:model="ruleForm"
-			status-icon
-			:rules="rules"
-			ref="ruleForm"
-			label-width="100px"
-			class="demo-ruleForm"
-			:hide-required-asterisk="true"
-		>
-			<el-form-item label="手机号" prop="phone">
-				<el-input v-model.number="ruleForm.phone"></el-input>
-			</el-form-item>
-			<el-form-item label="昵称" prop="username">
-				<el-input v-model.number="ruleForm.username"></el-input>
-			</el-form-item>
-			<el-form-item label="密码" prop="password">
-				<el-input
-					type="password"
-					v-model="ruleForm.password"
-					autocomplete="off"
-				></el-input>
-			</el-form-item>
-			<el-form-item label="确认密码" prop="checkPass">
-				<el-input
-					type="password"
-					v-model="ruleForm.checkPass"
-					autocomplete="off"
-				></el-input>
-			</el-form-item>
-
-			<el-form-item>
-				<el-button
-					class="register"
-					type="primary"
-					@click="submitForm('ruleForm')"
-					>注册</el-button
-				>
-			</el-form-item>
-			<el-form-item>
-				<p class="sign-in-link" @click="handleBackToLogin">
-					已有账号？
-				</p>
-			</el-form-item>
-		</el-form>
+	<div class="container">
+		<div class="top"></div>
+		<div class="bottom"></div>
+		<div class="center">
+			<SignUpForm></SignUpForm>
+		</div>
 	</div>
 </template>
 
 <script>
-	import userApi from '@/api/user.js';
+	import SignUpForm from './Register-form.vue';
 	export default {
+		components: { SignUpForm },
 		data() {
-			const validatePhone = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请输入手机号'));
-				} else {
-					const res = /^1[3-9]\d{9}$/.test(value);
-					if (!res) {
-						callback(new Error('请输入有效手机号'));
-					} else {
-						callback();
-					}
-				}
-			};
-			const validateUsername = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请设置您的昵称'));
-				} else {
-					callback();
-				}
-			};
-			const validatePass = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请输入密码'));
-				} else {
-					if (this.ruleForm.checkPass !== '') {
-						this.$refs.ruleForm.validateField('checkPass');
-					}
-					callback();
-				}
-			};
-			const validatePass2 = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请再次输入密码'));
-				} else if (value !== this.ruleForm.password) {
-					callback(new Error('两次输入密码不一致!'));
-				} else {
-					callback();
-				}
-			};
-			return {
-				ruleForm: {
-					phone: '',
-					username: '',
-					password: '',
-					checkPass: '',
-				},
-				rules: {
-					phone: [{ validator: validatePhone, trigger: 'blur' }],
-					username: [
-						{ validator: validateUsername, trigger: 'blur' },
-					],
-					password: [{ validator: validatePass, trigger: 'blur' }],
-					checkPass: [{ validator: validatePass2, trigger: 'blur' }],
-				},
-				imgUrl: require('../../assets/chat-logo-trans.png'),
-			};
+			return {};
 		},
-		methods: {
-			handleBackToLogin() {
-				// change views
-				this.$router.push('/login');
-			},
-			submitForm(formName) {
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
-						const postData = {
-							userId: this.ruleForm.phone,
-							name: this.ruleForm.username,
-							password: this.ruleForm.password,
-						};
-						userApi
-							.Register(postData)
-							.then((res) => {
-								console.log(res);
-								if (res.data && res.data.id) {
-									this.$message({
-										type: 'success',
-										message: '注册成功！',
-									});
-									res.data.id && this.$router.push('/login');
-								} else if (res.data) {
-									this.$message.error(res.data.errorMsg);
-								} else {
-									// if res.data == null
-									this.$message.error(
-										`服务器返回数据格式错误：${res.data}`
-									);
-								}
-							})
-							.catch((err) => {
-								this.$message.error('服务器错误');
-								console.log(err);
-							});
-					} else {
-						console.log('error submit');
-						return false;
-					}
-				});
-			},
-		},
-		mounted() {},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import '@/assets/styles/login/login.scss';
+	@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+	@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC');
+
+	*,
+	*:before,
+	*:after {
+		box-sizing: border-box;
+		font-family: 'Raleway', 'Noto Sans SC', sans-serif;
+	}
+
+	body {
+		min-height: 100vh;
+	}
+	// 关键帧动画：1）镜头打开效果 open；2）表单逐渐显示 show
+	@keyframes open {
+		from {
+			transform-origin: 0 50%;
+		}
+		to {
+			margin-left: 570px;
+			transform-origin: -565px 50%;
+		}
+	}
+	@keyframes show {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.top {
+		&:before {
+			transform: rotate(45deg);
+			background: $fontColorMedium;
+		}
+		&:after {
+			transform: rotate(135deg);
+			background: $emphasisColorA;
+		}
+	}
+
+	.bottom {
+		&:before {
+			transform: rotate(-45deg);
+			background: $themeColorLight;
+		}
+		&:after {
+			transform: rotate(-135deg);
+			background: $emphasisColorB;
+		}
+	}
+
+	.top,
+	.bottom {
+		&:before,
+		&:after {
+			content: '';
+			display: block;
+			position: absolute;
+
+			width: 200vmax;
+			height: 200vmax;
+			top: 50%;
+			left: 50%;
+			margin-top: -100vmax;
+
+			z-index: 10;
+			opacity: 0.65;
+			// 动画
+			animation: open 1.5s cubic-bezier(0.445, 0.05, 0, 1);
+			animation-fill-mode: forwards; // 动画停在 to
+		}
+	}
+	.center {
+		position: absolute;
+		width: 400px;
+		height: 400px;
+		// 水平垂直居中
+		top: 50%;
+		left: 50%;
+		margin-left: -200px;
+		margin-top: -200px;
+		padding: 30px;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		color: #333;
+		// cubic-bezier 是曲线变化函数，用于产生丝滑的移动效果
+		animation: show 2.5s cubic-bezier(0.445, 0.05, 0, 1);
+		animation-fill-mode: forwards; // 停在 to
+	}
 </style>

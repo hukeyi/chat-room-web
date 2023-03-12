@@ -1,150 +1,125 @@
 <template>
-	<div class="signin">
-		<el-form
-			:model="ruleForm"
-			status-icon
-			:rules="rules"
-			ref="ruleForm"
-			label-width="100px"
-			class="demo-ruleForm"
-			:hide-required-asterisk="true"
-		>
-			<el-form-item label="手机号" prop="phone">
-				<el-input
-					v-model.number="ruleForm.phone"
-					@keydown.enter="handleEnterClear"
-					@keyup.enter="submitForm('ruleForm')"
-				></el-input>
-			</el-form-item>
-			<el-form-item label="密码" prop="password">
-				<el-input
-					type="password"
-					v-model="ruleForm.password"
-					autocomplete="off"
-					@keydown.enter="handleEnterClear"
-					@keyup.enter="submitForm('ruleForm')"
-				></el-input>
-			</el-form-item>
-
-			<el-form-item>
-				<el-button class="signin" type="primary" @click="submitForm('ruleForm')"
-					>登录</el-button
-				>
-			</el-form-item>
-			<el-form-item>
-				<p class="sign-in-link" @click="handleCreateAcc">创建账号</p>
-				<!-- <span style="color: #fff"> | </span>
-				<p @click="handleChangePass" class="sign-in-link">忘记密码</p> -->
-			</el-form-item>
-		</el-form>
+	<div class="container">
+		<div class="top"></div>
+		<div class="bottom"></div>
+		<div class="center">
+			<LogInForm></LogInForm>
+		</div>
 	</div>
 </template>
 
 <script>
-	import userApi from '@/api/user.js';
-	import { mapGetters, mapActions } from 'vuex';
+	import LogInForm from './Login-form.vue';
 	export default {
+		components: { LogInForm },
 		data() {
-			const validatePhone = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请输入手机号'));
-				} else {
-					const res = /^1[3-9]\d{9}$/.test(value);
-					if (!res) {
-						callback(new Error('请输入有效手机号'));
-					} else {
-						callback();
-					}
-				}
-			};
-			const validatePass = (rule, value, callback) => {
-				if (value === '') {
-					callback(new Error('请输入密码'));
-				} else {
-					if (this.ruleForm.checkPass !== '') {
-						this.$refs.ruleForm.validateField('checkPass');
-					}
-					callback();
-				}
-			};
-			return {
-				ruleForm: {
-					phone: '',
-					password: '',
-				},
-				rules: {
-					phone: [{ validator: validatePhone, trigger: 'blur' }],
-					password: [{ validator: validatePass, trigger: 'blur' }],
-				},
-				imgUrl: require('../../assets/chat-logo-trans.png'),
-			};
-		},
-		methods: {
-			...mapGetters(['getUserId', 'getUserName']),
-			...mapActions([
-				'setUserId',
-				'setUserName',
-				'setUserPhone',
-				'setUserInfo',
-			]),
-			submitForm(formName) {
-				this.$refs[formName].validate((valid) => {
-					if (valid) {
-						const postData = {
-							userId: this.ruleForm.phone,
-							password: this.ruleForm.password,
-						};
-						userApi
-							.Login(postData)
-							.then((res) => {
-								const { id } = res.data;
-								const { token } = res;
-								this.setUserInfo(res.data);
-								// this.setUserId(id);
-								// this.setUserName(name);
-								// this.setUserPhone(phone);
-
-								// todo: provide a choice that whether or not remember this account
-								// if it checked, store the info in localstorage
-								// otherwise in sesssionstorage
-								// remember to change the store location in vuex
-								localStorage.setItem(`token_${id}`, token);
-								this.$router.push(`/user/${id}`);
-							})
-							.catch((err) => {
-								// and control the content, only display string type
-								this.$message.error(err);
-							});
-					} else {
-						console.log('error submit');
-						return false;
-					}
-				});
-			},
-			handleCreateAcc() {
-				// change views
-				this.$router.push('/register');
-			},
-			handleChangePass() {
-				alert('Not completed');
-			},
-			// 清除回车键默认事件
-			handleEnterClear(e) {
-				if (e.preventDefault) e.preventDefault();
-				else window.event.value = false;
-			},
-		},
-		mounted() {
-			// 响应enter键
-			// window.addEventListener('keyup', (event) => {
-			// 	if (event.key === 'Enter') {
-			// 		this.submitForm('ruleForm');
-			// 	}
-			// });
+			return {};
 		},
 	};
 </script>
 
 <style lang="scss" scoped>
-	@import '@/assets/styles/login/login.scss';
+	@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
+	@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC');
+
+	*,
+	*:before,
+	*:after {
+		box-sizing: border-box;
+		font-family: 'Raleway', 'Noto Sans SC', sans-serif;
+	}
+
+	body {
+		min-height: 100vh;
+	}
+	// 关键帧动画：1）镜头打开效果 open；2）表单逐渐显示 show
+	@keyframes open {
+		from {
+			transform-origin: 0 50%;
+		}
+		to {
+			margin-left: 570px;
+			transform-origin: -565px 50%;
+		}
+	}
+	@keyframes show {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.top {
+		&:before {
+			transform: rotate(45deg);
+			background: $fontColorMedium;
+		}
+		&:after {
+			transform: rotate(135deg);
+			background: $emphasisColorA;
+		}
+	}
+
+	.bottom {
+		&:before {
+			transform: rotate(-45deg);
+			background: $themeColorLight;
+		}
+		&:after {
+			transform: rotate(-135deg);
+			background: $emphasisColorB;
+		}
+	}
+
+	.top,
+	.bottom {
+		&:before,
+		&:after {
+			content: '';
+			display: block;
+			position: absolute;
+
+			width: 200vmax;
+			height: 200vmax;
+			top: 50%;
+			left: 50%;
+			margin-top: -100vmax;
+
+			z-index: 10;
+			opacity: 0.65;
+			// 动画
+			animation: open 1.5s cubic-bezier(0.445, 0.05, 0, 1);
+			animation-fill-mode: forwards; // 动画停在 to
+		}
+	}
+	.center {
+		position: absolute;
+		width: 400px;
+		height: 400px;
+		// 水平垂直居中
+		top: 50%;
+		left: 50%;
+		margin-left: -200px;
+		margin-top: -200px;
+		padding: 30px;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		color: #333;
+		// cubic-bezier 是曲线变化函数，用于产生丝滑的移动效果
+		animation: show 2.5s cubic-bezier(0.445, 0.05, 0, 1);
+		animation-fill-mode: forwards; // 停在 to
+	}
 </style>

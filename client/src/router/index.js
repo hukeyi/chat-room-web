@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-08 15:04:23
+ * @Last Modified time: 2023-03-12 16:17:07
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -29,8 +29,10 @@ import Setting from '../views/setting/index.vue';
 import ErrorPage from '@/views/error/index.vue';
 
 // test component
-import LoginTest from '@/views/login/Login-test.vue';
-import LoginTest2 from '@/views/login/Login-test-form.vue';
+// import LoginTest from '@/views/login/Login-test.vue';
+// import LoginTest2 from '@/views/login/Login-test-form.vue';
+// import SignUpTest from '@/views/login/Register-test.vue';
+// import SignUpTest2 from '@/views/login/Register-test-form.vue';
 
 const routes = [
 	{
@@ -50,14 +52,6 @@ const routes = [
 				meta: { requiresAuth: false },
 			},
 		],
-	},
-	{
-		path: '/test',
-		component: LoginTest,
-	},
-	{
-		path: '/test2',
-		component: LoginTest2,
 	},
 	{
 		// 用户首页-好友界面
