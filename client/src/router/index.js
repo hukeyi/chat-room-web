@@ -2,14 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-12 16:17:07
+ * @Last Modified time: 2023-03-12 16:33:04
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
 // login
-import Register from '../views/login/Register.vue';
 import Entrance from '../views/login/index.vue';
-import Signin from '../views/login/Login.vue';
+import Login from '../views/login/Login-form.vue';
+import Register from '../views/login/Register-form.vue';
 // channel & user
 import Channel from '../views/channel/index.vue';
 import User from '../views/user/index.vue';
@@ -43,7 +43,7 @@ const routes = [
 		children: [
 			{
 				path: 'login',
-				component: Signin,
+				component: Login,
 				meta: { requiresAuth: false },
 			},
 			{
