@@ -2,14 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-02 10:57:09
+ * @Last Modified time: 2023-03-12 16:33:04
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
 // login
-import Register from '../views/login/Register.vue';
 import Entrance from '../views/login/index.vue';
-import Signin from '../views/login/Login.vue';
+import Login from '../views/login/Login-form.vue';
+import Register from '../views/login/Register-form.vue';
 // channel & user
 import Channel from '../views/channel/index.vue';
 import User from '../views/user/index.vue';
@@ -28,6 +28,12 @@ import Setting from '../views/setting/index.vue';
 // error
 import ErrorPage from '@/views/error/index.vue';
 
+// test component
+// import LoginTest from '@/views/login/Login-test.vue';
+// import LoginTest2 from '@/views/login/Login-test-form.vue';
+// import SignUpTest from '@/views/login/Register-test.vue';
+// import SignUpTest2 from '@/views/login/Register-test-form.vue';
+
 const routes = [
 	{
 		//网站首页-登录注册界面
@@ -37,7 +43,7 @@ const routes = [
 		children: [
 			{
 				path: 'login',
-				component: Signin,
+				component: Login,
 				meta: { requiresAuth: false },
 			},
 			{
