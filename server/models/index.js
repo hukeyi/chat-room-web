@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-05-31 10:06:40
+ * @Last Modified time: 2023-03-04 16:08:10
  */
 
 // Model的统一出口
@@ -165,7 +165,14 @@ sequelize
 	.then(() => {
 		console.log('\nAll tables sync success');
 		// fixme: remember to delete this
-		// createTest({ User, UserFriend, Message, MessageRecipient, Room, UserRoom });
+		// createTest({
+		// 	User,
+		// 	UserFriend,
+		// 	Message,
+		// 	MessageRecipient,
+		// 	Room,
+		// 	UserRoom,
+		// });
 	})
 	.catch((err) => console.log('\nSome tables sync error', err));
 
