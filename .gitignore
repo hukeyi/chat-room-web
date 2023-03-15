@@ -3,10 +3,6 @@ node_modules
 /dist
 **/test.js
 /note
-<<<<<<< HEAD
-/cert
-=======
->>>>>>> 3bd7522b4e13dfc4e68b1200f5071db93bd1b76d
 */cert
 
 # local env files
