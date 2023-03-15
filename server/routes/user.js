@@ -2,12 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:42:19
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2021-06-03 00:13:51
+ * @Last Modified time: 2023-03-06 10:57:41
  */
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user.js');
-const passport = require('../configs/passport.config.js');
+const passport = require('../utils/passport.js');
 
 /**
  * 上传图片相关
@@ -32,19 +32,19 @@ router.get('/logout', (req, res) => {
 
 router.post(
 	'/search',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	userController.user_search_post
 );
 
 router.post(
 	'/update/password',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	userController.user_update_password_post
 );
 
 router.post(
 	'/update/info',
-	passport.authenticate('jwt', { session: false }),
+	// passport.authenticate('jwt', { session: false }),
 	userController.user_update_info_post
 );
 

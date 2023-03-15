@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-02 22:13:28
+ * @Last Modified time: 2023-03-11 14:39:54
  */
 
 /**
@@ -26,7 +26,7 @@ const app = express();
 /**
  * passport config
  */
-const passport = require('./configs/passport.config.js');
+const passport = require('./utils/passport.js');
 const session = require('express-session');
 
 /**
@@ -52,6 +52,7 @@ const messagesRouter = require('./routes/message');
 const roomRouter = require('./routes/room');
 /**
  * Middleware
+ * [Using middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.application)
  */
 /**
  * CORS
@@ -78,14 +79,14 @@ app.use(
 		secret: process.env.SESSION_SECRET,
 		resave: true,
 		saveUninitialized: true,
-		cookie: { secure: false },
+		cookie: { secure: false }, // `secure: false` -> no need for https
 		store: store,
-		name: process.env.COOKIE_NAME,
+		name: process.env.COOKIE_NAME, // name for the cookie to be stored in user's browser
 	})
 );
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session()); // alias for `passport.authenticate('session')`
 
 /**
  * Routers
