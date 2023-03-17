@@ -3,7 +3,7 @@ services:
     image: node:16
     command: sh -c "npm install && npm start"
     ports:
-      - 443:3000
+      - 3000:3000
     working_dir: /app
     volumes:
       - ./:/app
