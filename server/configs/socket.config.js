@@ -5,7 +5,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-18 16:28:40
+ * @Last Modified time: 2023-03-18 17:44:46
  */
 
 /**
@@ -68,8 +68,10 @@ const onDisconnect = (socket) => {
 	socket.on('disconnect', function () {
 		const userId = socket.request.user.id,
 			socketId = socket.id;
+
 		console.log('\n😈 Oops! User disconnected', userId, socketId);
-		socketMap.delete(userId);
+
+		if (userId != undefined) socketMap.delete(userId);
 	});
 };
 const onSendNotice = (socket) => {
@@ -213,21 +215,12 @@ module.exports = function (io) {
 		/**
 		 * check if user successfully logged in
 		 */
-		if (socket.request.user && !socket.request.user.logged_in) {
+		if (!socket.request.user.logged_in) {
 			console.log(
 				`\n【socket.io】User not logged in try to connect socket, user: ${socket.request.user}`
 			);
-			return;
-		}
-		// for debug
-		if (socket.request.user && !socket.request.user.id) {
-			console.log(
-				`\n【socket.io】Missing user id in socket.request.user`
-			);
-			return;
-		}
-		if (socket && !socket.id) {
-			console.log(`\n【socket.io】Missing socket id in socket object`);
+			// disconnect
+			io.in(socket.id).disconnectSockets();
 			return;
 		}
 
