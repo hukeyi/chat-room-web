@@ -17,6 +17,7 @@ import { io } from 'socket.io-client';
 import store from '../store/index';
 import friendApi from '../api/friend';
 import roomApi from '../api/room';
+import cookieTool from './cookies';
 
 export class Socket {
 	constructor() {
@@ -39,9 +40,18 @@ export class Socket {
 			process.env.NODE_ENV != 'production'
 				? 'http://localhost:3000'
 				: process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
+		const cookieKey = process.env.VUE_APP_COOKIE_NAME;
+		const cookieVal = cookieTool.getItem(cookieKey);
+
+		console.log(`【socket.js】Cookie send: ${cookie}`);
+
 		this.socket = io(serverUrl, {
 			withCredentials: true,
 			transports: ['websocket'],
+			// query: `session_id=${cookieVal}`,
+			query: {
+				session_id: cookieVal,
+			},
 		});
 		/**
 		 * 挂载监听
