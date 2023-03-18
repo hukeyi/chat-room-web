@@ -1,7 +1,7 @@
 const path = require('path');
 const serverUrl =
 	process.env.NODE_ENV != 'production'
-		? 'http://localhost:3000'
+		? process.env.VUE_APP_SERVER_URL_LOCAL
 		: process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
 
 function resolve(dir) {

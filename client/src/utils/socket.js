@@ -38,20 +38,23 @@ export class Socket {
 		 */
 		const serverUrl =
 			process.env.NODE_ENV != 'production'
-				? 'http://localhost:3000'
+				? process.env.VUE_APP_SERVER_URL_LOCAL
 				: process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
-		const cookieKey = process.env.VUE_APP_COOKIE_NAME;
-		const cookieVal = cookieTool.getItem(cookieKey);
 
-		console.log(`【socket.js】Cookie send: ${cookieVal}`);
+		const cookieKey = process.env.VUE_APP_COOKIE_NAME;
+		let cookieVal = cookieTool.getItem(cookieKey);
+
+		// weird thing: only part of cookieVal(substring
+		// between `:` and `.`) is valid session_id
+		// #fixme: why?
+		// below are just workaround:
+		cookieVal = cookieVal.split(':')[1];
+		cookieVal = cookieVal.split('.')[0];
 
 		this.socket = io(serverUrl, {
 			withCredentials: true,
 			transports: ['websocket'],
-			// query: `session_id=${cookieVal}`,
-			query: {
-				session_id: cookieVal,
-			},
+			query: `session_id=${cookieVal}`,
 		});
 		/**
 		 * 挂载监听

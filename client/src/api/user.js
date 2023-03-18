@@ -51,7 +51,7 @@ const UpdateInfo = (data) => {
 
 const serverUrl =
 	process.env.NODE_ENV != 'production'
-		? 'http://localhost:3000'
+		? process.env.VUE_APP_SERVER_URL_LOCAL
 		: process.env.VUE_APP_SERVER_URL; // 后端服务器 host 地址
 const UpdateAvatar = serverUrl + '/api/user/update/avatar';
 const DownloadAvatar = (uid) => serverUrl + '/api/user/download/avatar/' + uid;
