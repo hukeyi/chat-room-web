@@ -43,7 +43,7 @@ export class Socket {
 		const cookieKey = process.env.VUE_APP_COOKIE_NAME;
 		const cookieVal = cookieTool.getItem(cookieKey);
 
-		console.log(`【socket.js】Cookie send: ${cookie}`);
+		console.log(`【socket.js】Cookie send: ${cookieVal}`);
 
 		this.socket = io(serverUrl, {
 			withCredentials: true,
