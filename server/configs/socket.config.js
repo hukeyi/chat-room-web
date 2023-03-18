@@ -5,7 +5,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-23 00:20:55
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-04 15:22:31
+ * @Last Modified time: 2023-03-18 17:44:46
  */
 
 /**
@@ -68,8 +68,10 @@ const onDisconnect = (socket) => {
 	socket.on('disconnect', function () {
 		const userId = socket.request.user.id,
 			socketId = socket.id;
+
 		console.log('\n😈 Oops! User disconnected', userId, socketId);
-		socketMap.delete(userId);
+
+		if (userId != undefined) socketMap.delete(userId);
 	});
 };
 const onSendNotice = (socket) => {
@@ -211,12 +213,24 @@ const onRoomChat = async (io, socket) => {
 module.exports = function (io) {
 	io.on('connection', async function (socket) {
 		/**
+		 * check if user successfully logged in
+		 */
+		if (!socket.request.user.logged_in) {
+			console.log(
+				`\n【socket.io】User not logged in try to connect socket, user: ${socket.request.user}`
+			);
+			// disconnect
+			io.in(socket.id).disconnectSockets();
+			return;
+		}
+
+		/**
 		 * 初始化socket映射表和room集合
 		 */
-
 		const userId = socket.request.user.id,
 			socketId = socket.id;
-		console.log('\n🎉 Yeah! User connected', userId, socketId);
+		console.log('\n【socket.io】🎉 Yeah! User connected', userId, socketId);
+
 		socketMap.set(userId, socketId);
 		console.log('socketMap', socketMap);
 

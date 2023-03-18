@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-11 14:39:54
+ * @Last Modified time: 2023-03-18 17:46:55
  */
 
 /**
@@ -79,7 +79,8 @@ app.use(
 		secret: process.env.SESSION_SECRET,
 		resave: true,
 		saveUninitialized: true,
-		cookie: { secure: false }, // `secure: false` -> no need for https
+		cookie: { secure: false, httpOnly: false }, // `secure: false` -> no need for https
+		// httpOnly: false, 'cause client-side need to get cookie
 		store: store,
 		name: process.env.COOKIE_NAME, // name for the cookie to be stored in user's browser
 	})
