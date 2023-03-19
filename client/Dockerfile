@@ -28,8 +28,9 @@ COPY cert /etc/nginx/cert
 # [add by me] copy nginx.conf to container
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# expose port 443
+# expose port 443 and 80
 EXPOSE 443
+EXPOSE 80
 
 # run nginx
 CMD ["nginx", "-g", "daemon off;"]
