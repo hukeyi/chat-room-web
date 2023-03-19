@@ -1,5 +1,5 @@
 # builder stage for building vue app
-FROM node:alpine as builder
+FROM node:16 as builder
 
 # install dependencies
 WORKDIR /app
