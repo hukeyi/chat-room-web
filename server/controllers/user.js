@@ -2,12 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-21 21:00:45
+ * @Last Modified time: 2023-03-21 21:13:33
  */
 
 const { User, $ } = require('../models/index.js');
 const bcrypt = require('bcryptjs');
-const SALT_LENGTH = process.env.SALT_LENGTH;
+const SALT_LENGTH = parseInt(process.env.SALT_LENGTH);
 const jsonwebtoken = require('jsonwebtoken');
 const { toJSON } = require('./utils.js');
 const fs = require('fs');
