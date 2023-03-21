@@ -2,12 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 23:01:35
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-02-25 16:23:51
+ * @Last Modified time: 2023-03-21 21:00:45
  */
 
 const { User, $ } = require('../models/index.js');
 const bcrypt = require('bcryptjs');
-const SALT_LENGTH = 8;
+const SALT_LENGTH = process.env.SALT_LENGTH;
 const jsonwebtoken = require('jsonwebtoken');
 const { toJSON } = require('./utils.js');
 const fs = require('fs');
@@ -34,9 +34,10 @@ function findUserPassById(id) {
 }
 
 async function updateUserPass(id, newPass) {
-	const hash = await bcrypt.hash(newPass, SALT_LENGTH);
+	// update: newPass is hashed by frontend
+	// const hash = await bcrypt.hash(newPass, SALT_LENGTH);
 	return User.update(
-		{ password: hash },
+		{ password: newPass },
 		{
 			where: { id },
 		}
@@ -74,6 +75,22 @@ function updateUserInfoAll(id, name, email, gender, birth_date) {
 		}
 	);
 }
+/**
+ * compare password, if match return true
+ *
+ * @param {*} password hashed password send by user
+ * @param {*} storedPassword hashed one stored in database
+ */
+const isPasswordMatch = async (password, storedPassword) => {
+	const salt = await bcrypt.genSalt(SALT_LENGTH);
+	// hash the user password again
+	// make sure the SALT_LENGTH is equal to frontend
+	const hashedPassword = await bcrypt.hash(password, salt);
+	// compare the double-hashed password with
+	// the one stored in database
+	const isMatch = await bcrypt.compare(hashedPassword, storedPassword);
+	return isMatch;
+};
 
 const user_search_post = async (req, res, next) => {
 	try {
@@ -129,7 +146,8 @@ const user_update_password_post = async (req, res, next) => {
 		const user = toJSON(await findUserPassById(id));
 		console.log('\nuser change password post', user);
 		// 密码不正确
-		if (!bcrypt.compareSync(exPass, user.password)) {
+		// if (!bcrypt.compareSync(exPass, user.password)) {
+		if (!isPasswordMatch(exPass, user.password)) {
 			console.log('\nwrong password');
 			res.status(401).json('密码错误，认证失败');
 		} else {
@@ -153,11 +171,12 @@ const user_register_post = async (req, res, next) => {
 			attributes: ['id', 'phone'],
 		});
 		if (!user) {
-			const hash = await bcrypt.hash(password, SALT_LENGTH);
+			// updated: hash in frontend
+			// const hash = await bcrypt.hash(password, SALT_LENGTH);
 			const newUser = await User.create({
 				phone: userId,
 				name: name,
-				password: hash,
+				password: password,
 			});
 			console.log('\nNew user created: ', newUser.id);
 			return res.status(200).json({
@@ -177,6 +196,9 @@ const user_register_post = async (req, res, next) => {
 
 const user_login_post = async (req, res, next) => {
 	const { id, phone } = req.user;
+
+	// 这里不需要验证密码
+	// 密码验证在 passport.authenticate('local') 里做了
 
 	/**
 	 * 生成jsonwebtoken
@@ -208,4 +230,5 @@ module.exports = {
 	user_update_password_post,
 	user_update_info_post,
 	user_update_avatar_post,
+	isPasswordMatch,
 };
