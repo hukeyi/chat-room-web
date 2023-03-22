@@ -4,6 +4,8 @@ import createPersistedState from 'vuex-persistedstate';
 import { userModule } from './userModule';
 import { roomModule } from './roomModule';
 
+import waitFor from '../utils/timer';
+
 const store = createStore({
 	plugins: [createPersistedState({ storage: window.sessionStorage })],
 	modules: {
@@ -20,7 +22,8 @@ const store = createStore({
 				/**
 				 * 整页的加载
 				 */
-				hideFullPageLoader(state) {
+				async hideFullPageLoader(state) {
+					await waitFor(2);
 					state.showFullPageLoader = false;
 				},
 				showFullPageLoader(state) {

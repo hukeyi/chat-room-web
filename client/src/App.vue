@@ -1,26 +1,27 @@
 <template>
 	<div style="height: 100%; width: 100%">
-		<!-- <Spinner
-			class="full-page-loader"
+		<Spinner
 			v-if="isLoading()"
+			class="full-page-loader"
 			:loading="isLoading()"
 			:color="colorForLoader"
-		/> -->
-		<!-- <router-view v-else /> -->
-		<transition name="fade" mode="out-in">
-			<router-view />
-		</transition>
+		/>
+		<router-view v-else v-slot="{ Component }">
+			<transition name="fade" mode="out-in">
+				<component :is="Component" />
+			</transition>
+		</router-view>
 	</div>
 </template>
 
 <script>
-	// import Spinner from 'vue-spinner/src/PacmanLoader.vue';
+	import Spinner from 'vue-spinner/src/PacmanLoader.vue';
 	import { mapGetters } from 'vuex';
 
 	export default {
 		name: 'App',
 		components: {
-			// Spinner,
+			Spinner,
 		},
 		data() {
 			return {

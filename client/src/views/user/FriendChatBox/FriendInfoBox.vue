@@ -65,20 +65,6 @@
 							>
 						</InputItem>
 					</div>
-					<!-- 无好友 -->
-					<div v-else-if="!friendList.length" class="no-friends">
-						<el-empty
-							description="暂时没有好友，赶快搜索好友开始聊天吧"
-							:image-size="200"
-						>
-							<el-button
-								size="medium"
-								class="add-friend-btn"
-								@click="handleClickAddFriend"
-								>添加好友</el-button
-							>
-						</el-empty>
-					</div>
 					<!-- 所有好友信息列表 -->
 					<div
 						v-else-if="selectFriendStatus === 'all'"
@@ -118,6 +104,21 @@
 							@click="handleClickFriendCard(item)"
 						></InfoCardItem>
 					</div> -->
+					<!-- 无好友 -->
+					<div v-else-if="!friendList.length" class="no-friends">
+						<el-empty
+							description="暂时没有好友，赶快搜索好友开始聊天吧"
+							:image-size="200"
+						>
+							<el-button
+								size="medium"
+								class="add-friend-btn"
+								@click="handleClickAddFriend"
+								>添加好友</el-button
+							>
+						</el-empty>
+					</div>
+
 					<!-- 好友信息边栏，点击某个好友的card，从右往左弹出指定好友的信息 -->
 					<el-drawer
 						custom-class="friend-info-drawer"

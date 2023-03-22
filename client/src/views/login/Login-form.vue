@@ -86,7 +86,7 @@
 
 <script>
 	import userApi from '@/api/user.js';
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	// vuelidate: https://vuelidate-next.netlify.app/
 	import { useVuelidate } from '@vuelidate/core';
 	import { required } from '@vuelidate/validators';
@@ -120,13 +120,13 @@
 		},
 		methods: {
 			...mapGetters(['getUserId', 'getUserName']),
-			// ...mapMutations({
-			// 	showLoader: 'showFullPageLoader',
-			// 	hideLoader: 'hideFullPageLoader',
-			// }),
+			...mapMutations({
+				showLoader: 'showFullPageLoader',
+				hideLoader: 'hideFullPageLoader',
+			}),
 			...mapActions(['setUserInfo']),
 			async submitForm() {
-				// this.showLoader(); // start loading;
+				this.showLoader(); // start loading;
 
 				const isFormCorrect = await this.v$.$validate();
 				if (isFormCorrect) {
@@ -144,11 +144,11 @@
 					} catch (err) {
 						this.$message.error(err ? err : '系统繁忙，请稍后');
 					} finally {
-						// this.hideLoader();
+						this.hideLoader();
 					}
 				} else {
 					this.$message.error('手机号或密码格式错误！');
-					// this.hideLoader();
+					this.hideLoader();
 				}
 			},
 			// to register page
