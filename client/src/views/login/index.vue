@@ -3,7 +3,7 @@
 		<div class="top"></div>
 		<div class="bottom"></div>
 		<div class="center">
-			<router-view />
+			<transition name="fade" mode="out-in"> <router-view /></transition>
 		</div>
 	</div>
 </template>
@@ -20,6 +20,7 @@
 <style lang="scss" scoped>
 	@import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
 	@import url('https://fonts.googleapis.com/css?family=Noto+Sans+SC');
+	@import '@/assets/styles/transition.scss';
 
 	*,
 	*:before,

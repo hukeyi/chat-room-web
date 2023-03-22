@@ -120,8 +120,14 @@
 		},
 		methods: {
 			...mapGetters(['getUserId', 'getUserName']),
+			// ...mapMutations({
+			// 	showLoader: 'showFullPageLoader',
+			// 	hideLoader: 'hideFullPageLoader',
+			// }),
 			...mapActions(['setUserInfo']),
 			async submitForm() {
+				// this.showLoader(); // start loading;
+
 				const isFormCorrect = await this.v$.$validate();
 				if (isFormCorrect) {
 					const postData = {
@@ -137,10 +143,12 @@
 						this.$router.push(`/user/${id}`);
 					} catch (err) {
 						this.$message.error(err ? err : '系统繁忙，请稍后');
+					} finally {
+						// this.hideLoader();
 					}
 				} else {
 					this.$message.error('手机号或密码格式错误！');
-					return false;
+					// this.hideLoader();
 				}
 			},
 			// to register page
