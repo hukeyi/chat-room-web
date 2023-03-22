@@ -8,10 +8,6 @@
 						>好友</span
 					>
 				</div>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-menu
 					@select="handleSelectStatus"
 					class="main-header-menu"
@@ -22,10 +18,6 @@
 					<!-- <el-menu-item index="on">在线</el-menu-item>
 					<el-menu-item index="off">离线</el-menu-item> -->
 				</el-menu>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-button
 					@click="handleClickAddFriend"
 					size="medium"

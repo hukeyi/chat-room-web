@@ -103,10 +103,6 @@
 				font-weight: bolder;
 			}
 
-			*.main-header-divider {
-				background-color: $themeColorMedium;
-			}
-
 			.main-header-title {
 				display: flex;
 				align-items: center;
@@ -130,6 +126,7 @@
 				width: auto;
 				background-color: transparent;
 				border: transparent;
+				margin-left: auto 20px;
 
 				.el-menu-item {
 					margin: auto 20px;
