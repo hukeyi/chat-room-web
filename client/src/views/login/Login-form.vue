@@ -136,7 +136,7 @@
 						localStorage.setItem(`token_${id}`, token);
 						this.$router.push(`/user/${id}`);
 					} catch (err) {
-						this.$message.error(err);
+						this.$message.error(err ? err : '系统繁忙，请稍后');
 					}
 				} else {
 					this.$message.error('手机号或密码格式错误！');

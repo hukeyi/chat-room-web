@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-02 22:33:54
+ * @Last Modified time: 2023-03-22 17:01:54
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -20,6 +20,7 @@ const statusHash = {
 	408: '重复提交',
 	500: '系统繁忙，请稍后',
 	501: '请求频繁，请稍后',
+	502: '服务器错误，请稍后·',
 };
 
 const service = axios.create({
@@ -75,7 +76,7 @@ service.interceptors.response.use(
 		if (error.response) {
 			// The request was made and the server responded with a status code
 			// that falls out of the range of 2xx
-			serverMsg = error.response.data.message || error.response.data; // 服务器返回的错误信息
+			if (error.response.data) serverMsg = error.response.data.message; // 服务器返回的错误信息
 			msg = statusHash[Number(error.response.status || 500)]; // 状态码代表的错误信息
 			console.log(
 				'The request was made and the server responded with a status code'
