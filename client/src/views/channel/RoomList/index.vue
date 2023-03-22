@@ -78,7 +78,9 @@
 			}),
 			...mapActions({}),
 			handleClickItem(item) {
-				this.$router.push(`/channel/${this.getUserId()}/room/${item.id}`);
+				this.$router.push(
+					`/channel/${this.getUserId()}/room/${item.id}`
+				);
 			},
 			handleClickLogout() {
 				// logout
@@ -93,7 +95,7 @@
 						this.$router.push('/');
 					})
 					.catch((err) => {
-						alert(err);
+						this.$message.error('服务器异常，请稍后');
 						console.log('logout vue', err);
 					});
 			},
