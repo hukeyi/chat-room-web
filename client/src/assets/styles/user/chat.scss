@@ -167,12 +167,14 @@
 				width: 90px;
 				height: 15px !important;
 
-				color: $fontColorLight;
-				opacity: 0.45;
+				color: $fontColorDeep;
+			}
+			.main-header-btn:active{
+				background-color: $fontColorDeep;
+				color: $emphasisColorA;
 			}
 
 			.main-header-btn.is-active {
-				opacity: 1;
 				border-color: $fontColorLight;
 				border-width: 2px;
 			}
@@ -207,9 +209,10 @@
 				background-color: $emphasisColorA;
 				color: $fontColorDeep;
 			}
-			.add-room-btn:hover,
-			.add-friend-btn:hover {
-				color: $fontColorLight;
+			.add-room-btn:active,
+			.add-friend-btn:active {
+				background-color: $fontColorDeep;
+				color: $emphasisColorA;
 			}
 			.room-info-drawer,
 			.friend-info-drawer {
