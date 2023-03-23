@@ -90,8 +90,7 @@
 	// vuelidate: https://vuelidate-next.netlify.app/
 	import { useVuelidate } from '@vuelidate/core';
 	import { required } from '@vuelidate/validators';
-	// validator for phone
-	const validatePhone = (value) => /^1[3-9]\d{9}$/.test(value);
+	import { validatePhone, validatePassword } from '@/utils/validators';
 
 	export default {
 		setup() {
@@ -114,7 +113,7 @@
 				},
 				password: {
 					required,
-					// todo: add more validator for pwd
+					validatePassword,
 				},
 			};
 		},

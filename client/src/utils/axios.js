@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-22 17:01:54
+ * @Last Modified time: 2023-03-23 15:15:34
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -38,7 +38,6 @@ service.interceptors.request.use(
 	(config) => {
 		// Before request is sent
 		const userId = store.getters.getUserId;
-		// todo: loading or not, add after
 		if (localStorage.getItem(`token_${userId}`)) {
 			// 获取登录时生成的 Bearer jsonwebtoken
 			// 作为 authorization，维护登录状态
@@ -50,7 +49,6 @@ service.interceptors.request.use(
 	},
 	(error) => {
 		// When request error
-		// todo: set loading false
 		return Promise.reject(error);
 	}
 );
@@ -60,9 +58,7 @@ service.interceptors.response.use(
 	(response) => {
 		// Any status code that lie within the range of 2xx cause this function to trigger
 		// Do something with response data
-		// todo: loading true
 		if (!response.data) {
-			// fixme: 会出现状态码 2xx，但 response 无 data 属性的情况吗？
 			console.log(
 				`Response succeed but reponse.data is ${response.data}`
 			);
