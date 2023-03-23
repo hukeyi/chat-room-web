@@ -14,9 +14,20 @@
 				type="text"
 				placeholder="手机号"
 				autocomplete="new-password"
-				:class="{ 'error-prompt': v$.phone.$dirty && v$.phone.$error }"
+				:class="{
+					'error-prompt':
+						isSubmit && v$.phone.$dirty && v$.phone.$error,
+				}"
 			/>
-
+			<!-- 表单格式提示 -->
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="isSubmit && v$.phone.$dirty && v$.phone.$error"
+					class="input-prompt"
+				>
+					请输入格式正确的手机号码
+				</div>
+			</transition>
 			<!-- 效果 -->
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -28,13 +39,7 @@
 				<div class="bg-inner"></div>
 			</div>
 		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.phone.required">
-			Phone is required
-		</div>
-		<div class="invalid-feedback">
-			{{ v$.phone.$error ? 'Invalid phone number' : '' }}
-		</div> -->
+
 		<!-- 密码输入框 -->
 		<div class="control block-cube block-input">
 			<input
@@ -46,9 +51,19 @@
 				name="password"
 				placeholder="密码"
 				:class="{
-					'error-prompt': v$.password.$dirty && v$.password.$error,
+					'error-prompt':
+						isSubmit && v$.password.$dirty && v$.password.$error,
 				}"
 			/>
+			<!-- 表单格式提示 -->
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="isSubmit && v$.password.$dirty && v$.password.$error"
+					class="input-prompt"
+				>
+					6～20位数字/字母/下划线
+				</div>
+			</transition>
 			<!-- 效果 -->
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -60,10 +75,6 @@
 				<div class="bg-inner"></div>
 			</div>
 		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.password.required">
-			Password is required
-		</div> -->
 		<button @click="submitForm()" class="btn block-cube block-cube-hover">
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -102,6 +113,7 @@
 			return {
 				phone: '',
 				password: '',
+				isSubmit: false,
 				imgUrl: require('../../assets/chat-logo-trans.png'),
 			};
 		},
@@ -125,10 +137,9 @@
 			}),
 			...mapActions(['setUserInfo']),
 			async submitForm() {
-				this.showLoader(); // start loading;
-
 				const isFormCorrect = await this.v$.$validate();
 				if (isFormCorrect) {
+					this.showLoader(); // start loading;
 					const postData = {
 						userId: this.phone,
 						password: this.password,
@@ -145,9 +156,9 @@
 					} finally {
 						this.hideLoader();
 					}
+					this.isSubmit = false;
 				} else {
-					this.$message.error('手机号或密码格式错误！');
-					this.hideLoader();
+					this.isSubmit = true;
 				}
 			},
 			// to register page
@@ -160,10 +171,10 @@
 				else window.event.value = false;
 			},
 		},
-		mounted() {},
 	};
 </script>
 
 <style lang="scss" scoped>
 	@import '@/assets/styles/login/login.scss';
+	@import '@/assets/styles/transition.scss';
 </style>

@@ -16,6 +16,15 @@
 				autocomplete="new-password"
 				:class="{ 'error-prompt': v$.phone.$dirty && v$.phone.$error }"
 			/>
+			<!-- 表单格式提示 -->
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="v$.phone.$dirty && v$.phone.$error"
+					class="input-prompt"
+				>
+					请输入格式正确的手机号码
+				</div>
+			</transition>
 
 			<!-- 效果 -->
 			<div class="bg-top">
@@ -28,19 +37,9 @@
 				<div class="bg-inner"></div>
 			</div>
 		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.phone.required">
-			Phone is required
-		</div>
-		<div class="invalid-feedback">
-			{{ v$.phone.$error ? 'Invalid phone number' : '' }}
-		</div> -->
+
 		<!-- 昵称输入 -->
 		<div class="control block-cube block-input">
-			<!-- add `autocomplete="new-password"` to remove Chrome's 
-				weird !important css style(background) -->
-			<!-- src: https://stackoverflow.com/questions/43783924/
-				disable-google-chrome-autocomplete-autofill-suggestion -->
 			<input
 				v-model.number="v$.username.$model"
 				@keydown.enter="handleEnterClear"
@@ -53,6 +52,15 @@
 					'error-prompt': v$.username.$dirty && v$.username.$error,
 				}"
 			/>
+			<!-- 表单格式提示 -->
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="v$.username.$dirty && v$.username.$error"
+					class="input-prompt"
+				>
+					3~16位字符/数字
+				</div>
+			</transition>
 
 			<!-- 效果 -->
 			<div class="bg-top">
@@ -79,6 +87,14 @@
 					'error-prompt': v$.password.$dirty && v$.password.$error,
 				}"
 			/>
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="v$.password.$dirty && v$.password.$error"
+					class="input-prompt"
+				>
+					6～20位数字/字母/下划线
+				</div>
+			</transition>
 			<!-- 效果 -->
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -104,6 +120,14 @@
 					'error-prompt': v$.password2.$dirty && v$.password2.$error,
 				}"
 			/>
+			<transition name="fade" mode="out-in">
+				<div
+					v-if="v$.password2.$dirty && v$.password2.$error"
+					class="input-prompt"
+				>
+					两次密码输入不一致
+				</div>
+			</transition>
 			<!-- 效果 -->
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -115,10 +139,7 @@
 				<div class="bg-inner"></div>
 			</div>
 		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.password.required">
-			Password is required
-		</div> -->
+
 		<button @click="submitForm()" class="btn block-cube block-cube-hover">
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -145,7 +166,11 @@
 	// vuelidate: https://vuelidate-next.netlify.app/
 	import { useVuelidate } from '@vuelidate/core';
 	import { required, sameAs } from '@vuelidate/validators';
-	import { validatePhone, validatePassword } from '@/utils/validators';
+	import {
+		validatePhone,
+		validatePassword,
+		validateUsername,
+	} from '@/utils/validators';
 
 	export default {
 		setup() {
@@ -170,6 +195,7 @@
 				},
 				username: {
 					required,
+					validateUsername,
 				},
 				password: {
 					required,
@@ -213,8 +239,7 @@
 						console.log(err);
 					}
 				} else {
-					this.$message.error('手机号或密码格式错误！');
-					return false;
+					// this.$message.error('手机号或密码格式错误！');
 				}
 			},
 			// to login page
@@ -227,10 +252,10 @@
 				else window.event.value = false;
 			},
 		},
-		mounted() {},
 	};
 </script>
 
 <style lang="scss" scoped>
 	@import '@/assets/styles/login/login.scss';
+	@import '@/assets/styles/transition.scss';
 </style>
