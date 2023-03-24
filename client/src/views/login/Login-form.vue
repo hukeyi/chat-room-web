@@ -1,80 +1,32 @@
 <template>
 	<div class="login">
 		<!-- 手机号输入框 -->
-		<div class="control block-cube block-input">
-			<!-- add `autocomplete="new-password"` to remove Chrome's 
+		<!-- add `autocomplete="new-password"` to remove Chrome's 
 				weird !important css style(background) -->
-			<!-- src: https://stackoverflow.com/questions/43783924/
+		<!-- src: https://stackoverflow.com/questions/43783924/
 				disable-google-chrome-autocomplete-autofill-suggestion -->
-			<input
-				v-model.number="v$.phone.$model"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="username"
-				type="text"
-				placeholder="手机号"
-				autocomplete="new-password"
-				:class="{
-					'error-prompt':
-						isSubmit && v$.phone.$dirty && v$.phone.$error,
-				}"
-			/>
-			<!-- 表单格式提示 -->
-			<transition name="fade" mode="out-in">
-				<div
-					v-if="isSubmit && v$.phone.$dirty && v$.phone.$error"
-					class="input-prompt"
-				>
-					请输入格式正确的手机号码
-				</div>
-			</transition>
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
+		<cubic-input
+			name="username"
+			placeholder="手机号"
+			:vModel="v$.phone"
+			:isSubmit="isSubmit"
+			errorPrompt="请输入格式正确的手机号码"
+			@submit="submitForm()"
+			@update="updatePhone"
+		></cubic-input>
 
 		<!-- 密码输入框 -->
-		<div class="control block-cube block-input">
-			<input
-				type="password"
-				v-model="v$.password.$model"
-				autocomplete="off"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="password"
-				placeholder="密码"
-				:class="{
-					'error-prompt':
-						isSubmit && v$.password.$dirty && v$.password.$error,
-				}"
-			/>
-			<!-- 表单格式提示 -->
-			<transition name="fade" mode="out-in">
-				<div
-					v-if="isSubmit && v$.password.$dirty && v$.password.$error"
-					class="input-prompt"
-				>
-					6～20位数字/字母/下划线
-				</div>
-			</transition>
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
+		<cubic-input
+			name="password"
+			type="password"
+			placeholder="密码"
+			:vModel="v$.password"
+			:isSubmit="isSubmit"
+			errorPrompt="6～20位数字/字母/下划线"
+			@submit="submitForm()"
+			@update="updatePassword"
+		></cubic-input>
+
 		<button @click="submitForm()" class="btn block-cube block-cube-hover">
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -103,7 +55,10 @@
 	import { required } from '@vuelidate/validators';
 	import { validatePhone, validatePassword } from '@/utils/validators';
 
+	import CubicInput from './CubicInputComponent.vue';
+
 	export default {
+		components: { CubicInput },
 		setup() {
 			return {
 				v$: useVuelidate(),
@@ -136,7 +91,15 @@
 				hideLoader: 'hideFullPageLoader',
 			}),
 			...mapActions(['setUserInfo']),
+			updatePhone(value) {
+				this.phone = value;
+			},
+			updatePassword(value) {
+				this.password = value;
+			},
 			async submitForm() {
+				console.log(`phone: ${this.phone}, password: ${this.password}`);
+
 				const isFormCorrect = await this.v$.$validate();
 				if (isFormCorrect) {
 					this.showLoader(); // start loading;
