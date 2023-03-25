@@ -3,7 +3,6 @@
 		<input
 			:name="name"
 			:type="type"
-			:value="model"
 			@input="updateValue($event.target.value)"
 			@keydown.enter="handleEnterClear"
 			@keyup.enter="$emit('submit')"
@@ -73,16 +72,6 @@
 			return {
 				state,
 			};
-		},
-		computed: {
-			model: {
-				get() {
-					return this.vModel.$model;
-				},
-				set(value) {
-					this.updateValue(value);
-				},
-			},
 		},
 		methods: {
 			updateValue(value) {
