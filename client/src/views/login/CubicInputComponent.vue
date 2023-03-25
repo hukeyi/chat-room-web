@@ -8,7 +8,7 @@
 			@keydown.enter="handleEnterClear"
 			@keyup.enter="$emit('submit')"
 			:placeholder="placeholder"
-			autocomplete="new-password"
+			autocomplete="off"
 			:class="{
 				'error-prompt': isSubmit && vModel.$dirty && vModel.$error,
 			}"
