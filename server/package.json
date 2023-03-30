@@ -2,7 +2,7 @@
   "name": "chat-room-web",
   "author": "Hu Keyi <hukeyi1024@qq.com>",
   "description": "Graduation Design: Backend for my chat system",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "start": "nodemon bin/www"
