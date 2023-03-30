@@ -2,12 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-21 20:39:49
+ * @Last Modified time: 2023-03-30 23:11:43
  */
 import axios from '@/utils/axios.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
-const saltRounds = parceInt(process.env.VUE_APP_SALT_ROUNDS);
+const saltRounds = parseInt(process.env.VUE_APP_SALT_ROUNDS);
 
 const Register = async (data) => {
 	// encode user's password for security
