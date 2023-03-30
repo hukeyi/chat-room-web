@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 17:10:56
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-02 22:33:54
+ * @Last Modified time: 2023-03-30 21:04:12
  */
 import axios from 'axios';
 import store from '../store/index';
@@ -75,7 +75,10 @@ service.interceptors.response.use(
 		if (error.response) {
 			// The request was made and the server responded with a status code
 			// that falls out of the range of 2xx
-			serverMsg = error.response.data.message || error.response.data; // 服务器返回的错误信息
+			serverMsg =
+				error.response.data != null
+					? error.response.data.message
+					: undefined; // 服务器返回的错误信息
 			msg = statusHash[Number(error.response.status || 500)]; // 状态码代表的错误信息
 			console.log(
 				'The request was made and the server responded with a status code'
