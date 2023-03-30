@@ -11,7 +11,10 @@
 			</el-aside>
 			<!-- 主界面 好友界面 这里有嵌套路由 -->
 			<el-main class="main-box">
-				<FriendBox @startChat="startChat" :friendList="friendList"></FriendBox>
+				<FriendBox
+					@startChat="startChat"
+					:friendList="friendList"
+				></FriendBox>
 			</el-main>
 		</el-container>
 	</div>
@@ -54,6 +57,9 @@
 					const chatList = await MsgApi.GetFriendChatAll();
 					this.setFriendChatListAll(chatList);
 					this.chatInfoList = this.getChatInfoList();
+					/**
+					 * todo: init 未读通知列表
+					 */
 				} catch (err) {
 					console.log('user/index.vue init err', err);
 				}
