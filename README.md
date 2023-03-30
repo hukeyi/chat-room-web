@@ -73,7 +73,7 @@ cd server
 执行：
 
 ```shell
-nodemon bin/www
+docker compose up -d
 ```
 
 看到：
@@ -89,6 +89,6 @@ All tables sync success
 
 ## 测试数据
 
-用户名：13300000000
+用户名：13300000001
 
-密码：000000
+密码：test

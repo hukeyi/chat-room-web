@@ -81,11 +81,12 @@
 			...mapActions({}),
 			handleClickItem(item) {
 				console.log('click', item.name);
-				this.$router.push(`/user/${this.getUserId()}/friend/${item.id}`);
+				this.$router.push(
+					`/user/${this.getUserId()}/friend/${item.id}`
+				);
 			},
 			handleClickLogout() {
 				// logout
-				console.log('setting btn clicked');
 				userApi
 					.Logout()
 					.then((res) => {
@@ -96,7 +97,7 @@
 						this.$router.push('/');
 					})
 					.catch((err) => {
-						alert(err);
+						this.$message.error('服务器异常，请稍后');
 						console.log('logout vue', err);
 					});
 			},

@@ -2,10 +2,12 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-12 16:33:04
+ * @Last Modified time: 2023-03-22 17:19:54
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
+import { ElMessage } from 'element-plus';
+
 // login
 import Entrance from '../views/login/index.vue';
 import Login from '../views/login/Login-form.vue';
@@ -133,16 +135,20 @@ router.beforeEach((to, from, next) => {
 				// url的id与token中是否匹配
 				next('/error/403');
 			} else if (decoded.exp < currentTime) {
-				// todo: do a notify alert with element ui global
-				alert('Token is expired, please login again');
+				ElMessage({
+					message: '登录令牌已过期，请重新登录',
+					type: 'error',
+				});
 				// todo: clear vuex？
 				next('/');
 			} else {
 				next();
 			}
 		} else {
-			// todo: replace with element message box
-			alert('Please login first');
+			ElMessage({
+				message: '请先登录',
+				type: 'error',
+			});
 			// todo: clear vuex
 			next('/');
 		}

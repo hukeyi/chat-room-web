@@ -2,12 +2,18 @@
 	<!-- 主页最左边栏界面 -->
 	<div class="channel-selector">
 		<!-- 用户主页 -->
-		<SelectorItem :icon="icon_userhome" :link="getUserHomeUrl()"></SelectorItem>
-		<hr width="60%" class="level-divider" />
+		<SelectorItem
+			:icon="icon_userhome"
+			:link="getUserHomeUrl()"
+		></SelectorItem>
+		<!-- <hr width="60%" class="level-divider" /> -->
 		<!-- 聊天室主页 -->
 		<SelectorItem :icon="icon_room" :link="getRoomHomeUrl()"></SelectorItem>
 		<!-- 用户个人信息页面 -->
-		<SelectorItem :icon="icon_userInfo" :link="getSettingUrl()"></SelectorItem>
+		<SelectorItem
+			:icon="icon_userInfo"
+			:link="getSettingUrl()"
+		></SelectorItem>
 	</div>
 </template>
 

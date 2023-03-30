@@ -1,69 +1,32 @@
 <template>
 	<div class="login">
 		<!-- 手机号输入框 -->
-		<div class="control block-cube block-input">
-			<!-- add `autocomplete="new-password"` to remove Chrome's 
+		<!-- add `autocomplete="new-password"` to remove Chrome's 
 				weird !important css style(background) -->
-			<!-- src: https://stackoverflow.com/questions/43783924/
+		<!-- src: https://stackoverflow.com/questions/43783924/
 				disable-google-chrome-autocomplete-autofill-suggestion -->
-			<input
-				v-model.number="v$.phone.$model"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="username"
-				type="text"
-				placeholder="手机号"
-				autocomplete="new-password"
-				:class="{ 'error-prompt': v$.phone.$dirty && v$.phone.$error }"
-			/>
+		<cubic-input
+			name="username"
+			placeholder="手机号"
+			:vModel="v$.phone"
+			:isSubmit="isSubmit"
+			errorPrompt="请输入格式正确的手机号码"
+			@submit="submitForm()"
+			@update="updatePhone"
+		></cubic-input>
 
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.phone.required">
-			Phone is required
-		</div>
-		<div class="invalid-feedback">
-			{{ v$.phone.$error ? 'Invalid phone number' : '' }}
-		</div> -->
 		<!-- 密码输入框 -->
-		<div class="control block-cube block-input">
-			<input
-				type="password"
-				v-model="v$.password.$model"
-				autocomplete="off"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="password"
-				placeholder="密码"
-				:class="{
-					'error-prompt': v$.password.$dirty && v$.password.$error,
-				}"
-			/>
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.password.required">
-			Password is required
-		</div> -->
+		<cubic-input
+			name="password"
+			type="password"
+			placeholder="密码"
+			:vModel="v$.password"
+			:isSubmit="isSubmit"
+			errorPrompt="6～20位数字/字母/下划线"
+			@submit="submitForm()"
+			@update="updatePassword"
+		></cubic-input>
+
 		<button @click="submitForm()" class="btn block-cube block-cube-hover">
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -86,14 +49,16 @@
 
 <script>
 	import userApi from '@/api/user.js';
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	// vuelidate: https://vuelidate-next.netlify.app/
 	import { useVuelidate } from '@vuelidate/core';
 	import { required } from '@vuelidate/validators';
-	// validator for phone
-	const validatePhone = (value) => /^1[3-9]\d{9}$/.test(value);
+	import { validatePhone, validatePassword } from '@/utils/validators';
+
+	import CubicInput from './CubicInputComponent.vue';
 
 	export default {
+		components: { CubicInput },
 		setup() {
 			return {
 				v$: useVuelidate(),
@@ -103,6 +68,7 @@
 			return {
 				phone: '',
 				password: '',
+				isSubmit: false,
 				imgUrl: require('../../assets/chat-logo-trans.png'),
 			};
 		},
@@ -114,16 +80,29 @@
 				},
 				password: {
 					required,
-					// todo: add more validator for pwd
+					validatePassword,
 				},
 			};
 		},
 		methods: {
 			...mapGetters(['getUserId', 'getUserName']),
+			...mapMutations({
+				showLoader: 'showFullPageLoader',
+				hideLoader: 'hideFullPageLoader',
+			}),
 			...mapActions(['setUserInfo']),
+			updatePhone(value) {
+				this.phone = value;
+			},
+			updatePassword(value) {
+				this.password = value;
+			},
 			async submitForm() {
+				console.log(`phone: ${this.phone}, password: ${this.password}`);
+
 				const isFormCorrect = await this.v$.$validate();
 				if (isFormCorrect) {
+					this.showLoader(); // start loading;
 					const postData = {
 						userId: this.phone,
 						password: this.password,
@@ -136,11 +115,13 @@
 						localStorage.setItem(`token_${id}`, token);
 						this.$router.push(`/user/${id}`);
 					} catch (err) {
-						this.$message.error(err);
+						this.$message.error(err ? err : '系统繁忙，请稍后');
+					} finally {
+						this.hideLoader();
 					}
+					this.isSubmit = false;
 				} else {
-					this.$message.error('手机号或密码格式错误！');
-					return false;
+					this.isSubmit = true;
 				}
 			},
 			// to register page
@@ -153,10 +134,10 @@
 				else window.event.value = false;
 			},
 		},
-		mounted() {},
 	};
 </script>
 
 <style lang="scss" scoped>
 	@import '@/assets/styles/login/login.scss';
+	@import '@/assets/styles/transition.scss';
 </style>

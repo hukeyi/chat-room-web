@@ -8,10 +8,6 @@
 						>设置</span
 					>
 				</div>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-menu
 					@select="handleSelectStatus"
 					class="main-header-menu"
@@ -21,15 +17,14 @@
 					<el-menu-item index="info">个人信息设置</el-menu-item>
 					<el-menu-item index="password">密码重设</el-menu-item>
 				</el-menu>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 			</el-header>
 			<!-- 个人信息界面 -->
 			<el-container>
 				<el-main class="main-central">
-					<el-row v-if="selectStatus == 'info'" class="user-info-form">
+					<el-row
+						v-if="selectStatus == 'info'"
+						class="user-info-form"
+					>
 						<el-col :span="10">
 							<el-form
 								label-position="top"
@@ -51,14 +46,21 @@
 									></el-input>
 								</el-form-item>
 								<el-form-item label="昵称" prop="name">
-									<el-input v-model="ruleInfoForm.name"></el-input>
+									<el-input
+										v-model="ruleInfoForm.name"
+									></el-input>
 								</el-form-item>
 
 								<el-form-item label="邮箱" prop="email">
-									<el-input v-model="ruleInfoForm.email"></el-input>
+									<el-input
+										v-model="ruleInfoForm.email"
+									></el-input>
 								</el-form-item>
 								<el-form-item label="生日" prop="birthDate">
-									<el-date-picker v-model="ruleInfoForm.birthDate" type="date">
+									<el-date-picker
+										v-model="ruleInfoForm.birthDate"
+										type="date"
+									>
 									</el-date-picker>
 								</el-form-item>
 								<el-form-item label="性别" prop="gender">
@@ -77,28 +79,44 @@
 								</el-form-item>
 
 								<el-form-item>
-									<el-button type="primary" @click="submitForm('ruleInfoForm')"
+									<el-button
+										type="primary"
+										@click="submitForm('ruleInfoForm')"
 										>确认修改</el-button
 									>
-									<el-button @click="resetForm('ruleInfoForm')">重置</el-button>
+									<el-button
+										@click="resetForm('ruleInfoForm')"
+										>重置</el-button
+									>
 								</el-form-item>
 							</el-form>
 						</el-col>
 						<el-col style="padding-top: 40px;" :span="14">
-							<div class="avatar-form" style="margin-left: 80px; border:0px;">
+							<div
+								class="avatar-form"
+								style="margin-left: 80px; border:0px;"
+							>
 								<div class="avatar-operation">
 									<el-upload
 										name="avatar"
-										:action="upload_url + `?uid=${getUserId()}`"
+										:action="
+											upload_url + `?uid=${getUserId()}`
+										"
 										:show-file-list="false"
 										:on-success="handleAvatarSuccess"
 										:before-upload="beforeAvatarUpload"
 									>
 										<img
-											:src="ruleInfoForm.avatar ? avatar_url : icon_user"
+											:src="
+												ruleInfoForm.avatar
+													? avatar_url
+													: icon_user
+											"
 											class="avatar-image"
 										/>
-										<el-button class="avatar-form-button">修改图像</el-button>
+										<el-button class="avatar-form-button"
+											>修改图像</el-button
+										>
 									</el-upload>
 								</div>
 							</div>
@@ -135,10 +153,14 @@
 							</el-form-item>
 
 							<el-form-item>
-								<el-button type="primary" @click="submitForm('rulePassForm')"
+								<el-button
+									type="primary"
+									@click="submitForm('rulePassForm')"
 									>确认重设</el-button
 								>
-								<el-button @click="resetForm('rulePassForm')">重置</el-button>
+								<el-button @click="resetForm('rulePassForm')"
+									>重置</el-button
+								>
 							</el-form-item>
 						</el-form>
 					</div>
@@ -277,15 +299,27 @@
 			},
 			async submitInfoForm() {
 				try {
-					const { name, email, gender, birthDate } = this.ruleInfoForm;
+					const {
+						name,
+						email,
+						gender,
+						birthDate,
+					} = this.ruleInfoForm;
 					const postData = {
 						name: name ? name : this.exInfo.name,
 						email: email ? email : this.exInfo.email,
 						gender: gender ? gender : this.exInfo.gender,
-						birth_date: birthDate ? birthDate : this.exInfo.birthDate,
+						birth_date: birthDate
+							? birthDate
+							: this.exInfo.birthDate,
 					};
 
-					console.log('this.exInfo:', this.exInfo, '\npostData', postData);
+					console.log(
+						'this.exInfo:',
+						this.exInfo,
+						'\npostData',
+						postData
+					);
 
 					if (
 						this.exInfo &&
@@ -324,7 +358,8 @@
 				});
 			},
 			resetForm(formName) {
-				if (formName === 'rulePassForm') this.$refs[formName].resetFields();
+				if (formName === 'rulePassForm')
+					this.$refs[formName].resetFields();
 				else this.ruleInfoForm = this.getUserInfo();
 			},
 		},

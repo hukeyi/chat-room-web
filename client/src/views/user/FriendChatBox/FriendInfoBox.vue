@@ -4,12 +4,10 @@
 			<!-- 好友界面：头顶栏，选择好友状态分类 -->
 			<el-header class="main-header">
 				<div class="main-header-title">
-					<img :src="icon_friend" /><span style="margin: auto 10px;">好友</span>
+					<img :src="icon_friend" /><span style="margin: auto 10px;"
+						>好友</span
+					>
 				</div>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-menu
 					@select="handleSelectStatus"
 					class="main-header-menu"
@@ -20,16 +18,12 @@
 					<!-- <el-menu-item index="on">在线</el-menu-item>
 					<el-menu-item index="off">离线</el-menu-item> -->
 				</el-menu>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-button
 					@click="handleClickAddFriend"
 					size="medium"
 					class="main-header-btn"
 					:class="{ 'is-active': showAddFriend }"
-					>添加朋友</el-button
+					>添加好友</el-button
 				>
 				<el-badge
 					v-if="noticeList.length"
@@ -71,22 +65,11 @@
 							>
 						</InputItem>
 					</div>
-					<!-- 无好友 -->
-					<div v-else-if="!friendList.length" class="no-friends">
-						<el-empty
-							description="暂时没有好友，赶快搜索好友开始聊天吧"
-							:image-size="200"
-						>
-							<el-button
-								size="medium"
-								class="add-friend-btn"
-								@click="handleClickAddFriend"
-								>添加好友</el-button
-							>
-						</el-empty>
-					</div>
 					<!-- 所有好友信息列表 -->
-					<div v-else-if="selectFriendStatus === 'all'" class="friend-list-all">
+					<div
+						v-else-if="selectFriendStatus === 'all'"
+						class="friend-list-all"
+					>
 						<InfoCardItem
 							v-for="item in friendList"
 							:key="item.id"
@@ -121,6 +104,21 @@
 							@click="handleClickFriendCard(item)"
 						></InfoCardItem>
 					</div> -->
+					<!-- 无好友 -->
+					<div v-else-if="!friendList.length" class="no-friends">
+						<el-empty
+							description="暂时没有好友，赶快搜索好友开始聊天吧"
+							:image-size="200"
+						>
+							<el-button
+								size="medium"
+								class="add-friend-btn"
+								@click="handleClickAddFriend"
+								>添加好友</el-button
+							>
+						</el-empty>
+					</div>
+
 					<!-- 好友信息边栏，点击某个好友的card，从右往左弹出指定好友的信息 -->
 					<el-drawer
 						custom-class="friend-info-drawer"
@@ -135,8 +133,12 @@
 								:src="drawerAvatar"
 							/>
 						</el-row>
-						<el-row type="flex" justify="center">{{ drawerInfo.id }}</el-row>
-						<el-row type="flex" justify="center">{{ drawerInfo.name }}</el-row>
+						<el-row type="flex" justify="center">{{
+							drawerInfo.id
+						}}</el-row>
+						<el-row type="flex" justify="center">{{
+							drawerInfo.name
+						}}</el-row>
 						<el-row type="flex" justify="center">{{
 							drawerInfo.gender
 						}}</el-row>
@@ -150,7 +152,12 @@
 							<el-button
 								id="delete-friend"
 								size="medium"
-								@click="handleClickDeleteFriend(drawerInfo.id, drawerInfo.name)"
+								@click="
+									handleClickDeleteFriend(
+										drawerInfo.id,
+										drawerInfo.name
+									)
+								"
 								>删除好友</el-button
 							>
 						</el-row>
@@ -168,7 +175,9 @@
 								:id="item.id"
 								:status="item.status ? item.status : 'off'"
 							></InfoCardItem>
-							<el-button @click="handleClickSend(item)">发送好友申请</el-button>
+							<el-button @click="handleClickSend(item)"
+								>发送好友申请</el-button
+							>
 						</div>
 						<el-empty
 							v-if="showEmptyRes"
@@ -177,7 +186,9 @@
 						></el-empty>
 					</div>
 					<div v-if="showNotice" class="friend-notice">
-						<span v-if="noticeList.length" class="friend-notice-title"
+						<span
+							v-if="noticeList.length"
+							class="friend-notice-title"
 							>好友申请</span
 						>
 						<div
@@ -188,14 +199,22 @@
 							<br />
 							<InfoCardItem
 								:name="item.detail.name"
-								:avatar="item.detail.avatar ? item.detail.avatar : undefined"
+								:avatar="
+									item.detail.avatar
+										? item.detail.avatar
+										: undefined
+								"
 								:id="item.detail.id"
 								:showStatus="false"
 							></InfoCardItem>
-							<el-button class="yes-btn" @click="handleClickYes(item, key)"
+							<el-button
+								class="yes-btn"
+								@click="handleClickYes(item, key)"
 								>同意</el-button
 							>
-							<el-button class="no-btn" @click="handleClickNo(item, key)"
+							<el-button
+								class="no-btn"
+								@click="handleClickNo(item, key)"
 								>拒绝</el-button
 							>
 						</div>
@@ -299,7 +318,10 @@
 			// 发送好友请求
 			sendAddRequest(id) {
 				console.log('send request to', id);
-				this.$socket.emitter('add friend request', [id, 'friend request']);
+				this.$socket.emitter('add friend request', [
+					id,
+					'friend request',
+				]);
 			},
 			//添加好友按钮的点击事件回调函数
 			handleClickAddFriend() {
@@ -400,12 +422,18 @@
 			handleClickYes(item, key) {
 				console.log('yes to ', item.detail.name, key);
 				this.noticeList.splice(key, 1);
-				this.$socket.emitter('add friend response', [item.detail.id, true]);
+				this.$socket.emitter('add friend response', [
+					item.detail.id,
+					true,
+				]);
 			},
 			handleClickNo(item, key) {
 				console.log('no to ', item.detail.name, key);
 				this.noticeList.splice(key, 1);
-				this.$socket.emitter('add friend response', [item.detail.id, false]);
+				this.$socket.emitter('add friend response', [
+					item.detail.id,
+					false,
+				]);
 			},
 		},
 		computed: {

@@ -1,124 +1,51 @@
 <template>
 	<div class="signup">
 		<!-- 手机号输入框 -->
-		<div class="control block-cube block-input">
-			<!-- add `autocomplete="new-password"` to remove Chrome's 
-				weird !important css style(background) -->
-			<!-- src: https://stackoverflow.com/questions/43783924/
-				disable-google-chrome-autocomplete-autofill-suggestion -->
-			<input
-				v-model.number="v$.phone.$model"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="phone"
-				type="text"
-				placeholder="手机号"
-				autocomplete="new-password"
-				:class="{ 'error-prompt': v$.phone.$dirty && v$.phone.$error }"
-			/>
+		<cubic-input
+			name="phone"
+			placeholder="手机号"
+			:vModel="v$.phone"
+			:isSubmit="true"
+			errorPrompt="请输入格式正确的手机号码"
+			@submit="submitForm()"
+			@update="updatePhone"
+		></cubic-input>
 
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.phone.required">
-			Phone is required
-		</div>
-		<div class="invalid-feedback">
-			{{ v$.phone.$error ? 'Invalid phone number' : '' }}
-		</div> -->
 		<!-- 昵称输入 -->
-		<div class="control block-cube block-input">
-			<!-- add `autocomplete="new-password"` to remove Chrome's 
-				weird !important css style(background) -->
-			<!-- src: https://stackoverflow.com/questions/43783924/
-				disable-google-chrome-autocomplete-autofill-suggestion -->
-			<input
-				v-model.number="v$.username.$model"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="username"
-				type="text"
-				placeholder="昵称"
-				autocomplete="new-password"
-				:class="{
-					'error-prompt': v$.username.$dirty && v$.username.$error,
-				}"
-			/>
+		<cubic-input
+			name="username"
+			placeholder="昵称"
+			:vModel="v$.username"
+			:isSubmit="true"
+			errorPrompt="3~16位字符/数字"
+			@submit="submitForm()"
+			@update="updateUsername"
+		></cubic-input>
 
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
 		<!-- 密码输入框 -->
-		<div class="control block-cube block-input">
-			<input
-				type="password"
-				v-model="v$.password.$model"
-				autocomplete="off"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="password"
-				placeholder="密码"
-				:class="{
-					'error-prompt': v$.password.$dirty && v$.password.$error,
-				}"
-			/>
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
+		<cubic-input
+			name="password"
+			type="password"
+			placeholder="密码"
+			:vModel="v$.password"
+			:isSubmit="true"
+			errorPrompt="6～20位数字/字母/下划线"
+			@submit="submitForm()"
+			@update="updatePassword"
+		></cubic-input>
+
 		<!-- 重复输入密码 -->
-		<div class="control block-cube block-input">
-			<input
-				type="password"
-				v-model="v$.password2.$model"
-				autocomplete="off"
-				@keydown.enter="handleEnterClear"
-				@keyup.enter="submitForm()"
-				name="password2"
-				placeholder="确认密码"
-				:class="{
-					'error-prompt': v$.password2.$dirty && v$.password2.$error,
-				}"
-			/>
-			<!-- 效果 -->
-			<div class="bg-top">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg-right">
-				<div class="bg-inner"></div>
-			</div>
-			<div class="bg">
-				<div class="bg-inner"></div>
-			</div>
-		</div>
-		<!-- 表单验证错误信息 -->
-		<!-- <div class="invalid-feedback" v-if="!v$.password.required">
-			Password is required
-		</div> -->
+		<cubic-input
+			name="password2"
+			type="password"
+			placeholder="再次输入密码"
+			:vModel="v$.password2"
+			:isSubmit="true"
+			errorPrompt="两次密码输入不一致"
+			@submit="submitForm()"
+			@update="updatePassword2"
+		></cubic-input>
+
 		<button @click="submitForm()" class="btn block-cube block-cube-hover">
 			<div class="bg-top">
 				<div class="bg-inner"></div>
@@ -133,6 +60,7 @@
 				注 册
 			</div>
 		</button>
+
 		<p class="or-sign-in" @click="handleBackToLogin()">
 			已有账号？
 		</p>
@@ -145,10 +73,17 @@
 	// vuelidate: https://vuelidate-next.netlify.app/
 	import { useVuelidate } from '@vuelidate/core';
 	import { required, sameAs } from '@vuelidate/validators';
-	// validator for phone
-	const validatePhone = (value) => /^1[3-9]\d{9}$/.test(value);
+	import {
+		validatePhone,
+		validatePassword,
+		validateUsername,
+	} from '@/utils/validators';
+	import CubicInput from './CubicInputComponent.vue';
 
 	export default {
+		components: {
+			CubicInput,
+		},
 		setup() {
 			return {
 				v$: useVuelidate(),
@@ -171,10 +106,11 @@
 				},
 				username: {
 					required,
+					validateUsername,
 				},
 				password: {
 					required,
-					// todo: add more validator for pwd
+					validatePassword,
 				},
 				password2: {
 					required,
@@ -185,6 +121,18 @@
 		methods: {
 			...mapGetters(['getUserId', 'getUserName']),
 			...mapActions(['setUserInfo']),
+			updatePhone(value) {
+				this.phone = value;
+			},
+			updateUsername(value) {
+				this.username = value;
+			},
+			updatePassword(value) {
+				this.password = value;
+			},
+			updatePassword2(value) {
+				this.password2 = value;
+			},
 			async submitForm() {
 				const isFormCorrect = await this.v$.$validate();
 				if (isFormCorrect) {
@@ -214,8 +162,7 @@
 						console.log(err);
 					}
 				} else {
-					this.$message.error('手机号或密码格式错误！');
-					return false;
+					// this.$message.error('手机号或密码格式错误！');
 				}
 			},
 			// to login page
@@ -228,10 +175,10 @@
 				else window.event.value = false;
 			},
 		},
-		mounted() {},
 	};
 </script>
 
 <style lang="scss" scoped>
 	@import '@/assets/styles/login/login.scss';
+	@import '@/assets/styles/transition.scss';
 </style>

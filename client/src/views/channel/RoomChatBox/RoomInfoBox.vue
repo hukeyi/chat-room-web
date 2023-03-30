@@ -4,12 +4,10 @@
 			<!-- 聊天室界面：头顶栏，选择聊天室状态分类 -->
 			<el-header class="main-header">
 				<div class="main-header-title">
-					<img :src="icon_room" /><span style="margin: auto 10px;">聊天室</span>
+					<img :src="icon_room" /><span style="margin: auto 10px;"
+						>聊天室</span
+					>
 				</div>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-menu
 					@select="handleSelectStatus"
 					class="main-header-menu"
@@ -19,10 +17,6 @@
 					<el-menu-item index="all">全部</el-menu-item>
 					<el-menu-item index="mine">我管理的</el-menu-item>
 				</el-menu>
-				<el-divider
-					class="main-header-divider"
-					direction="vertical"
-				></el-divider>
 				<el-button
 					@click="handleClickAddRoom"
 					size="medium"
@@ -94,7 +88,10 @@
 						</el-empty>
 					</div>
 					<!-- 所有聊天室信息列表 -->
-					<div v-else-if="selectRoomStatus === 'all'" class="room-list-all">
+					<div
+						v-else-if="selectRoomStatus === 'all'"
+						class="room-list-all"
+					>
 						<InfoCardItem
 							v-for="item in roomList"
 							:key="item.id"
@@ -105,7 +102,10 @@
 						></InfoCardItem>
 					</div>
 					<!-- 我管理的聊天室信息列表 -->
-					<div v-else-if="selectRoomStatus === 'mine'" class="room-list-on">
+					<div
+						v-else-if="selectRoomStatus === 'mine'"
+						class="room-list-on"
+					>
 						<InfoCardItem
 							v-for="item in getMyRoomList()"
 							:key="item.id"
@@ -124,17 +124,28 @@
 							:rules="rules"
 							ref="ruleForm"
 						>
-							<el-form-item id="create-room-name" label="名称" prop="name">
+							<el-form-item
+								id="create-room-name"
+								label="名称"
+								prop="name"
+							>
 								<el-input v-model="ruleForm.name"></el-input>
 							</el-form-item>
 							<el-form-item label="简介" prop="intro">
-								<el-input type="textarea" v-model="ruleForm.intro"></el-input>
+								<el-input
+									type="textarea"
+									v-model="ruleForm.intro"
+								></el-input>
 							</el-form-item>
 							<el-form-item>
-								<el-button type="primary" @click="submitForm('ruleForm')"
+								<el-button
+									type="primary"
+									@click="submitForm('ruleForm')"
 									>立即创建</el-button
 								>
-								<el-button @click="resetForm('ruleForm')">重置</el-button>
+								<el-button @click="resetForm('ruleForm')"
+									>重置</el-button
+								>
 							</el-form-item>
 						</el-form>
 					</div>
@@ -151,14 +162,22 @@
 							<br />
 							<InfoCardItem
 								:name="item.detail.name"
-								:avatar="item.detail.avatar ? item.detail.avatar : undefined"
+								:avatar="
+									item.detail.avatar
+										? item.detail.avatar
+										: undefined
+								"
 								:id="item.detail.id"
 								:showStatus="false"
 							></InfoCardItem>
-							<el-button class="yes-btn" @click="handleClickYes(item, key)"
+							<el-button
+								class="yes-btn"
+								@click="handleClickYes(item, key)"
 								>同意</el-button
 							>
-							<el-button class="no-btn" @click="handleClickNo(item, key)"
+							<el-button
+								class="no-btn"
+								@click="handleClickNo(item, key)"
 								>拒绝</el-button
 							>
 						</div>
@@ -176,7 +195,9 @@
 								:id="item.id"
 								:showStatus="false"
 							></InfoCardItem>
-							<el-button @click="handleClickSend(item)">发送加入申请</el-button>
+							<el-button @click="handleClickSend(item)"
+								>发送加入申请</el-button
+							>
 						</div>
 						<el-empty
 							v-if="showEmptyRes"
@@ -193,10 +214,19 @@
 						destroy-on-close
 					>
 						<el-row type="flex" justify="center"
-							><img :src="drawerInfo.avatar ? drawerInfo.avatar : icon_room"
+							><img
+								:src="
+									drawerInfo.avatar
+										? drawerInfo.avatar
+										: icon_room
+								"
 						/></el-row>
-						<el-row type="flex" justify="center">{{ drawerInfo.id }}</el-row>
-						<el-row type="flex" justify="center">{{ drawerInfo.name }}</el-row>
+						<el-row type="flex" justify="center">{{
+							drawerInfo.id
+						}}</el-row>
+						<el-row type="flex" justify="center">{{
+							drawerInfo.name
+						}}</el-row>
 						<el-row type="flex" justify="center">{{
 							drawerInfo.status
 						}}</el-row>
@@ -211,14 +241,24 @@
 							<el-button
 								id="delete-room"
 								size="medium"
-								@click="handleClickQuitRoom(drawerInfo.id, drawerInfo.name)"
+								@click="
+									handleClickQuitRoom(
+										drawerInfo.id,
+										drawerInfo.name
+									)
+								"
 								>退出聊天室</el-button
 							>
 							<el-button
 								id="btn-del-room"
 								v-if="drawerInfo.isAdmin"
 								size="medium"
-								@click="handleClickDeleteRoom(drawerInfo.id, drawerInfo.name)"
+								@click="
+									handleClickDeleteRoom(
+										drawerInfo.id,
+										drawerInfo.name
+									)
+								"
 								>删除聊天室</el-button
 							>
 						</el-row>
@@ -272,7 +312,11 @@
 				},
 				rules: {
 					name: [
-						{ required: true, message: '请输入聊天室名称', trigger: 'blur' },
+						{
+							required: true,
+							message: '请输入聊天室名称',
+							trigger: 'blur',
+						},
 					],
 				},
 			};
@@ -341,7 +385,10 @@
 			},
 			async searchRooms(id) {
 				try {
-					this.searchResultList.splice(0, this.searchResultList.length);
+					this.searchResultList.splice(
+						0,
+						this.searchResultList.length
+					);
 					console.log('start room search by id', id);
 					const postData = { rId: id };
 					const temp = await roomApi.PostSearchRooms(postData);
@@ -492,12 +539,18 @@
 			handleClickYes(item, key) {
 				console.log('yes to ', item.detail.name, key);
 				this.noticeList.splice(key, 1);
-				this.$socket.emitter('add room response', [item.detail.id, true]);
+				this.$socket.emitter('add room response', [
+					item.detail.id,
+					true,
+				]);
 			},
 			handleClickNo(item, key) {
 				console.log('no to ', item.detail.name, key);
 				this.noticeList.splice(key, 1);
-				this.$socket.emitter('add room response', [item.detail.id, false]);
+				this.$socket.emitter('add room response', [
+					item.detail.id,
+					false,
+				]);
 			},
 			// 清除回车键默认事件
 			handleEnterClear(e) {
