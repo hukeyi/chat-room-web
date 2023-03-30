@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-04 22:46:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-11 16:10:10
+ * @Last Modified time: 2023-03-21 21:05:41
  */
 
 // passport setting
@@ -11,10 +11,11 @@ const passport = require('passport');
 // const JwtStrategy = require('passport-jwt').Strategy;
 // const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 const { User } = require('../models/index.js');
 const { toJSON } = require('../controllers/utils');
+const { isPasswordMatch } = require('../controllers/user');
 
 // const options = {};
 // options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -103,7 +104,8 @@ passport.use(
 					return done(null, false);
 				}
 				// 密码不正确
-				if (!bcrypt.compareSync(password, user.password)) {
+				// if (!bcrypt.compareSync(password, user.password)) {
+				if (!isPasswordMatch(password, user.password)) {
 					console.log('\n【Passport.js】wrong password');
 					return done(null, false);
 				}

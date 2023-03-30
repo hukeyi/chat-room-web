@@ -53,6 +53,11 @@
 			bottom: 0;
 			right: 0;
 			margin: auto;
+
+			cursor: pointer;
+			&:active {
+				background-color: $emphasisColorA;
+			}
 		}
 	}
 </style>

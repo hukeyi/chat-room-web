@@ -1,15 +1,93 @@
-.entrance {
-	overflow: hidden;
-	text-align: center;
+<template>
+	<div class="control block-cube block-input">
+		<input
+			:name="name"
+			:type="type"
+			@input="updateValue($event.target.value)"
+			@keydown.enter="handleEnterClear"
+			@keyup.enter="$emit('submit')"
+			:placeholder="placeholder"
+			autocomplete="off"
+			:class="{
+				'error-prompt': isSubmit && vModel.$dirty && vModel.$error,
+			}"
+		/>
+		<transition name="fade" mode="out-in">
+			<div
+				v-if="isSubmit && vModel.$dirty && vModel.$error"
+				class="input-prompt"
+			>
+				{{ errorPrompt }}
+			</div>
+		</transition>
+		<div class="bg-top">
+			<div class="bg-inner"></div>
+		</div>
+		<div class="bg-right">
+			<div class="bg-inner"></div>
+		</div>
+		<div class="bg">
+			<div class="bg-inner"></div>
+		</div>
+	</div>
+</template>
 
-	*,
-	::after,
-	::before {
-		box-sizing: border-box;
-		font-weight: 300;
-	}
+<script>
+	import { defineComponent, reactive } from 'vue';
 
-	// $bg_body: #212121;
+	export default defineComponent({
+		name: 'CubicInput',
+		props: {
+			name: {
+				type: String,
+			},
+			type: {
+				type: String,
+				default: 'text',
+			},
+			placeholder: {
+				type: String,
+				default: 'placeholder',
+			},
+			vModel: {
+				type: Object,
+				required: true,
+			},
+			isSubmit: {
+				type: Boolean,
+				default: false,
+			},
+			errorPrompt: {
+				type: String,
+			},
+		},
+		setup(props) {
+			// make local reactive prop for vModel
+			// otherwise, vue will throw
+			// no-mutation-prop error
+			const state = reactive({
+				value: props.vModel,
+			});
+
+			return {
+				state,
+			};
+		},
+		methods: {
+			updateValue(value) {
+				this.$emit('update', value);
+				this.vModel.$touch();
+				this.state.$model = value;
+			},
+			handleEnterClear(e) {
+				if (e.preventDefault) e.preventDefault();
+				else window.event.value = false;
+			},
+		},
+	});
+</script>
+
+<style lang="scss" scoped>
 	$bg_body: $themeColorDeep;
 	$bg_gradient: linear-gradient(
 		90deg,
@@ -17,72 +95,54 @@
 		$emphasisColorA 37%,
 		$fontColorDeep 94%
 	);
-
-	* {
-		// background-color: $bg_body;
-		color: #fff;
-		// font-family: monospace, serif;
-		letter-spacing: 0.05em;
-	}
-
-	h1 {
-		font-size: 23px;
-	}
-
-	.login, .signup {
-		width: 300px;
-		padding: 64px 15px 24px;
-		margin: 0 auto;
-
-		/**
+	/**
 		* 立方体的输入框
 		*/
-		.control {
-			margin: 0 0 24px;
-			input {
-				width: 100%;
-				padding: 14px 16px;
+	.control {
+		margin: 0 0 24px;
+		input {
+			width: 100%;
+			padding: 14px 16px;
+			border: 0;
+			background: transparent;
+			color: #fff;
+			// font-family: monospace, serif;
+			letter-spacing: 0.05em;
+			font-size: 16px;
+			&:hover,
+			&:focus {
+				outline: none;
 				border: 0;
-				background: transparent;
-				color: #fff;
-				// font-family: monospace, serif;
-				letter-spacing: 0.05em;
-				font-size: 16px;
-				&:hover,
-				&:focus {
-					outline: none;
-					border: 0;
-				}
 			}
 		}
-		/**
+	}
+	/**
 		* 立方体的按钮
 		*/
-		.btn {
-			// margin: 0 0 24px;
-			width: 100%;
-			display: block;
-			padding: 14px 16px;
-			background: transparent;
-			outline: none;
-			border: 0;
-			color: #fff;
-			letter-spacing: 0.1em;
-			font-weight: bold;
-			font-size: 16px;
-			
+	.btn {
+		// margin: 0 0 24px;
+		width: 100%;
+		display: block;
+		padding: 14px 16px;
+		background: transparent;
+		outline: none;
+		border: 0;
+		color: #fff;
+		letter-spacing: 0.1em;
+		font-weight: bold;
+		font-size: 16px;
+
+		cursor: pointer;
+	}
+	// 输入框格式错误显示红色点线
+	.error-prompt {
+		text-decoration: underline dashed rgb(255, 0, 89) 2.5px;
+	}
+	.or-sign-in {
+		text-decoration: underline $fontColorLight 1.5px;
+		text-align: center;
+		&:hover {
 			cursor: pointer;
-		}
-		// 输入框格式错误显示红色点线
-		.error-prompt {
-			text-decoration: underline dashed rgb(255, 0, 89) 2.5px;
-		}
-		.or-sign-in {
-			text-decoration: underline $fontColorLight 1.5px;
-			text-align: center;
-			&:hover {
-				cursor: pointer;
-			}
 		}
 	}
 	/**
@@ -224,4 +284,4 @@
 			border-style: solid;
 		}
 	}
-}
+</style>
