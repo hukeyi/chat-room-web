@@ -2,23 +2,38 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 23:56:53
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-02 22:22:56
+ * @Last Modified time: 2023-03-21 20:39:49
  */
 import axios from '@/utils/axios.js';
+import bcrypt from 'bcrypt';
 
-const Register = (data) =>
-	axios({
+const saltRounds = parceInt(process.env.VUE_APP_SALT_ROUNDS);
+
+const Register = async (data) => {
+	// encode user's password for security
+	const password = data.password || '';
+	const hashedPassword = await bcrypt.hash(password, saltRounds);
+	if (data.password != null) data.password = hashedPassword;
+
+	return axios({
 		url: '/api/user/register',
 		data: data,
 		method: 'post',
 	});
+};
 
-const Login = (data) =>
-	axios({
+const Login = async (data) => {
+	// encode user's password for security
+	const password = data.password || '';
+	const hashedPassword = await bcrypt.hash(password, saltRounds);
+	if (data.password != null) data.password = hashedPassword;
+
+	return axios({
 		url: '/api/user/login',
 		data: data,
 		method: 'post',
 	});
+};
 
 const Logout = () =>
 	axios({

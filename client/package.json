@@ -13,6 +13,7 @@
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "axios": "^0.21.1",
+    "bcrypt": "^5.1.0",
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.28",
     "express": "^4.17.1",

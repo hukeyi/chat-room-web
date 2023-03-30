@@ -6,9 +6,9 @@
 
 var { app, store } = require('../app');
 var debug = require('debug')('server:server');
-// var http = require('http');
-var https = require('https');
-var fs = require('fs');
+var http = require('http');
+// var https = require('https');
+// var fs = require('fs');
 var onListenSocket = require('../utils/socket');
 const { SSL_OP_COOKIE_EXCHANGE } = require('constants');
 
@@ -25,7 +25,9 @@ app.set('port', port);
 
 // var server = http.createServer(app);
 const key = fs.readFileSync(__dirname + '/../cert/drrrchat.site.key');
-const cert = fs.readFileSync(__dirname + '/../cert/drrrchat.site_bundle.crt');
+const cert = fs.readFileSync(
+	__dirname + '/../cert/drrrchat.site_bundle.crt'
+);
 const options = {
 	key,
 	cert,
