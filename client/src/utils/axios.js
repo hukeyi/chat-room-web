@@ -14,7 +14,7 @@ const statusHash = {
 	402: '用户 token 未生效',
 	403: '用户 token 已过期',
 	404: '用户 token 未找到',
-	405: '用户 token 被修改',
+	405: '请求类型不支持',
 	406: '非法用户 token',
 	407: '非法请求',
 	408: '重复提交',
@@ -22,9 +22,10 @@ const statusHash = {
 	501: '请求频繁，请稍后',
 	502: '服务器错误，请稍后·',
 };
-
+const serverUrl = process.env.NODE_ENV != 'production'? process.env.VUE_APP_SERVER_URL_LOCAL: process.env.VUE_APP_SERVER_URL;
 const service = axios.create({
-	baseURL: '/',
+	baseURL: serverUrl + '/',
+	// baseURL: '/',
 	timeout: 10000,
 	responseType: 'json',
 	withCredentials: true,

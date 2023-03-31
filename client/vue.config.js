@@ -15,9 +15,10 @@ module.exports = {
 	},
 
 	// webpack-dev-server 相关配置
+	/**
 	devServer: {
 		port: 8080,
-		https: false,
+		https: true,
 		open: false,
 		proxy: {
 			'/api': {
@@ -30,6 +31,7 @@ module.exports = {
 			},
 		},
 	},
+	*/
 	css: {
 		loaderOptions: {
 			scss: {

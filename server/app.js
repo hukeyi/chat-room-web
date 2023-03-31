@@ -60,6 +60,7 @@ const roomRouter = require('./routes/room');
 app.use(
 	cors({
 		origin: true,
+		credentials: true, // add `Acess-Controal-Allow-Credenticals` to true
 		methods: ['GET', 'POST', 'OPTIONS'],
 		allowHeaders: ['Conten-Type', 'Authorization'],
 	})
