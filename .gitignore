@@ -5,6 +5,7 @@ node_modules
 /note
 */cert
 /cert
+www_http
 
 # local env files
 .env.local
