@@ -37,7 +37,7 @@
 				return `user/${this.getUserId()}`;
 			},
 			getRoomHomeUrl() {
-				return `channel/${this.getUserId()}`;
+				return `group/${this.getUserId()}`;
 			},
 			getSettingUrl() {
 				return `setting/${this.getUserId()}`;

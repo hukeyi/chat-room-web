@@ -45,7 +45,7 @@
 </template>
 
 <script>
-	import ChatListItem from './RoomChatItem';
+	import ChatListItem from './RoomListItem';
 	import { mapGetters, mapMutations, mapActions } from 'vuex';
 	import userApi from '@/api/user.js';
 
@@ -78,9 +78,7 @@
 			}),
 			...mapActions({}),
 			handleClickItem(item) {
-				this.$router.push(
-					`/channel/${this.getUserId()}/room/${item.id}`
-				);
+				this.$router.push(`/group/${this.getUserId()}/room/${item.id}`);
 			},
 			handleClickLogout() {
 				// logout

@@ -4,9 +4,8 @@
 			<el-header class="main-header">
 				<div class="main-header-title">
 					<img :src="icon_room" /><span style="margin: auto 10px;">
-						<span style="color: white;">{{ roomInfo.name }}</span> #{{
-							roomInfo.id
-						}}</span
+						<span style="color: white;">{{ roomInfo.name }}</span>
+						#{{ roomInfo.id }}</span
 					>
 				</div>
 			</el-header>
@@ -62,7 +61,9 @@
 							:showDropDown="item.id != uId"
 							:info="item"
 							:rId="Number(rId)"
-							:auth="adminIdList.includes(uId) ? 'admin' : 'member'"
+							:auth="
+								adminIdList.includes(uId) ? 'admin' : 'member'
+							"
 						></InfoListItem>
 					</div>
 				</el-aside>
@@ -73,11 +74,11 @@
 
 <script>
 	import { mapGetters, mapActions, mapMutations } from 'vuex';
-	import ChatMessage from '@/components/ChatMessageItem.vue';
-	import ChatNotice from '@/components/ChatNoticeItem.vue';
+	import ChatMessage from '@/views/common/components/ChatMessageItem.vue';
+	import ChatNotice from '@/views/common/components/ChatNoticeItem.vue';
 
 	import { formatDate } from '@/utils/time';
-	import InfoListItem from '@/components/InfoListItem.vue';
+	import InfoListItem from '@/views/common/components/InfoListItem.vue';
 	// import roomApi from '@/api/room';
 
 	export default {

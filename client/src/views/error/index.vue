@@ -1,7 +1,7 @@
 <template>
 	<div class="error-page">
 		<h1 class="error-code">
-			{{ code && code !== '' ? code : defaultCode }}
+			{{ code != '' && !isNaN(Number(code)) ? code : defaultCode }}
 		</h1>
 		<p class="error-msg">{{ getErrorMsg(code) }}</p>
 		<el-button v-if="code[0] != '5'" class="error-btn" @click="toLogin"
@@ -16,7 +16,7 @@
 	 * @Author: Hu Keyi
 	 * @Date: 2021-05-05 22:20:43
 	 * @Last Modified by: Hu Keyi
-	 * @Last Modified time: 2023-03-22 18:54:38
+	 * @Last Modified time: 2023-04-04 20:32:55
 	 */
 	export default {
 		props: ['code'],
@@ -32,7 +32,10 @@
 		},
 		methods: {
 			getErrorMsg(code) {
-				const theCode = code && code !== '' ? code : this.defaultCode;
+				const theCode =
+					code != '' && !isNaN(Number(code))
+						? code
+						: this.defaultCode;
 				const msg = this.msgHash[Number(theCode)];
 				return msg ? msg : '服务器异常';
 			},

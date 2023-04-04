@@ -51,7 +51,7 @@
 
 <script>
 	import { mapGetters, mapActions, mapMutations } from 'vuex';
-	import ChatMessage from '@/components/ChatMessageItem.vue';
+	import ChatMessage from '@/views/common/components/ChatMessageItem.vue';
 	import { formatDate } from '@/utils/time';
 	import userApi from '@/api/user';
 

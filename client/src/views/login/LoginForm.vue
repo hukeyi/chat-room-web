@@ -55,7 +55,7 @@
 	import { required } from '@vuelidate/validators';
 	import { validatePhone, validatePassword } from '@/utils/validators';
 
-	import CubicInput from './CubicInputComponent.vue';
+	import CubicInput from '@/views/common/components/CubicInputItem.vue';
 
 	export default {
 		components: { CubicInput },
@@ -69,7 +69,6 @@
 				phone: '',
 				password: '',
 				isSubmit: false,
-				imgUrl: require('../../assets/chat-logo-trans.png'),
 			};
 		},
 		validations() {

@@ -23,8 +23,8 @@
 
 <script>
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
-	import RoomList from './RoomList/index';
-	import RoomChatBox from './RoomChatBox/index';
+	import RoomList from './RoomAside/index';
+	import RoomChatBox from './RoomMain/index';
 	import roomApi from '@/api/room.js';
 
 	import { mapGetters, mapActions } from 'vuex';
@@ -46,7 +46,7 @@
 			async enterRoom(uid, rid) {
 				console.log('enter room', uid, rid);
 				await this.initLists();
-				this.$router.push(`/channel/${uid}/room/${rid}`);
+				this.$router.push(`/group/${uid}/room/${rid}`);
 			},
 			async initLists() {
 				this.roomList = await roomApi.GetRoomListAll();

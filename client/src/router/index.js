@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-22 17:19:54
+ * @Last Modified time: 2023-04-04 21:02:26
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -10,19 +10,19 @@ import { ElMessage } from 'element-plus';
 
 // login
 import Entrance from '../views/login/index.vue';
-import Login from '../views/login/Login-form.vue';
-import Register from '../views/login/Register-form.vue';
+import Login from '../views/login/LoginForm.vue';
+import Register from '../views/login/RegisterForm.vue';
 // channel & user
-import Channel from '../views/channel/index.vue';
-import User from '../views/user/index.vue';
+import Room from '../views/room/index.vue';
+import User from '../views/chat/index.vue';
 
 // friend-box
-import FriendInfoBox from '../views/user/FriendChatBox/FriendInfoBox.vue';
-import FriendChatBox from '../views/user/FriendChatBox/FriendChatBox.vue';
+import FriendInfoBox from '../views/chat/FriendMain/FriendInfoBox.vue';
+import FriendChatBox from '../views/chat/FriendMain/FriendChatBox.vue';
 
 // room-box
-import RoomChatBox from '../views/channel/RoomChatBox/RoomChatBox.vue';
-import RoomInfoBox from '../views/channel/RoomChatBox/RoomInfoBox.vue';
+import RoomChatBox from '../views/room/RoomMain/RoomChatBox.vue';
+import RoomInfoBox from '../views/room/RoomMain/RoomInfoBox.vue';
 
 // setting
 import Setting from '../views/setting/index.vue';
@@ -85,9 +85,9 @@ const routes = [
 		],
 	},
 	{
-		// 用户首页-某频道界面
-		path: '/channel/:id',
-		component: Channel,
+		// 用户首页-群聊界面
+		path: '/group/:id',
+		component: Room,
 		meta: { requiresAuth: true },
 		children: [
 			{
@@ -109,8 +109,8 @@ const routes = [
 	},
 	{
 		path: '/:pathMatch(.*)*',
-		name: 'error-404',
 		component: ErrorPage,
+		props: { code: '404' },
 	},
 ];
 const router = createRouter({
@@ -119,10 +119,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const id = to.params.id;
 	if (!to.meta.requiresAuth) {
 		next();
 	} else {
+		const id = to.params.id;
 		// 判断是否存在token
 		// 存在则鉴权判断
 		// 不存在则返回登录页

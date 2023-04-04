@@ -67,7 +67,10 @@
 					</div>
 					<!-- 所有好友信息列表 -->
 					<div
-						v-else-if="selectFriendStatus === 'all'"
+						v-else-if="
+							selectFriendStatus === 'all' &&
+								friendList.length > 0
+						"
 						class="friend-list-all"
 					>
 						<InfoCardItem
@@ -226,8 +229,8 @@
 </template>
 
 <script>
-	import InputItem from '@/components/InputItem.vue';
-	import InfoCardItem from '@/components/InfoCardItem.vue';
+	import InputItem from '@/views/common/components/InputItem.vue';
+	import InfoCardItem from '@/views/common/components/InfoCardItem.vue';
 	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	import friendApi from '@/api/friend';
 	import userApi from '@/api/user';

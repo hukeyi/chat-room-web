@@ -78,7 +78,7 @@
 		validatePassword,
 		validateUsername,
 	} from '@/utils/validators';
-	import CubicInput from './CubicInputComponent.vue';
+	import CubicInput from '@/views/common/components/CubicInputItem.vue';
 
 	export default {
 		components: {
@@ -95,7 +95,6 @@
 				username: '',
 				password: '',
 				password2: '',
-				imgUrl: require('../../assets/chat-logo-trans.png'),
 			};
 		},
 		validations() {

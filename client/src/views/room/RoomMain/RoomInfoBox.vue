@@ -73,48 +73,6 @@
 							>
 						</InputItem>
 					</div>
-					<!-- 无聊天室 -->
-					<div v-else-if="!roomList.length" class="no-rooms">
-						<el-empty
-							description="暂时没有聊天室，赶快搜索聊天室开始聊天吧"
-							:image-size="200"
-						>
-							<el-button
-								size="medium"
-								class="add-room-btn"
-								@click="handleClickAddRoom"
-								>加入聊天室</el-button
-							>
-						</el-empty>
-					</div>
-					<!-- 所有聊天室信息列表 -->
-					<div
-						v-else-if="selectRoomStatus === 'all'"
-						class="room-list-all"
-					>
-						<InfoCardItem
-							v-for="item in roomList"
-							:key="item.id"
-							:name="item.name"
-							:showRoom="true"
-							:id="item.id"
-							@click="handleClickRoomCard(item)"
-						></InfoCardItem>
-					</div>
-					<!-- 我管理的聊天室信息列表 -->
-					<div
-						v-else-if="selectRoomStatus === 'mine'"
-						class="room-list-on"
-					>
-						<InfoCardItem
-							v-for="item in getMyRoomList()"
-							:key="item.id"
-							:name="item.name"
-							:showRoom="true"
-							:id="item.id"
-							@click="handleClickRoomCard(item)"
-						></InfoCardItem>
-					</div>
 					<!-- 创建聊天室 -->
 					<div v-else-if="showCreateRoom" class="create-room-form">
 						<el-form
@@ -148,6 +106,52 @@
 								>
 							</el-form-item>
 						</el-form>
+					</div>
+					<!-- 所有聊天室信息列表 -->
+					<div
+						v-else-if="
+							selectRoomStatus === 'all' && roomList.length > 0
+						"
+						class="room-list-all"
+					>
+						<InfoCardItem
+							v-for="item in roomList"
+							:key="item.id"
+							:name="item.name"
+							:showRoom="true"
+							:id="item.id"
+							@click="handleClickRoomCard(item)"
+						></InfoCardItem>
+					</div>
+					<!-- 我管理的聊天室信息列表 -->
+					<div
+						v-else-if="
+							selectRoomStatus === 'mine' && roomList.length > 0
+						"
+						class="room-list-on"
+					>
+						<InfoCardItem
+							v-for="item in getMyRoomList()"
+							:key="item.id"
+							:name="item.name"
+							:showRoom="true"
+							:id="item.id"
+							@click="handleClickRoomCard(item)"
+						></InfoCardItem>
+					</div>
+					<!-- 无聊天室 -->
+					<div v-else class="no-rooms">
+						<el-empty
+							description="暂时没有聊天室，赶快搜索聊天室开始聊天吧"
+							:image-size="200"
+						>
+							<el-button
+								size="medium"
+								class="add-room-btn"
+								@click="handleClickAddRoom"
+								>加入聊天室</el-button
+							>
+						</el-empty>
 					</div>
 					<!-- 通知 -->
 					<div v-if="showNotice" class="room-notice">
@@ -270,8 +274,8 @@
 </template>
 
 <script>
-	import InputItem from '@/components/InputItem.vue';
-	import InfoCardItem from '@/components/InfoCardItem.vue';
+	import InputItem from '@/views/common/components/InputItem.vue';
+	import InfoCardItem from '@/views/common/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
 	import roomApi from '@/api/room';
 	import { h } from 'vue';
@@ -445,7 +449,7 @@
 			async handleClickEnterRoom(id) {
 				this.showRightDrawer = false;
 				// todo: emit user enter xx room
-				this.$router.push(`/channel/${this.getUserId()}/room/${id}`);
+				this.$router.push(`/group/${this.getUserId()}/room/${id}`);
 			},
 			//点击删除聊天室按钮的回调函数
 			handleClickDeleteRoom(id, name) {

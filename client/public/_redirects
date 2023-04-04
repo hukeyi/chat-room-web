@@ -1,3 +1,0 @@
-# Netlify settings for single-page application
-/api/*    http://175.178.70.234:3000/api/:splat    200
-/*    /index.html   200
