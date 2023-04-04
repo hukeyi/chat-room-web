@@ -1,27 +1,20 @@
 <template>
-	<div class="user">
-		<el-container class="whole-area">
-			<!-- 最左侧边栏，频道选择 front ok; axios:? -->
-			<el-aside class="left-sidebar-0">
-				<ChannelSelector></ChannelSelector>
-			</el-aside>
-			<!-- 列表侧边栏 朋友选择 -->
-			<el-aside class="left-sidebar-1">
-				<FriendChatList :chatInfoList="chatInfoList"></FriendChatList>
-			</el-aside>
-			<!-- 主界面 好友界面 这里有嵌套路由 -->
-			<el-main class="main-box">
-				<FriendBox
-					@startChat="startChat"
-					:friendList="friendList"
-				></FriendBox>
-			</el-main>
-		</el-container>
-	</div>
+	<el-container class="whole-area">
+		<!-- 列表侧边栏 朋友选择 -->
+		<el-aside class="left-sidebar-1">
+			<FriendChatList :chatInfoList="chatInfoList"></FriendChatList>
+		</el-aside>
+		<!-- 主界面 好友界面 这里有嵌套路由 -->
+		<el-main class="main-box">
+			<FriendBox
+				@startChat="startChat"
+				:friendList="friendList"
+			></FriendBox>
+		</el-main>
+	</el-container>
 </template>
 
 <script>
-	import ChannelSelector from '../components/ChannelSelector/index.vue';
 	import FriendChatList from './FriendAside/index';
 	import FriendBox from './FriendMain/index';
 	import { mapGetters, mapActions } from 'vuex';
@@ -30,7 +23,7 @@
 	import MsgApi from '@/api/message';
 
 	export default {
-		components: { ChannelSelector, FriendChatList, FriendBox },
+		components: { FriendChatList, FriendBox },
 		data() {
 			return {
 				chatInfoList: [],
@@ -90,34 +83,4 @@
 	};
 </script>
 
-<style lang="scss" scoped>
-	.user {
-		@media (max-width: 900px) {
-			.main-right-sidebar {
-				display: none;
-			}
-			.left-sidebar-1 {
-				display: none;
-			}
-		}
-		overflow: hidden;
-		height: 100%;
-		color: $fontColorLight;
-
-		:deep(.whole-area) {
-			height: 100%;
-			.left-sidebar-0 {
-				background-color: $themeColorDeep;
-				width: 60px !important;
-			}
-			.left-sidebar-1 {
-				background-color: $themeColorMedium;
-				width: 290px !important;
-			}
-			.main-box {
-				padding: 0;
-				background-color: $themeColorLight;
-			}
-		}
-	}
-</style>
+<style lang="scss" scoped></style>

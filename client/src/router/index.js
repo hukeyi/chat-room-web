@@ -2,17 +2,21 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-04-04 22:20:47
+ * @Last Modified time: 2023-04-05 00:30:57
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
 import { ElMessage } from 'element-plus';
 
-// login
+// entrance
 import Entrance from '../views/login/index.vue';
 import Login from '../views/login/LoginForm.vue';
 import Register from '../views/login/RegisterForm.vue';
-// channel & user
+
+// Main
+import Container from '../views/index.vue';
+
+// room & chat
 import Room from '../views/room/index.vue';
 import User from '../views/chat/index.vue';
 
@@ -29,12 +33,6 @@ import Setting from '../views/setting/index.vue';
 
 // error
 import ErrorPage from '@/views/error/index.vue';
-
-// test component
-// import LoginTest from '@/views/login/Login-test.vue';
-// import LoginTest2 from '@/views/login/Login-test-form.vue';
-// import SignUpTest from '@/views/login/Register-test.vue';
-// import SignUpTest2 from '@/views/login/Register-test-form.vue';
 
 const routes = [
 	{
@@ -56,53 +54,62 @@ const routes = [
 		],
 	},
 	{
-		// 用户首页-好友界面
-		path: '/user/:id',
-		component: User,
-		children: [
-			{
-				path: '',
-				component: FriendInfoBox,
-				meta: { requiresAuth: true },
-			},
-			{
-				path: 'friend/:fId',
-				component: FriendChatBox,
-				meta: { requiresAuth: true },
-			},
-		],
-	},
-	{
-		// 用户设置界面
-		path: '/setting/:id',
-		component: Setting,
-		children: [
-			{
-				path: '',
-				component: FriendInfoBox,
-				meta: { requiresAuth: true },
-			},
-		],
-	},
-	{
-		// 用户首页-群聊界面
-		path: '/group/:id',
-		component: Room,
+		// 用户登录后界面
+		path: '/',
+		component: Container,
 		meta: { requiresAuth: true },
 		children: [
 			{
-				path: '',
-				component: RoomInfoBox,
-				meta: { requiresAuth: true },
+				// 用户首页-好友界面
+				path: 'user/:id',
+				component: User,
+				children: [
+					{
+						path: '',
+						component: FriendInfoBox,
+						meta: { requiresAuth: true },
+					},
+					{
+						path: 'friend/:fId',
+						component: FriendChatBox,
+						meta: { requiresAuth: true },
+					},
+				],
 			},
 			{
-				path: 'room/:rId',
-				component: RoomChatBox,
+				// 用户设置界面
+				path: 'setting/:id',
+				component: Setting,
+				children: [
+					{
+						path: '',
+						component: FriendInfoBox,
+						meta: { requiresAuth: true },
+					},
+				],
+			},
+			{
+				// 用户首页-群聊界面
+				path: 'group/:id',
+				component: Room,
 				meta: { requiresAuth: true },
+				children: [
+					{
+						path: '',
+						component: RoomInfoBox,
+						meta: { requiresAuth: true },
+					},
+					{
+						path: 'room/:rId',
+						component: RoomChatBox,
+						meta: { requiresAuth: true },
+					},
+				],
 			},
 		],
 	},
 	{
+		// 错误提示界面
 		path: '/error/:code?',
 		component: ErrorPage,
 		props: true,
@@ -115,9 +122,9 @@ const routes = [
 ];
 const router = createRouter({
 	history: createWebHashHistory(),
-	routes, // `routes: routes`
+	routes,
 });
-
+// 路由拦截
 router.beforeEach((to, from, next) => {
 	if (!to.meta.requiresAuth) {
 		next();
