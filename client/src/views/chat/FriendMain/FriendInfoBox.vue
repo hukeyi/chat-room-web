@@ -229,8 +229,8 @@
 </template>
 
 <script>
-	import InputItem from '@/views/common/components/InputItem.vue';
-	import InfoCardItem from '@/views/common/components/InfoCardItem.vue';
+	import InputItem from '@/views/components/InputItem.vue';
+	import InfoCardItem from '@/views/components/InfoCardItem.vue';
 	import { mapGetters, mapActions, mapMutations } from 'vuex';
 	import friendApi from '@/api/friend';
 	import userApi from '@/api/user';

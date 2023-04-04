@@ -78,7 +78,7 @@
 		validatePassword,
 		validateUsername,
 	} from '@/utils/validators';
-	import CubicInput from '@/views/common/components/CubicInputItem.vue';
+	import CubicInput from '@/views/components/CubicInputItem.vue';
 
 	export default {
 		components: {

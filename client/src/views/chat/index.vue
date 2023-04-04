@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import ChannelSelector from '../common/ChannelSelector/index.vue';
+	import ChannelSelector from '../components/ChannelSelector/index.vue';
 	import FriendChatList from './FriendAside/index';
 	import FriendBox from './FriendMain/index';
 	import { mapGetters, mapActions } from 'vuex';

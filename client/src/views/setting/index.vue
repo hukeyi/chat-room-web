@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import ChannelSelector from '../common/ChannelSelector/index.vue';
+	import ChannelSelector from '../components/ChannelSelector/index.vue';
 	import UserSetting from './UserInfoSetting';
 
 	export default {

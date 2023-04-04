@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import ChannelSelector from '../common/ChannelSelector/index.vue';
+	import ChannelSelector from '../components/ChannelSelector/index.vue';
 	import RoomList from './RoomAside/index';
 	import RoomChatBox from './RoomMain/index';
 	import roomApi from '@/api/room.js';

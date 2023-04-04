@@ -74,11 +74,11 @@
 
 <script>
 	import { mapGetters, mapActions, mapMutations } from 'vuex';
-	import ChatMessage from '@/views/common/components/ChatMessageItem.vue';
-	import ChatNotice from '@/views/common/components/ChatNoticeItem.vue';
+	import ChatMessage from '@/views/components/ChatMessageItem.vue';
+	import ChatNotice from '@/views/components/ChatNoticeItem.vue';
 
 	import { formatDate } from '@/utils/time';
-	import InfoListItem from '@/views/common/components/InfoListItem.vue';
+	import InfoListItem from '@/views/components/InfoListItem.vue';
 	// import roomApi from '@/api/room';
 
 	export default {

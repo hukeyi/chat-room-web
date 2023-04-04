@@ -274,8 +274,8 @@
 </template>
 
 <script>
-	import InputItem from '@/views/common/components/InputItem.vue';
-	import InfoCardItem from '@/views/common/components/InfoCardItem.vue';
+	import InputItem from '@/views/components/InputItem.vue';
+	import InfoCardItem from '@/views/components/InfoCardItem.vue';
 	import { mapGetters, mapActions } from 'vuex';
 	import roomApi from '@/api/room';
 	import { h } from 'vue';
