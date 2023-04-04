@@ -1,3 +1,26 @@
+/**
+* 聊天界面的左边栏
+*/
+
+/**
+* 
+	聊天界面指：1）/user/:id 和 2）/group/:id
+
+	聊天界面总结构：
+	左边栏｜主界面【主要有 1）聊天界面；2）信息界面】
+
+	左边栏结构：
+	-----------------------
+	顶栏
+	-----------------------
+	列表项1
+	列表项2
+	...
+	-----------------------
+	用户信息展示 | 退出登录按钮
+	-----------------------
+*/
+
 .room-chat-list,
 .friend-chat-list {
 	width: 100%;
@@ -12,6 +35,9 @@
 
 	color: $fontColorDeep;
 
+	/**
+	* 顶栏
+	*/
 	.room-chat-header,
 	.friend-chat-header {
 		padding: 20px;
@@ -27,7 +53,10 @@
 		}
 	}
 
-	.user-info-setting {
+	/**
+	* 用户信息展示，左侧边栏最下方的小卡片
+	*/
+	.user-info-display {
 		padding: 20px;
 		border-top: 2px solid $themeColorDeep;
 		display: flex;
@@ -39,14 +68,14 @@
 			justify-content: center;
 			width: 50%;
 
-			img {
+			img { // 用户头像
 				width: 40px;
 				height: 40px;
 
 				background-color: $emphasisColorA;
 				border-radius: 50%;
 			}
-			.user-name-id {
+			.user-name-id { // 昵称和id
 				margin: auto;
 				font-size: 12px;
 				#user-name {
@@ -58,6 +87,10 @@
 				}
 			}
 		}
+
+		/**
+		* 退出登录小图标（左侧栏的最下面，靠右）
+		*/
 		.user-logout {
 			width: 15px;
 			height: 15px;

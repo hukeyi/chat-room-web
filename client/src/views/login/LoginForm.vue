@@ -41,7 +41,7 @@
 				登 录
 			</div>
 		</button>
-		<p class="or-sign-in" @click="handleCreateAccount()">
+		<p class="switch-link" @click="handleCreateAccount()">
 			或者注册？
 		</p>
 	</div>
@@ -137,6 +137,8 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '@/assets/styles/login/login.scss';
+	@import '@/assets/styles/login/index.scss';
+	@import '@/assets/styles/login/cube.scss';
+	// 动画
 	@import '@/assets/styles/transition.scss';
 </style>

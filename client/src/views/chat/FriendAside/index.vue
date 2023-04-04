@@ -26,7 +26,7 @@
 				</div>
 			</el-main>
 			<!-- 底部：用户个人信息 -->
-			<el-footer class="user-info-setting">
+			<el-footer class="user-info-display">
 				<div class="user-info">
 					<img :src="user_avator" />
 					<div class="user-name-id">

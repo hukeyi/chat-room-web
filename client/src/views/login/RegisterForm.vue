@@ -61,7 +61,7 @@
 			</div>
 		</button>
 
-		<p class="or-sign-in" @click="handleBackToLogin()">
+		<p class="switch-link" @click="handleBackToLogin()">
 			已有账号？
 		</p>
 	</div>
@@ -178,6 +178,7 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '@/assets/styles/login/login.scss';
+	@import '@/assets/styles/login/index.scss';
+	@import '@/assets/styles/login/cube.scss';
 	@import '@/assets/styles/transition.scss';
 </style>

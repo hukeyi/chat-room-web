@@ -1,0 +1,38 @@
+.entrance {
+	overflow: hidden;
+	text-align: center;
+
+	*,
+	::after,
+	::before {
+		box-sizing: border-box;
+		font-weight: 300;
+	}
+
+	* {
+		color: #fff;
+		letter-spacing: 0.05em;
+		// font-family: monospace, serif;
+	}
+
+	h1 {
+		font-size: 23px;
+	}
+
+	.login, .signup {
+		width: 300px;
+		padding: 64px 15px 24px;
+		margin: 0 auto;
+
+		/**
+		* 注册页面上的登录链接 & 登录页面上的注册链接
+		*/
+		.switch-link {
+			text-decoration: underline $fontColorLight 1.5px;
+			text-align: center;
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+}
