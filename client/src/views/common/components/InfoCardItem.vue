@@ -47,8 +47,8 @@
 		},
 		data() {
 			return {
-				avatar: require('@/assets/styles/common/img/user.png'),
-				roomAvatar: require('@/assets/styles/common/img/group.png'),
+				avatar: require('@/assets/imgs/user.png'),
+				roomAvatar: require('@/assets/imgs/group.png'),
 			};
 		},
 		mounted() {

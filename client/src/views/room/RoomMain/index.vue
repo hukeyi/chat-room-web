@@ -13,5 +13,5 @@
 	// 		display: none;
 	// 	}
 	// }
-	@import '@/assets/styles/user/chat.scss';
+	@import '@/assets/styles/chat/chat.scss';
 </style>

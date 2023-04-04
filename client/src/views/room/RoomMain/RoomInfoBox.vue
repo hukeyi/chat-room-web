@@ -295,7 +295,7 @@
 				searchId: '',
 				showEmptyRes: false,
 
-				icon_room: require('@/assets/styles/common/img/group.png'),
+				icon_room: require('@/assets/imgs/group.png'),
 
 				// 添加聊天室 聊天室状态表
 				showAddRoom: false,
@@ -586,5 +586,5 @@
 	// 		display: none;
 	// 	}
 	// }
-	@import '@/assets/styles/user/chat.scss';
+	@import '@/assets/styles/chat/chat.scss';
 </style>

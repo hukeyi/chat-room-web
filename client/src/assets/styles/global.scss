@@ -1,3 +1,7 @@
+/**
+* 配色
+*/
+
 // 配色暂定方案：
 // 强调色：两个，最好是两个互补色，用于按钮和图标
 // 	•	#819C8A morning blue 绿
@@ -32,6 +36,10 @@ body {
 
 	background-color: $themeColorDeep;
 }
+
+/**
+* 更改 element-ui 的默认样式
+*/
 
 .is-message-box .el-message-box__btns .el-button--primary {
 	background-color: $emphasisColorA;

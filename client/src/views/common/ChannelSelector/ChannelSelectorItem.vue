@@ -16,7 +16,7 @@
 			// icon地址
 			icon: {
 				type: String,
-				default: require('@/assets/styles/common/img/user.png'),
+				default: require('@/assets/imgs/user.png'),
 			},
 		},
 		methods: {

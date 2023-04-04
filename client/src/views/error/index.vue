@@ -16,7 +16,7 @@
 	 * @Author: Hu Keyi
 	 * @Date: 2021-05-05 22:20:43
 	 * @Last Modified by: Hu Keyi
-	 * @Last Modified time: 2023-04-04 20:32:55
+	 * @Last Modified time: 2023-04-04 22:24:39
 	 */
 	export default {
 		props: ['code'],
@@ -74,7 +74,7 @@
 			background-color: $emphasisColorA;
 			border-color: $emphasisColorA;
 			color: $fontColorLight;
-			font-size: 1.5rem;
+			font-size: 1.2rem;
 			font-weight: 300;
 
 			&:active,

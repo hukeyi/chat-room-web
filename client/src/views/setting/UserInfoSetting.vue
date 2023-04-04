@@ -211,8 +211,8 @@
 				}
 			};
 			return {
-				icon_setting: require('@/assets/styles/common/img/setting.png'),
-				icon_user: require('@/assets/styles/common/img/user.png'),
+				icon_setting: require('@/assets/imgs/setting.png'),
+				icon_user: require('@/assets/imgs/user.png'),
 				avatar_url: '',
 				selectStatus: 'info',
 
@@ -388,5 +388,5 @@
 			height: 180px;
 		}
 	}
-	@import '@/assets/styles/user/chat.scss';
+	@import '@/assets/styles/chat/chat.scss';
 </style>

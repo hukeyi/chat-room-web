@@ -50,7 +50,7 @@
 		},
 		data() {
 			return {
-				avatar: require('@/assets/styles/common/img/user.png'),
+				avatar: require('@/assets/imgs/user.png'),
 			};
 		},
 		mounted() {
@@ -128,7 +128,8 @@
 					width: 0;
 					height: 0;
 					border-width: 6px;
-					border-color: transparent $message-bg-color transparent transparent;
+					border-color: transparent $message-bg-color transparent
+						transparent;
 					border-style: solid;
 				}
 			}
@@ -143,7 +144,8 @@
 
 			.chat-content::before {
 				left: 100%;
-				border-color: transparent transparent transparent $message-bg-color;
+				border-color: transparent transparent transparent
+					$message-bg-color;
 			}
 		}
 	}

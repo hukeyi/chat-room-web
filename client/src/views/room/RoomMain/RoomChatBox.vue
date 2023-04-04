@@ -89,7 +89,7 @@
 				rId: '',
 				adminIdList: [],
 				roomInfo: '',
-				icon_room: require('@/assets/styles/common/img/group.png'),
+				icon_room: require('@/assets/imgs/group.png'),
 
 				inputText: '',
 				messageList: [],
@@ -242,5 +242,5 @@
 	// 		display: none;
 	// 	}
 	// }
-	@import '@/assets/styles/user/chat.scss';
+	@import '@/assets/styles/chat/chat.scss';
 </style>

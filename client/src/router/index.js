@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-05 21:59:54
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-04-04 21:02:26
+ * @Last Modified time: 2023-04-04 22:20:47
  */
 import { createRouter, createWebHashHistory } from 'vue-router';
 import jwt_decode from 'jwt-decode';
@@ -150,7 +150,7 @@ router.beforeEach((to, from, next) => {
 				type: 'error',
 			});
 			// todo: clear vuex
-			next('/');
+			next('/error/403');
 		}
 	}
 });

@@ -23,9 +23,9 @@
 	export default {
 		data() {
 			return {
-				icon_userhome: require('@/assets/styles/common/img/user.png'),
-				icon_room: require('@/assets/styles/common/img/international.png'),
-				icon_userInfo: require('@/assets/styles/common/img/setting.png'),
+				icon_userhome: require('@/assets/imgs/user.png'),
+				icon_room: require('@/assets/imgs/international.png'),
+				icon_userInfo: require('@/assets/imgs/setting.png'),
 			};
 		},
 		components: {

@@ -61,7 +61,7 @@
 			return {
 				fId: '',
 				fName: '',
-				icon_friend: require('@/assets/styles/common/img/user.png'),
+				icon_friend: require('@/assets/imgs/user.png'),
 
 				inputText: '',
 				messageList: [],
@@ -168,5 +168,5 @@
 	// 		display: none;
 	// 	}
 	// }
-	@import '@/assets/styles/user/chat.scss';
+	@import '@/assets/styles/chat/chat.scss';
 </style>

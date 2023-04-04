@@ -11,7 +11,10 @@
 			</el-aside>
 			<!-- 主界面 好友界面 这里有嵌套路由 -->
 			<el-main class="main-box">
-				<FriendBox @startChat="startChat" :friendList="friendList"></FriendBox>
+				<FriendBox
+					@startChat="startChat"
+					:friendList="friendList"
+				></FriendBox>
 			</el-main>
 		</el-container>
 	</div>
@@ -19,8 +22,8 @@
 
 <script>
 	import ChannelSelector from '../common/ChannelSelector/index.vue';
-	import FriendChatList from './FriendChatList/index';
-	import FriendBox from './FriendChatBox/index';
+	import FriendChatList from './FriendAside/index';
+	import FriendBox from './FriendMain/index';
 	import { mapGetters, mapActions } from 'vuex';
 
 	import friendApi from '@/api/friend.js';

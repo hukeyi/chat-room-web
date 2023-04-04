@@ -251,7 +251,7 @@
 				searchId: '',
 				showEmptyRes: false,
 
-				icon_friend: require('@/assets/styles/common/img/user.png'),
+				icon_friend: require('@/assets/imgs/user.png'),
 
 				// 添加好友 好友状态表
 				showAddFriend: false,
@@ -475,5 +475,5 @@
 	// 		display: none;
 	// 	}
 	// }
-	@import '@/assets/styles/user/chat.scss';
+	@import '@/assets/styles/chat/chat.scss';
 </style>

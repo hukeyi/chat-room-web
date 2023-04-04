@@ -26,7 +26,7 @@
 		},
 		data() {
 			return {
-				avatar: require('@/assets/styles/common/img/user.png'),
+				avatar: require('@/assets/imgs/user.png'),
 			};
 		},
 		mounted() {

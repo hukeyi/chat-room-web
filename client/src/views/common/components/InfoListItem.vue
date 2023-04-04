@@ -46,7 +46,9 @@
 			></InfoDesciption>
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button @click="menuList[2].show = false">关 闭</el-button>
+					<el-button @click="menuList[2].show = false"
+						>关 闭</el-button
+					>
 				</span>
 			</template>
 		</el-dialog>
@@ -90,7 +92,7 @@
 						},
 					},
 				],
-				avatar: require('@/assets/styles/common/img/user.png'),
+				avatar: require('@/assets/imgs/user.png'),
 			};
 		},
 		props: {
@@ -138,7 +140,8 @@
 		mounted() {
 			this.status = this.info.isAdmin ? 'on' : 'off';
 			console.log(this.info.id, this.info.avatar);
-			if (this.info.avatar) this.avatar = userApi.DownloadAvatar(this.info.id);
+			if (this.info.avatar)
+				this.avatar = userApi.DownloadAvatar(this.info.id);
 		},
 	};
 </script>

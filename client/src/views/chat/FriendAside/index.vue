@@ -60,9 +60,9 @@
 		},
 		data() {
 			return {
-				user_avator: require('@/assets/styles/common/img/user.png'),
-				setting_icon: require('@/assets/styles/common/img/international.png'),
-				logout_icon: require('@/assets/styles/common/img/log-out.png'),
+				user_avator: require('@/assets/imgs/user.png'),
+				setting_icon: require('@/assets/imgs/international.png'),
+				logout_icon: require('@/assets/imgs/log-out.png'),
 
 				userId: '',
 				userName: '',
@@ -112,5 +112,5 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '@/assets/styles/user/list.scss';
+	@import '@/assets/styles/chat/list.scss';
 </style>
