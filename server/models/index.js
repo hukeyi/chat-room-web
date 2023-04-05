@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-04-05 21:19:32
+ * @Last Modified time: 2023-04-05 21:29:20
  */
 
 // Model的统一出口
@@ -174,7 +174,7 @@ sequelize
 				},
 			});
 			if (defaultUser == null) {
-				createDefault({ User, Room, UserRoom });
+				await createDefault({ User, Room, UserRoom });
 			}
 			console.log('\nAll tables sync success & default data set');
 		} catch (err) {
