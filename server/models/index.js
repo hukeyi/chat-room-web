@@ -2,13 +2,14 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-19 17:00:28
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-04 16:08:10
+ * @Last Modified time: 2023-04-05 21:19:32
  */
 
 // Model的统一出口
 // for config tables' associations
 const { $, sequelize } = require('./db');
-const createTest = require('./create_test');
+// const createTest = require('./create_test');
+const createDefault = require('./create_default');
 const User = require('./user.js');
 const UserFriend = require('./user_friend.js');
 const { Message } = require('./message.js');
@@ -162,17 +163,23 @@ async function InitUserAndRoom() {
 
 sequelize
 	.sync()
-	.then(() => {
-		console.log('\nAll tables sync success');
-		// fixme: remember to delete this
-		// createTest({
-		// 	User,
-		// 	UserFriend,
-		// 	Message,
-		// 	MessageRecipient,
-		// 	Room,
-		// 	UserRoom,
-		// });
+	.then(async () => {
+		// 创建数据库的基础数据：
+		// id 为 1 的 user
+		// id 为 1 的 room
+		try {
+			let defaultUser = await User.findOne({
+				where: {
+					id: 1,
+				},
+			});
+			if (defaultUser == null) {
+				createDefault({ User, Room, UserRoom });
+			}
+			console.log('\nAll tables sync success & default data set');
+		} catch (err) {
+			console.log(`Default mysql data init error: ${err}`);
+		}
 	})
 	.catch((err) => console.log('\nSome tables sync error', err));
 
