@@ -2,7 +2,7 @@
  * @Author: Hu Keyi
  * @Date: 2021-05-09 20:18:09
  * @Last Modified by: Hu Keyi
- * @Last Modified time: 2023-03-18 17:46:55
+ * @Last Modified time: 2023-04-07 12:46:29
  */
 
 /**
@@ -50,6 +50,8 @@ const usersRouter = require('./routes/user');
 const friendsRouter = require('./routes/userFriend');
 const messagesRouter = require('./routes/message');
 const roomRouter = require('./routes/room');
+const gptRouter = require('./routes/gpt');
+
 /**
  * Middleware
  * [Using middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.application)
@@ -97,6 +99,7 @@ app.use('/api/user', usersRouter);
 app.use('/api/friend', friendsRouter);
 app.use('/api/msg', messagesRouter);
 app.use('/api/room', roomRouter);
+app.use('/api/gpt', gptRouter);
 
 /**
  * Error handler
